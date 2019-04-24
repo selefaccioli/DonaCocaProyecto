@@ -4,7 +4,7 @@ package entity;
 import java.io.Serializable;
 
 
-public class DetalleTorta implements Serializable {
+public class Detalle implements Serializable {
     private int id;
     private String nombre;
     private String detalle;

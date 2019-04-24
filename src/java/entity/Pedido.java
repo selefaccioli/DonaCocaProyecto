@@ -1,6 +1,10 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -11,9 +15,26 @@ public class Pedido implements Serializable{
 	private String detalle;
 	private String estado;
 	private Usuario usuario;
-        private Torta torta;
+        private boolean cerrado;
+        private ArrayList<LineaPedido> lineasPedido;
+        
      
-        public Pedido(){}
+        public Pedido(){
+        lineasPedido = new ArrayList<LineaPedido>();
+        estado = "Nuevo";
+        DateFormat hoyFormato = new SimpleDateFormat("yyyy/MM/dd");      
+        Date hoy=new Date();
+        hoyFormato.format(hoy);
+        fechaPedido = hoy;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(hoy); // Configuramos la fecha que se recibe
+        calendar.add(Calendar.DAY_OF_YEAR, 1);  
+        fechaEntrega = calendar.getTime();
+        
+        
+        
+        
+        }
 
     public int getId() {
         return id;
@@ -63,14 +84,28 @@ public class Pedido implements Serializable{
         this.usuario = usuario;
     }
 
-    public Torta getTorta() {
-        return torta;
+    public boolean isCerrado() {
+        return cerrado;
     }
 
-    public void setTorta(Torta torta) {
-        this.torta = torta;
+    public void setCerrado(boolean cerrado) {
+        this.cerrado = cerrado;
     }
-        
+
+    public ArrayList<LineaPedido> getLineasPedido() {
+        return lineasPedido;
+    }
+
+    public void setLineasPedido(ArrayList<LineaPedido> lineasPedido) {
+        this.lineasPedido = lineasPedido;
+    }
+    
+     public void setLinea(LineaPedido lp)
+    {
+        getLineasPedido().add(lp);
+    }
+    
+   
         
         
 }

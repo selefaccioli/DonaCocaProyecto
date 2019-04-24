@@ -11,7 +11,7 @@ public class Torta implements Serializable{
     private float precio;
     private String nombre;
     private InputStream imagen;
-    ArrayList<DetalleTorta> detalles;
+    ArrayList<Detalle> detalles;
     
     public Torta(){}
 
@@ -47,12 +47,36 @@ public class Torta implements Serializable{
         this.imagen = imagen;
     }
 
-    public ArrayList<DetalleTorta> getDetalles() {
+    public ArrayList<Detalle> getDetalles() {
         return detalles;
     }
 
-    public void setDetalles(ArrayList<DetalleTorta> detalles) {
+    public void setDetalles(ArrayList<Detalle> detalles) {
         this.detalles = detalles;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Torta other = (Torta) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
     }
     
     

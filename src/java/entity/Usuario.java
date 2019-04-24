@@ -7,10 +7,14 @@ public class Usuario implements Serializable{
     private int id;
     private String nombre;
     private String apellido;
-    private String dni;
+    private int dni;
     private String usuario;
     private String contrasenia;
     private boolean esAdmin;
+    private boolean activo;
+    private String mail;
+    private String telefono;
+    private String direccion;
     
     public Usuario(){}
 
@@ -38,11 +42,11 @@ public class Usuario implements Serializable{
         this.apellido = apellido;
     }
 
-    public String getDni() {
+    public int getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(int dni) {
         this.dni = dni;
     }
 
@@ -71,6 +75,40 @@ public class Usuario implements Serializable{
     public void setEsAdmin(boolean esAdmin) {
         this.esAdmin = esAdmin;
     }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    
+    
 
     @Override
     public int hashCode() {
