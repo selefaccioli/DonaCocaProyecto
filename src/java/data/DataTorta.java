@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import logic.CtrlDetalle;
 import util.DonaCocaException;
 
 
@@ -36,6 +37,7 @@ public class DataTorta {
                 int id = rs.getInt(1);
                 torta.setId(id);
             }
+            new DataTortaDetalle().agregarTortaDetalle(torta);
             conec.close();
            
         }
@@ -46,37 +48,17 @@ public class DataTorta {
     }
     
      public void actualizarTorta(Torta torta) throws DonaCocaException{      
-        if(torta.getImagen()!=null)
-        { 
-            String sql="update torta set nombre=? , precio=? , imagen=? where id_torta=?";            
+        if(torta.getImagen() != null){
+            String sql="update torta set nombre=? , precio=?, imagen=?  where id_torta=?";  
             try
             {
                 conec= conn.getConn();
                 PreparedStatement ps = conec.prepareStatement(sql);
                 ps.setString(1, torta.getNombre());
                 ps.setDouble(2, torta.getPrecio());
-                ps.setBlob(3, torta.getImagen());
+                 ps.setBlob(3, torta.getImagen());
+                ps.setInt(4, torta.getId());
                
-               
-                new DataTortaDetalle().actualizarTortaDetalle(torta);
-                ps.executeUpdate();
-
-                conec.close();
-            }
-            catch(SQLException e){
-            throw new DonaCocaException("Error al actualizar torta ",e);
-            }
-        }
-        else            
-        {
-            String sql="update torta set nombre=? , precio=?  where id_torta=?";  
-            try
-            {
-                conec= conn.getConn();
-                PreparedStatement ps = conec.prepareStatement(sql);
-                ps.setString(1, torta.getNombre());
-                ps.setDouble(2, torta.getPrecio());
-                ps.setBlob(3, torta.getImagen());
                 
                 new DataTortaDetalle().actualizarTortaDetalle(torta);
                 ps.executeUpdate();
@@ -86,7 +68,29 @@ public class DataTorta {
             catch(SQLException e){
             throw new DonaCocaException("Error al actualizar torta",e);
             }
-        }    
+        }
+        else{
+            String sql="update torta set nombre=? , precio=?  where id_torta=?";  
+            try
+            {
+                conec= conn.getConn();
+                PreparedStatement ps = conec.prepareStatement(sql);
+                ps.setString(1, torta.getNombre());
+                ps.setDouble(2, torta.getPrecio());
+                ps.setInt(3, torta.getId());
+               
+                
+                new DataTortaDetalle().actualizarTortaDetalle(torta);
+                ps.executeUpdate();
+           
+                conec.close();
+            }
+            catch(SQLException e){
+            throw new DonaCocaException("Error al actualizar torta",e);
+            }
+        }
+            
+            
     }
      
      public byte[] buscarImagen(int id) throws DonaCocaException{
@@ -129,8 +133,10 @@ public class DataTorta {
                 t.setPrecio(rs.getFloat(2));
                 t.setNombre(rs.getString(3));
                 
-                ArrayList<Detalle> detalles= new DataTortaDetalle().obtenerDetallesTorta(t);
+                ArrayList<Detalle> detalles = new CtrlDetalle().obtenerDetalles(t.getId());
                 t.setDetalles(detalles);
+                
+                
                 
                 listaTortas.add(t);
 
@@ -262,21 +268,23 @@ public class DataTorta {
         catch(SQLException e){
             throw new DonaCocaException("Error al obtener la torta buscada ",e);
         }
-        
-        return cantidad > 0;
+        if(cantidad > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
-     public ArrayList<Torta> obtenerDetalle(int idDetalle, int inferior, int cantidad) throws DonaCocaException{
+     public ArrayList<Torta> obtenerDetalle(int idDetalle) throws DonaCocaException{
         ArrayList<Torta> listaTortas = new ArrayList<>();
-        String sql = "select td.id_torta from torta_detalle td inner join torta t on td.id_torta= t.id_torta where td.id_detalle=? limit ?,?";
+        String sql = "select td.id_torta from torta_detalle td inner join torta t on td.id_torta= t.id_torta where td.id_detalle=? ";
         
         try
         {
             conec = conn.getConn();
             PreparedStatement ps = conec.prepareStatement(sql);
             ps.setInt(1, idDetalle);
-            ps.setInt(2, inferior);
-            ps.setInt(3,cantidad);
             ResultSet rs = ps.executeQuery();
                    
             while(rs.next())
@@ -308,5 +316,7 @@ public class DataTorta {
              throw new DonaCocaException("Error al eliminar torta",e);
          }
     }
+       
+       
       
 }

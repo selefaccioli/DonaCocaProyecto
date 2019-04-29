@@ -14,6 +14,8 @@ import javax.servlet.http.Cookie;
 import entity.Pedido;
 import entity.Torta;
 import entity.Usuario;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlDetalle;
@@ -37,8 +39,21 @@ public class InicioComando extends Comando{
                 
         // carga de tortas del home, carrusel y tablita de abajo
         CtrlTorta ctrlT= new CtrlTorta();
+        CtrlUsuario ctrlU = new CtrlUsuario();
         ArrayList<Torta> listaTortas=new ArrayList<Torta>();
-        ArrayList<Torta>tortasCarrusel= new ArrayList<Torta>();
+        ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+        ArrayList<Torta> tortasCarrusel= new ArrayList<Torta>();
+        
+       try {
+           listaUsuarios = ctrlU.obtenerUsuarios();
+       } catch (DonaCocaException ex) {
+           request.getSession().setAttribute("ex", ex.getMessage());
+           return "/home.jsp";
+       }
+       
+       request.getSession().setAttribute("listaUsuarios", listaUsuarios);
+        
+       
 
         try
         {   
@@ -85,7 +100,7 @@ public class InicioComando extends Comando{
             }
             if(nomUsu!=null && contra!=null)
             {
-                CtrlUsuario ctrlU = new CtrlUsuario();
+               
                 Usuario usu;
                 try
                 {

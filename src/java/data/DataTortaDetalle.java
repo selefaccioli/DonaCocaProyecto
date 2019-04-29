@@ -48,6 +48,8 @@ public class DataTortaDetalle {
              ps.setInt(1, torta.getId());
              ps.executeUpdate();
              conec.close();
+             
+             this.agregarTortaDetalle(torta);
          }
          catch(SQLException e){
             throw new DonaCocaException("Error al actualizar torta_detalle",e);

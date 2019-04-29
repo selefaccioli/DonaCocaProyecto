@@ -13,7 +13,9 @@ public class Torta implements Serializable{
     private InputStream imagen;
     ArrayList<Detalle> detalles;
     
-    public Torta(){}
+    public Torta(){
+    this.detalles = new ArrayList<Detalle>();
+    }
 
     public int getId() {
         return id;
@@ -54,7 +56,30 @@ public class Torta implements Serializable{
     public void setDetalles(ArrayList<Detalle> detalles) {
         this.detalles = detalles;
     }
-
+    
+       public boolean contieneDetalle(Detalle det)
+    {
+        int cont=0;
+        for(Detalle d:detalles)
+        {
+            if(d.getId()== det.getId()){
+               cont++;
+            }
+                
+        }
+        if(cont>0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+       
+       public void agregarDetalle(Detalle detalle)
+    {
+        this.detalles.add(detalle);
+    }
+      
     @Override
     public int hashCode() {
         int hash = 7;

@@ -25,33 +25,20 @@ public class FactoriaDeComandos {
         mapa.put("AgregarLineaPedidoComando", AgregarLineaPedidoComando.class);
         mapa.put("LogInComando",LogInComando.class);
         mapa.put("FinalizarPedidoComando", FinalizarPedidoComando.class);
-        
-       /* mapa.put("CuentaComando",CuentaComando.class);
-        mapa.put("RegistroComando", RegistroComando.class);
-        mapa.put("PeliculasComando", PeliculasComando.class);
-        mapa.put("AdminPeliculasComando", AdminPeliculasComando.class);
-        mapa.put("SeleccionarPeliculaComando", SeleccionarPeliculaComando.class);
-        mapa.put("EditarPeliculaComando", EditarPeliculaComando.class);
-        mapa.put("AgregarPeliculaComando", AgregarPeliculaComando.class);
         mapa.put("LogOutComando", LogOutComando.class);
-        mapa.put("ActualizarLineaComando",ActualizarLineaComando.class);
-        mapa.put("AdminUsuariosComando",AdminUsuariosComando.class);
-        mapa.put("SeleccionarUsuarioComando", SeleccionarUsuarioComando.class);
-        
-        mapa.put("EditarUsuarioComando", EditarUsuarioComando.class);
+        mapa.put("SeleccionarTortaComando", SeleccionarTortaComando.class);
+        mapa.put("EditarTortaComando", EditarTortaComando.class);
+        mapa.put("AgregarTortaComando", AgregarTortaComando.class);
+        mapa.put("CuentaComando", CuentaComando.class);
+        mapa.put("RegistroComando", RegistroComando.class);
         mapa.put("AgregarUsuarioComando", AgregarUsuarioComando.class);
-        mapa.put("SetearFechaPedidoComando", SetearFechaPedidoComando.class);
+        mapa.put("SeleccionarUsuarioComando", SeleccionarUsuarioComando.class);
+        mapa.put("EditarUsuarioComando", EditarUsuarioComando.class);
+        mapa.put("ActualizarLineaComando", ActualizarLineaComando.class);
         mapa.put("EliminarLineaComando", EliminarLineaComando.class);
-        mapa.put("ObtenerPeliculaComando", ObtenerPeliculaComando.class);   
-        mapa.put("BuscarUsuarioComando", BuscarUsuarioComando.class);
-        mapa.put("VerPedidosComando", VerPedidosComando.class);
-        mapa.put("RegistrarDevolucionComando",RegistrarDevolucionComando.class);
-        mapa.put("EnviarMensajeComando", EnviarMensajeComando.class);
-        mapa.put("MisPedidosComando", MisPedidosComando.class);
-        mapa.put("EnviosComando", EnviosComando.class);
-        mapa.put("RegistrarEnvioComando", RegistrarEnvioComando.class);
         
-           */   
+       
+    
     }
     /**
      * Metodo de clase devuelve la instancia de FactoriaDeComandos

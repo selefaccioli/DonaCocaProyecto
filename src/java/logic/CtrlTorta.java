@@ -47,7 +47,7 @@ public class CtrlTorta {
      }
     
     public ArrayList<Torta> obtenerDetalle(int idDetalle, int inferior, int cantidad) throws DonaCocaException{
-        return dt.obtenerDetalle(idDetalle, inferior, cantidad);
+        return dt.obtenerDetalle(idDetalle);
     }
     
     public void eliminarTorta(Torta t) throws DonaCocaException{

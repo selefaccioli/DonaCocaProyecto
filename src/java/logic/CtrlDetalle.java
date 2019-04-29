@@ -17,4 +17,8 @@ public class CtrlDetalle {
         return dd.obtenerDetalles();
     }
     
+    public ArrayList<Detalle> obtenerDetalles(int idTorta) throws DonaCocaException{
+        return dd.obtenerDetalles(idTorta);
+    }
+    
 }

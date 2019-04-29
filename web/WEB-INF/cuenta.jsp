@@ -1,4 +1,5 @@
 
+<%@page import="entity.Usuario"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,9 +51,9 @@
 <div id="wrap"> 
   
   <!-- header -->
-  <jsp:include page="header.jsp"/>
+    <jsp:include page="header.jsp"/>
   
- 
+  
   
   <!-- Content -->
   <div id="content"> 
@@ -70,106 +71,102 @@
               
               <!-- ESTIMATE SHIPPING & TAX -->
               <div class="col-sm-12">
-                <h6>REGISTRO NUEVO USUARIO</h6>
-                <form action="CtrlMaestro" method="Post" onsubmit="return validarPass();">
+                <h6>MI CUENTA</h6>
+                <div class="col-sm-3 col-sm-offset-0">
+                        
+                        <% if(request.getAttribute("ex")!=null){%>
+                        <div class="vanish alert alert-danger mensajeError">
+                            <p>                                
+                                <%=request.getAttribute("ex")%>
+                            </p>
+                        </div>
+                    <%}else if(request.getAttribute("exitoEditado")!=null){
+                            if((Boolean)request.getAttribute("exitoEditado")){%>
+                        <div class="vanish alert alert-success mensajeError">
+                            <p>                                
+                                Usuario actualizado con exito!
+                            </p>
+                        </div>
+                        <%}else{%>
+                        <div class="vanish alert alert-danger mensajeError">
+                            <p>                                
+                                <strong>Error! </strong>El usuario no pudo ser actualizado.
+                            </p>
+                        </div>
+                <% }} 
+                        
+                                Usuario usu = (Usuario)session.getAttribute("usuario");
+                                if(usu != null){
+                                
+                    %>   
+                </div>
+                
+                
+                <form>
                   <ul class="row">
                     
                     <!-- Name -->
                     <li class="col-md-6">
-                      <label> *NOMBRE
-                        <input type="text" name="nomUsu" value="" placeholder="Nombre">
+                      <label> NOMBRE
+                        <input type="text" name="nombre"  value="<%= usu.getNombre() %>">
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
-                      <label> *APELLIDO
-                        <input type="text" name="apeUsu" value="" placeholder="Apellido">
+                      <label> APELLIDO
+                        <input type="text" name="apellido"  value="<%= usu.getApellido() %>">
                       </label>
                     </li>
-                    
-                     <!-- DNI -->
-                    <li class="col-md-6">
-                      <label> *DNI
-                        <input type="text" name="dniUsu" value="" placeholder="DNI">
-                      </label>
-                    </li>
-                    
-                     <!-- MAIL -->
-                    <li class="col-md-6">
-                      <label> *EMAIL
-                        <input type="text" name="mailUsu" value="" placeholder="Email">
-                      </label>
-                    </li>
-                    
-                    <!-- Name -->
-                    <li class="col-md-6">
-                      <label> *USUARIO
-                        <input type="text" name="usuUsu" value="" placeholder="Nombre de usuario">
-                      </label>
-                    </li>
-                    
-                    <!-- PASSWORD -->
-                    <li class="col-md-6">
-                      <label> *CONTRASEÑA
-                        <input id="passA" type="password"  placeholder="Contraseña*"  pattern="(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,15})" title="Al menos una minuscula, una mayuscula, un digito y longitud entre 8 y 15" required>
-                      </label>
-                    </li>
-                    
-                     <!-- PASSWORD -->
-                    <li class="col-md-6">
-                      <label> *CONFIRMAR CONTRASEÑA
-                        <input id="passB" class="control form-control" type="password" placeholder="Confirmar contraseña*"  pattern="(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,15})" title="Al menos una minuscula, una mayuscula, un digito y longitud entre 8 y 15"  required >
-                      </label>
-                    </li>
-                    
-                     <input type="hidden" id="pass1" name="Contra1">
-                     <input type="hidden" id="pass2" name="Contra2">
                     
                     <!-- EMAIL ADDRESS -->
                     <li class="col-md-6">
-                      <label> *DIRECCION
-                        <input type="text" name="direcUsu" value="" placeholder="">
+                      <label> EMAIL
+                        <input type="text" name="email"  value="<%= usu.getMail()  %>">
                       </label>
                     </li>
                     <!-- PHONE -->
                     <li class="col-md-6">
-                      <label> *TELEFONO
-                        <input type="text" name="telUsu" value="" placeholder="">
+                      <label> TELEFONO
+                        <input type="text" name="telefono"  value="<%= usu.getTelefono() %>">
                       </label>
                     </li>
                     
-                
-                    
-                    
+                    <!-- LAST NAME -->
                     <li class="col-md-6">
-                        <input type="hidden" name="form" value="RegistroComando"> 
-                      <button type="submit" class="btn">REGISTRARSE</button>
+                      <label> DIRECCION
+                        <input type="text" name="direccion"  value="<%= usu.getDireccion() %>">
+                      </label>
+                    </li>
+                    
+                    <!-- LAST NAME -->
+                    <li class="col-md-6">
+                        <label> DNI
+                            <input type="text" name="dni"  value="<%= usu.getDni() %>">
+                        </label>
+                        
+                    </li>
+                    
+                    
+                
+                    <li class="col-md-6">
+                      <input type="hidden" name="form" value="CuentaComando"/>
+                      <button type="submit" name="actDatos" value="actualizarDatos" class="btn">ACTUALIZAR DATOS</button>
                     </li>
                   </ul>
-                    <%if(request.getAttribute("ex") != null){%>                                           
-                                <div class="alert alert-danger">
-                                    <%=request.getAttribute("ex")%>
-                                </div>
-                                <%}if(request.getAttribute("exitoRegistro") != null){%> 
-                                <div class="alert alert-danger">
-                                    <%=request.getAttribute("exitoRegistro")%>
-                                </div>
-                  <%}%>
-                  
                 </form>
+                <% }%>        
+                
+                
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-   
+    
     
   </div>
-  
 
-  
-  <!--======= RIGHTS =========--> 
   
 </div>
 <script src="js/jquery-1.11.3.min.js"></script> 
@@ -182,7 +179,6 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
-<script src="../js/sha.js" type="text/javascript"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

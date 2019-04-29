@@ -75,8 +75,13 @@
   <!-- header -->
   <jsp:include page="header.jsp"/>
   
- 
-  
+ <div class="logo">
+               <% if(session.getAttribute("exitoTortaAgregada") != null){ %>
+        <div class="alert alert-success ">
+        <p class="text-center">Torta agregada al carro</p>        
+         </div>
+               <% session.setAttribute("exitoTortaAgregada", null); } %>
+        </div>
   <!-- Content -->
   <div id="content"> 
     
@@ -100,18 +105,25 @@
         </div> -->
                         
         <%}else{
+       
+        
         session.setAttribute("ex", null);
         ArrayList<Torta> listaTortas = (ArrayList)session.getAttribute("listaTortas");
         for(Torta t: listaTortas){ 
-        ArrayList<Detalle> detalles = t.getDetalles();    %> 
+        ArrayList<Detalle> detalles = t.getDetalles(); 
+       
+        %> 
           
           <!-- Item -->
           <div class="col-md-3">
             <div class="item"> 
               <!-- Item img -->
-              <div class="item-img"> <img class="img-1" src="images/product-2-1.jpg" alt="" > <img class="img-2" src="images/product-2.jpg" alt="" > 
+              <div class="item-img"> <img class="img-1" src="ProcesadorImagenes?id=<%=t.getId()%>" alt="">
+                   
                 <!-- Overlay -->
+                
                <!-- <div class="overlay">
+               <img class="img-1" src="images/product-2-1.jpg" alt="" > <img class="img-2" src="images/product-2.jpg" alt="" >
                   <div class="position-center-center">
                       <div class="inn"><a href="images/product-2-1.jpg" data-lighter></a>
                          <a href="#" onClick="ready();" class="cd-add-to-cart"  id="torta<%= t.getId() %>"><i class="icon-basket"></i></a> <a href="#." ></a></div>
@@ -123,7 +135,9 @@
                      
                         <input type="hidden"  name="form" value="AgregarLineaPedidoComando"/>
                         <input type="hidden" name="idTorta"  value="<%= t.getId() %>"/>
-                        <input class="btn btn-default add-to-cart linea" type="submit" name="tipoLinea"  value="Comprar">
+                        <center>
+                            <input class="btn btn-default add-to-cart linea" type="submit" name="tipoLinea"  value="Comprar">
+                        </center>
                         
                         
                 </form> 
@@ -156,67 +170,7 @@
     
    
   </div>
-  
-  <!--======= FOOTER =========-->
-  <footer>
-    <div class="container"> 
-      
-      <!-- ABOUT Location -->
-      <div class="col-md-3">
-        <div class="about-footer"> <img class="margin-bottom-30" src="images/logo-foot.png" alt="" >
-          <p><i class="icon-pointer"></i> Street No. 12, Newyork 12, <br>
-            MD - 123, USA.</p>
-          <p><i class="icon-call-end"></i> 1.800.123.456789</p>
-          <p><i class="icon-envelope"></i> info@PAVSHOP.com</p>
-        </div>
-      </div>
-      
-      <!-- HELPFUL LINKS -->
-      <div class="col-md-3">
-        <h6>HELPFUL LINKS</h6>
-        <ul class="link">
-          <li><a href="#."> Products</a></li>
-          <li><a href="#."> Find a Store</a></li>
-          <li><a href="#."> Features</a></li>
-          <li><a href="#."> Privacy Policy</a></li>
-          <li><a href="#."> Blog</a></li>
-          <li><a href="#."> Press Kit </a></li>
-        </ul>
-      </div>
-      
-      <!-- SHOP -->
-      <div class="col-md-3">
-        <h6>SHOP</h6>
-        <ul class="link">
-          <li><a href="#."> About Us</a></li>
-          <li><a href="#."> Career</a></li>
-          <li><a href="#."> Shipping Methods</a></li>
-          <li><a href="#."> Contact</a></li>
-          <li><a href="#."> Support</a></li>
-          <li><a href="#."> Retailer</a></li>
-        </ul>
-      </div>
-      
-      <!-- MY ACCOUNT -->
-      <div class="col-md-3">
-        <h6>MY ACCOUNT</h6>
-        <ul class="link">
-          <li><a href="#."> Login</a></li>
-          <li><a href="#."> My Account</a></li>
-          <li><a href="#."> My Cart</a></li>
-          <li><a href="#."> Wishlist</a></li>
-          <li><a href="#."> Checkout</a></li>
-        </ul>
-      </div>
-      
-      <!-- Rights -->
-      
-      <div class="rights">
-        <p>©  2017 PAVSHOP All right reserved. </p>
-        <div class="scroll"> <a href="#wrap" class="go-up"><i class="lnr lnr-arrow-up"></i></a> </div>
-      </div>
-    </div>
-  </footer>
+
   
   <!--======= RIGHTS =========--> 
   
@@ -231,7 +185,7 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="js/main.js"></script>
+<script src="../js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');

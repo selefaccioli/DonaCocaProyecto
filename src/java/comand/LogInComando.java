@@ -8,6 +8,7 @@ package comand;
 import entity.Pedido;
 import entity.Usuario;
 import java.util.ArrayList;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlPedido;
@@ -25,6 +26,7 @@ public class LogInComando extends Comando{
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
         String nomUsu = request.getParameter("nomUsu");
         String contra = request.getParameter("contra");
+        Boolean recordar = (request.getParameter("recordarUsu")!=null);
         
         Usuario usu = null;
         
@@ -42,6 +44,19 @@ public class LogInComando extends Comando{
         
         if(usu != null)
         {      
+            
+        if(recordar)
+            {
+                Cookie recordarNombre = new Cookie("nomUsuarioDonaCoca", nomUsu);
+                Cookie recordarContra = new Cookie("contraDonaCoca", contra);
+                recordarNombre.setMaxAge(356*24*60*60);
+                recordarContra.setMaxAge(365*24*60*60);
+                recordarContra.setPath("/");
+                recordarNombre.setPath("/");
+                response.addCookie(recordarNombre);
+                response.addCookie(recordarContra);
+            }    
+            
             
         if(usu.isEsAdmin())
             {

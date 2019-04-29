@@ -3,25 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet;
 
-import comand.FactoriaDeComandos;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logic.CtrlTorta;
 
 /**
  *
- * @author selef
+ * @author User
  */
-@WebServlet(name = "CtrlMaestro", urlPatterns = {"/CtrlMaestro"})
-@MultipartConfig
-public class CtrlMaestro extends HttpServlet {
+@WebServlet(name = "ProcesadorImagenes", urlPatterns = {"/ProcesadorImagenes"})
+public class ProcesadorImagenes extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,29 +30,19 @@ public class CtrlMaestro extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private FactoriaDeComandos factoria;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-         if(request.getParameter("form")!=null)
-        {
-            factoria = FactoriaDeComandos.getInstancia();
-            String nombreComando = request.getParameter("form");
-            String proxPag=null;
-            try
-            {
-                proxPag = factoria.buscarComando(nombreComando).ejecutar(request,response);
-            }
-            catch(Exception ex)
-            {
-                request.setAttribute("ex", ex.getMessage());
-            }
-            if(!proxPag.equals("/index.jsp"))
-                proxPag = "/WEB-INF"+proxPag;       
-            request.getRequestDispatcher(proxPag).forward(request, response);
-        }
-        else
-        {
-            request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+            throws ServletException, IOException {        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ProcesadorImagenes</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ProcesadorImagenes at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -68,9 +56,23 @@ public class CtrlMaestro extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
+        CtrlTorta ct = new CtrlTorta();
+        
+        try
+        {   byte[]imgData= ct.buscarImagen(Integer.parseInt(request.getParameter("id")));
+            OutputStream os = response.getOutputStream(); 
+            os.write(imgData);
+            os.flush();
+            os.close();
+        }
+        catch(Exception ex)
+        {
+            request.setAttribute("ex", ex.getMessage());
+        }
+
+
     }
 
     /**
@@ -84,7 +86,7 @@ public class CtrlMaestro extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+      
     }
 
     /**

@@ -63,9 +63,9 @@ public class DataUsuarios {
             
             if(rs.next()){
                 cantidad= rs.getInt(1);
-                conec.close();
+                
             }
-            
+            conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al recuperar el usuario en existeUsuario",e);
@@ -125,7 +125,7 @@ public class DataUsuarios {
     public ArrayList<Usuario> obtenerUsuarios() throws DonaCocaException{
         ArrayList<Usuario> resultado = new ArrayList<Usuario>();
         
-        String sql= "select * from usuarios;";
+        String sql= "select * from usuario;";
         try{
             Connection conec= conn.getConn();
             PreparedStatement ps = conec.prepareStatement(sql);
@@ -157,8 +157,7 @@ public class DataUsuarios {
     }
     
     public void editarUsuario(Usuario usu) throws DonaCocaException{
-        String sql="update usuarios set nombre=? , apellido=? , direccion=? ,telefono=? , mail=?, "+
-                "dni=?,activo=?,es_admin=?,usuario=?, contrasenia=? where id_usuario=?";
+        String sql="update usuario set nombre=? , apellido=? , direccion=? ,telefono=? , mail=?, dni=?,activo=?,es_admin=?,usuario=?, contrasenia=? where id_usuario=?";
                
         try{
             Connection conec= conn.getConn();
@@ -185,8 +184,7 @@ public class DataUsuarios {
     
     public void registrarUsuario(Usuario usu)throws DonaCocaException{
         PreparedStatement ps;
-        String transac = "insert into usuario(nombre,apellido,dni,usuario,contrasenia,es_admin,activo,mail,telefono,direccion)+"
-                + " values (?,?,?,?,?,?,?,?,?,?);";
+        String transac = "insert into usuario(nombre,apellido,dni,usuario,contrasenia,es_admin,activo,mail,telefono,direccion) values (?,?,?,?,?,?,?,?,?,?);";
         try{
             Connection conec= conn.getConn();
             ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);

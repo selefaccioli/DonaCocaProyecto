@@ -30,9 +30,9 @@ function validarCambioPass()
 function validarChecks()
 {
     cant = 0;
-    for(i=0; i<document.DatosPelicula.generos.length; i++)
+    for(i=0; i<document.DatosTorta.detalles.length; i++)
     {
-        if(document.DatosPelicula.generos[i].checked)
+        if(document.DatosTorta.detalles[i].checked)
         {
             cant++;
         }
@@ -44,7 +44,7 @@ function validarChecks()
     }
     else
     {
-        alert("Seleccione alg\u00fan g\u00e9nero para la pel\u00edcula");
+        alert("Seleccione alg\u00fan detalle para la torta");
         return false;
     }
 }

@@ -65,10 +65,23 @@
             <div class="alert alert-success">
                 Pedido realizado con éxito!
             </div>
-<% 
-session.setAttribute("exitoPedido", null); }
-else{
-%>  
+<% session.setAttribute("exitoPedido", null); }
+        else if(session.getAttribute("cantidadInvalida")!= null){%> 
+                    <div class="alert alert-danger">
+                        Por favor ingrese una cantidad válida
+                    </div>
+                    <%session.setAttribute("cantidadInvalida",null);} 
+        else if(session.getAttribute("errorDias")!=null){%> 
+                    <div class="alert alert-danger">
+                        Por favor ingrese una cantidad de días válida. 
+                        No se permiten pedidos con menos de 7 dias de anticipación.
+                    </div>
+                    <%session.setAttribute("errorDias", null);}  
+        else if(request.getAttribute("ex") != null){%> 
+                    <div class="alert alert-danger">
+                        <%=request.getAttribute("ex")%>
+                    </div>
+  <% }else{ %>  
   </div>
   
   <div id="content"> 
@@ -145,10 +158,16 @@ else{
             <!-- QTY -->
             <li class="col-sm-1">
               <div class="position-center-center">
-                <div class="quinty"> 
+              
                   <!-- QTY -->
-                  <input type="text" name="cantidad" value="<%= linea.getCantidad()  %>">
-                </div>
+                <div class="cart_quantity_button">
+                   <form action="CtrlMaestro" method="post">
+                   <input type="hidden"  name="form" value="ActualizarLineaComando"/>
+                   <input type="hidden" name="idTorta" value="<%= linea.getTorta().getId() %>"/>
+                   <input onchange="submit()" min="1" class="tamanio cart_quantity_input"type="number" name="cantidad" value="<%=linea.getCantidad()%>"/>
+                   </form>
+              </div>
+               
               </div>
             </li>
             
@@ -159,7 +178,14 @@ else{
             
             <!-- REMOVE -->
             <li class="col-sm-1">
-              <div class="position-center-center"> <a href="#."><i class="icon-close"></i></a> </div>
+              <div class="position-center-center"> 
+                  <form action="CtrlMaestro" method="post" id="eliminarLinea">
+                      <input type="hidden" name="form" value="EliminarLineaComando">
+                      <input type="hidden" name="idTorta" value="<%= linea.getTorta().getId() %>">
+                      <a href="javascript:;" type="submit" onclick="document.getElementById('eliminarLinea').submit()"><i class="icon-close"></i></a> 
+                  </form>
+                  
+              </div>
             </li>
           </ul>
         
@@ -180,38 +206,32 @@ else{
         <!-- SHOPPING INFORMATION -->
         <div class="cart-ship-info margin-top-0">
           <div class="row"> 
-            
-            <!-- DISCOUNT CODE -->
+              <!-- DISCOUNT CODE -->
             <div class="col-sm-7">
-              <div class="coupn-btn">
-               <form action="CtrlMaestro" method="post">
-                     
-                        <input type="hidden"  name="form" value="RedireccionarComando"/>
-                        <input type="hidden" name="destino"  value="/home.jsp"/>
-                        <input class="btn btn-default add-to-cart linea" type="submit" value="Seguir Comprando">
-                        
-                        
-                </form> 
-                  <form action="CtrlMaestro" method="post">
-                     
-                        <input type="hidden"  name="form" value="FinalizarPedidoComando"/>
-                        <input class="btn btn-default add-to-cart linea" type="submit" value="Finalizar Pedido" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
-                        
-                        
-                </form> 
-                  </div>
-               
+              <h6>CUPON DE DESCUENTO</h6>
+              <form>
+                <input type="text" value="" placeholder="INGRESE EL CÓDIGO DE SU CUPÓN AQUÍ">
+                <button type="submit" class="btn btn-small btn-dark">APLICAR</button>
+              </form>
             </div>
+              
+              
+          
+               
+              
+         
             
             <!-- SUB TOTAL -->
             <div class="col-sm-5">
-              <h6>grand total</h6>
+              <h6>Total</h6>
               <div class="grand-total">
                 <div class="order-detail">
-                  <p>WOOD CHAIR <span>$598 </span></p>
-                  <p>STOOL <span>$199 </span></p>
-                  <p>WOOD SPOON <span> $139</span></p>
+                   <% for(LineaPedido linea: lp){
+           
+           %>
+                  <p><%= linea.getTorta().getNombre()  %><span><%= linea.getTorta().getPrecio()*linea.getCantidad() %></span></p>
                   
+                  <% } %>
                   <!-- SUB TOTAL -->
                   <p class="all-total">TOTAL COST <span> $998</span></p>
                 </div>
@@ -219,28 +239,34 @@ else{
             </div>
           </div>
         </div>
+        
+            <div class="row">
+                  <form action="CtrlMaestro" method="post">
+                     
+                        <input type="hidden"  name="form" value="RedireccionarComando"/>
+                        <input type="hidden" name="destino"  value="/home.jsp"/>
+                        <input class="btn btn-default add-to-cart linea" type="submit" value="Seguir Comprando">
+                        
+                        
+                </form> 
+                <br>
+                  <form action="CtrlMaestro" method="post">
+                     
+                        <input type="hidden"  name="form" value="FinalizarPedidoComando"/>
+                        <input class="btn btn-default add-to-cart linea" type="submit" value="Finalizar Pedido" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
+                        
+                        
+                </form> 
+              </div>
       </div>
     </section>
-  <div class="row">
-      
-      
-      
-      
-      
-  </div>
-    <div class="signup-form">
-                            
-  
-    
-  
-  </div>
+ 
   
   
   <!--======= RIGHTS =========--> 
  
 </div>
-  <% } %>                       
-                        
+  <% } %>                    
                         
 <script src="js/jquery-1.11.3.min.js"></script> 
 <script src="js/bootstrap.min.js"></script> 
