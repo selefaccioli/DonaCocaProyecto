@@ -10,8 +10,8 @@ public class Conexion {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             String usuarioDB= "root";
-            String passwordDB= "";
-            String servidor= "jdbc:mysql://localhost:3308/finaljava";
+            String passwordDB= "YHZmeq25645";
+            String servidor= "jdbc:mysql://node31527-donacoca.jelastic.saveincloud.net/donaCocaFinalJava";
             
             conn= DriverManager.getConnection(servidor, usuarioDB, passwordDB);
             
