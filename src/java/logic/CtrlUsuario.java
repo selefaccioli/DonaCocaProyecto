@@ -3,6 +3,10 @@ package logic;
 
 import data.DataUsuarios;
 import entity.Usuario;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import util.DonaCocaException;
 
@@ -16,6 +20,10 @@ public class CtrlUsuario {
      public Usuario obtenerUsuario(String usuario,String password)throws DonaCocaException{
          return du.obtenerUsuario(usuario, password);
      }
+      public Usuario obtenerUsuario(int idUsuario)throws DonaCocaException{
+        return du.obtenerUsuario(idUsuario);
+    }
+    
      
      public boolean existeUsuario(String nombreUsuario) throws DonaCocaException{
          return du.existeUsuario(nombreUsuario);

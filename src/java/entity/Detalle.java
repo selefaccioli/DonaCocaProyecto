@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Detalle {
     private int id;
     private String nombre;
-    private String detalle;
+    private String descripcion;
 
     public int getId() {
         return id;
@@ -25,12 +25,12 @@ public class Detalle {
         this.nombre = nombre;
     }
 
-    public String getDetalle() {
-        return detalle;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDetalle(String detalle) {
-        this.detalle = detalle;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
     

@@ -19,7 +19,7 @@ public class EliminarLineaComando extends Comando{
     @Override
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
         Pedido ped= (Pedido)request.getSession().getAttribute("pedido");
-        Integer idTorta= Integer.parseInt(request.getParameter("idTorta"));
+        Integer idTorta= Integer.parseInt(request.getParameter("idTortaEliminar"));
         LineaPedido l = null;
         
         for(LineaPedido lp: ped.getLineasPedido())

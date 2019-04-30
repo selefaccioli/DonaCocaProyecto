@@ -58,7 +58,7 @@ public class DataTortaDetalle {
     
     public ArrayList<Detalle> obtenerDetallesTorta(Torta torta) throws DonaCocaException{
         ArrayList<Detalle> detalles = new ArrayList<Detalle>();
-        String sql="select detalle.`nombre`, detalle.`detalle` from detalle inner join torta_detalle on " +
+        String sql="select detalle.`nombre`, detalle.`descripcion` from detalle inner join torta_detalle on " +
                     "detalle.`id_detalle`= torta_detalle.`id_detalle`where id_torta=?;";
         
         try{
@@ -71,7 +71,7 @@ public class DataTortaDetalle {
                  Detalle d = new Detalle();
                  //d.setId(rs.getInt(1));
                  d.setNombre(rs.getString(1));
-                 d.setDetalle(rs.getString(2));
+                 d.setDescripcion(rs.getString(2));
                  detalles.add(d);
              }
              conec.close();

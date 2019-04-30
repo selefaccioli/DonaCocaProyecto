@@ -208,7 +208,7 @@
                                                 <tr>
                                                     <td>
                                                         
-                                                        <label class="puntero"><input class="check" type="checkbox" name="detalles1" value="<%=detalles.get(i).getId()%>" <%if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.contieneDetalle(detalles.get(i)))%>checked<%;%>><%= detalles.get(i).getNombre() %></label>
+                                                        <label class="puntero"><input class="check" type="checkbox" name="detalles1" value="<%=detalles.get(i).getId()%>" <%if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.contieneDetalle(detalles.get(i)))%>checked<%;%>><%= detalles.get(i).getNombre() %>: &nbsp; <%= detalles.get(i).getDescripcion()  %></label>
 
                                                     </td>
                                                 </tr>

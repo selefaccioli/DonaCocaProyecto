@@ -12,7 +12,7 @@ public class Pedido implements Serializable{
         private int id;
 	private Date fechaPedido;
         private Date fechaEntrega;
-	private String detalle;
+	private float total;
 	private String estado;
 	private Usuario usuario;
         private boolean cerrado;
@@ -29,7 +29,7 @@ public class Pedido implements Serializable{
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(hoy); // Configuramos la fecha que se recibe
         calendar.add(Calendar.DAY_OF_YEAR, 1);  
-        fechaEntrega = calendar.getTime();
+        //fechaEntrega = calendar.getTime();
         
         
         
@@ -60,13 +60,15 @@ public class Pedido implements Serializable{
         this.fechaEntrega = fechaEntrega;
     }
 
-    public String getDetalle() {
-        return detalle;
+    public float getTotal() {
+        return total;
     }
 
-    public void setDetalle(String detalle) {
-        this.detalle = detalle;
+    public void setTotal(float total) {
+        this.total = total;
     }
+
+   
 
     public String getEstado() {
         return estado;

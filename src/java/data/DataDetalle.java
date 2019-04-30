@@ -30,7 +30,7 @@ public class DataDetalle {
                     
                     d.setId(rs.getInt(1));
                     d.setNombre(rs.getString(2));
-                    d.setDetalle(rs.getString(3));
+                    d.setDescripcion(rs.getString(3));
                     
                     listaDetalles.add(d);
                 }
@@ -60,7 +60,7 @@ public class DataDetalle {
                     
                     d.setId(rs.getInt(1));
                     d.setNombre(rs.getString(2));
-                    d.setDetalle(rs.getString(3));
+                    d.setDescripcion(rs.getString(3));
                     
                    
                 }

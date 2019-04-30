@@ -1,21 +1,16 @@
 <%-- 
-    Document   : pedidos
-    Created on : 29/04/2019, 10:16:53
+    Document   : envios
+    Created on : 30/04/2019, 06:56:55
     Author     : selef
 --%>
-
-<%-- 
-    Document   : pedidos
-    Created on : 30/04/2019, 06:48:22
-    Author     : selef
---%>
-
 
 <%@page import="entity.LineaPedido"%>
 <%@page import="entity.Pedido"%>
 <%@page import="java.util.ArrayList"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
-  <head>
+   <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,27 +65,37 @@
 </script>--> 
 
 </head>
-    <body onload="scrollDiv();">
+  
+        <body onload="scrollDiv();">
         <jsp:include page="header.jsp"/>
-        <%!ArrayList<Pedido> pedidos;%>
-        <% pedidos = (ArrayList)request.getAttribute("pedidos"); %>
+        <%!ArrayList<Pedido> pendientes;%>
+        <% pendientes = (ArrayList)request.getSession().getAttribute("pendientes");%>  
         <div class="cuenta">
-            <div class="container"> 
+            <div class="container">
+            <%if(request.getAttribute("ExitoEnvio")!=null){%>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-success fade in">
+                            Envío registrado.
+                        </div>
+                    </div>
+                </div>
+                <%}if(request.getAttribute("ex")!=null){%>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger">
+                           <%=request.getAttribute("ex")%>
+                        </div>
+                    </div>
+                </div>
+                <%}%>                      
                 <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); };%> class="row">
                     <div class="col-lg-12">
-                        <%if(request.getAttribute("ex")!=null){%>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="alert alert-danger">
-                                    <%=request.getAttribute("ex")%>
-                                </div>
-                            </div>
-                        </div>
-                        <%} else if(pedidos!=null){%>
-                        <h2 class="title text-center">Historial de Pedidos</h2>
-                        <%if(pedidos.isEmpty()){%>
-                        <div class="alert alert-danger">
-                            Usted nunca ha realizado pedidos.       
+                        <% if(pendientes!=null){%>
+                        <h2 class="title text-center">Pedidos pendientes de envío</h2>
+                        <%if(pendientes.isEmpty()){%>
+                        <div class="alert alert-success fade<%if(pendientes.isEmpty()){ %> in <%session.setAttribute("pendientes", null);} %>">
+                            No existen pedidos pendientes de envío.       
                         </div>
                         <%}else{%>
                         <div class="table-responsive">
@@ -98,27 +103,33 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID Pedido</th>
-                                            <th>F Desde</th>
-                                            <th>F Hasta</th>
-                                            <th>Peliculas</th>
-                                            <th>Recargo</th>
-                                            <th>Estado</th>
-                                        </tr>
+                                        <th>ID Pedido</th>
+                                        <th>F Pedido</th>
+                                        <th>Socio</th>
+                                        <th>Tortas</th>
+                                        <th>Destino</th>
+                                        <th></th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                    <%for(Pedido p:pedidos){%>
+                                        <%for(Pedido p:pendientes){%>
                                         <tr>
-                                            <td><%= p.getId()  %></td>
+                                            <td><%= p.getId()%></td>
                                             <td><%= p.getFechaPedido() %></td>
-                                            <td><%= p.getFechaEntrega() %></td>
+                                            <td><%= p.getUsuario().getApellido()%>, <%= p.getUsuario().getNombre()%></td>
                                             <td>
-                                            <% for(LineaPedido lp: p.getLineasPedido()){
-                                            %>Compra<%}%> <br>                                          
-                                          
+                                            <% for(LineaPedido lp: p.getLineasPedido() ){%>                                           
+                                            <%= lp.getTorta().getNombre() %><br>
+                                            <%}%> 
                                             </td>
-                                            
-                                            <td><%= p.getEstado()%></td>
+                                            <td><%= p.getUsuario().getDireccion()%></td>
+                                            <td>
+                                                <form action="CtrlMaestro" method="post">
+                                                    <input type="hidden"  name="form" value="RegistrarEnvioComando"/>
+                                                    <input type="hidden" name="idPedido" value="<%= p.getId()%>">
+                                                    <input type="submit" value="Registrar Envío">
+                                                </form>
+                                            </td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -140,13 +151,11 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="js/main.js"></script>
 <script src="../js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
 </script>
     </body>
-   
+ 
 </html>
-

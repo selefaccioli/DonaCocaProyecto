@@ -12,6 +12,39 @@ import util.DonaCocaException;
 public class DataUsuarios {
     
     Conexion conn = new Conexion();
+    public Usuario obtenerUsuario(int idUsuario)throws DonaCocaException{
+        Usuario usu= null;
+        String sql= "select * from usuario where id_usuario=?;";
+        Connection conec= null;
+        try{
+            conec= conn.getConn();
+            
+            PreparedStatement ps= conec.prepareStatement(sql);
+            ps.setInt(1, idUsuario);
+            ResultSet rs= ps.executeQuery();
+            
+            if(rs.next()){
+                usu = new Usuario();
+                usu.setId(rs.getInt(1));
+                usu.setNombre(rs.getString(2));
+                usu.setApellido(rs.getString(3));
+                usu.setDni(rs.getInt(4));
+                usu.setUsuario(rs.getString(5));
+                usu.setContrasenia(rs.getString(6));
+                usu.setEsAdmin(rs.getBoolean(7)); 
+                usu.setActivo(rs.getBoolean(8));
+                usu.setMail(rs.getString(9));
+                usu.setTelefono(rs.getString(10));
+                usu.setDireccion(rs.getString(11));
+            }
+            
+            conec.close();
+        }
+        catch(SQLException e){
+             throw new DonaCocaException("Error al recuperar el usuario por id",e);
+        }
+        return usu;
+    }
     
     public Usuario obtenerUsuario(String usuario,String password)throws DonaCocaException{
         Usuario usu= null;

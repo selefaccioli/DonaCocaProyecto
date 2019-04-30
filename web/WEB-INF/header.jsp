@@ -20,7 +20,8 @@
                 <input type="hidden" name="form" value="RedireccionarComando">
                 <input type="hidden" name="destino" value="/home.jsp">
                 <a href="javascript:;" type="submit" onclick="document.getElementById('formLogo').submit()">
-                <img class="img-responsive" src="images/logo.png" alt="" >
+                <img class="img-responsive" src="../images/logoDonaCocam.png" alt="" >
+                
               </a>    
             </form>
            
@@ -54,7 +55,7 @@
                     </form>
                     <form action="CtrlMaestro" method="post" id="formPedidosPendientes">
                         <input type="hidden" name="form" value="RedireccionarComando">
-                       <input type="hidden" name="destino" value="/pedidos.jsp">
+                       <input type="hidden" name="destino" value="/envios.jsp">
                         <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formPedidosPendientes').submit()"> Pedidos Pendientes</a> </li>
                     </form>
                   
@@ -127,9 +128,7 @@
                     <div class='cart-items'>
                        <!-- los productos van aqui -->
                     </div>
-                  <li>
-                    <h5 class="text-center">SUBTOTAL: $0</h5>
-                  </li>
+                  
                   <li class="margin-0">
                     <div class="row">
                         <form action="CtrlMaestro" method="post" class="formNav">
@@ -139,8 +138,7 @@
                                    
                                      
                         </form>
-                      
-                      <div class="col-xs-6 "> <a href="checkout.html" class="btn">CHECK OUT</a></div>
+               
                     </div>
                   </li>
                 </ul>

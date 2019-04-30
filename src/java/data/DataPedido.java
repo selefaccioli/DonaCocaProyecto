@@ -53,7 +53,8 @@ public class DataPedido {
             PreparedStatement ps = conec.prepareStatement(sql);
             
             ps.setString(1, p.getEstado());
-            ps.setInt(2, p.getId());
+            ps.setBoolean(2, true);
+            ps.setInt(3, p.getId());
             ps.executeUpdate();
             conec.close();
         }
@@ -63,7 +64,7 @@ public class DataPedido {
     }
     
     public void registrarPedido(Pedido p) throws DonaCocaException{        
-        String sql = "insert into pedido(fecha_pedido, fecha_entrega,detalle, estado, id_usuario, cerrado) values (?,?,?,?,?,?);";
+        String sql = "insert into pedido(fecha_pedido, fecha_entrega,total, estado, id_usuario, cerrado) values (?,?,?,?,?,?);";
         
         try
         {   
@@ -72,7 +73,7 @@ public class DataPedido {
             
             ps.setDate(1, new java.sql.Date(p.getFechaPedido().getTime()));
             ps.setDate(2,new java.sql.Date(p.getFechaEntrega().getTime()));
-            ps.setString(3, p.getDetalle());
+            ps.setFloat(3, p.getTotal());
             ps.setString(4, p.getEstado());
             ps.setInt(5, p.getUsuario().getId());
             ps.setBoolean(6, p.isCerrado());
@@ -112,7 +113,7 @@ public class DataPedido {
                 p.setId(rs.getInt(1));
                 p.setFechaPedido(new java.sql.Date(rs.getDate(2).getTime()));
                 p.setFechaEntrega(new java.sql.Date(rs.getDate(3).getTime()));
-                p.setDetalle(rs.getString(4));
+                p.setTotal(rs.getFloat(4));
                 p.setEstado(rs.getString(5));
                 p.setCerrado(rs.getBoolean(7));
                 p.setLineasPedido(new DataLineaPedido().obtenerLineasPedido(p.getId()));
@@ -143,7 +144,7 @@ public class DataPedido {
                 p.setId(rs.getInt(1));
                 p.setFechaPedido(new java.sql.Date(rs.getDate(2).getTime()));
                 p.setFechaEntrega(new java.sql.Date(rs.getDate(3).getTime()));
-                p.setDetalle(rs.getString(4));
+                p.setTotal(rs.getFloat(4));
                 p.setEstado(rs.getString(5));
                 p.setCerrado(rs.getBoolean(7));
                 p.setLineasPedido(new DataLineaPedido().obtenerLineasPedido(p.getId()));
@@ -159,6 +160,8 @@ public class DataPedido {
     
      public ArrayList<Pedido> obtenerPedidosPendientes() throws DonaCocaException{         
         ArrayList<Pedido> pedidosEncontrados = new ArrayList<>();
+        CtrlUsuario ctrlU = new CtrlUsuario();
+        Usuario usu = new Usuario();
         String sql = "SELECT * FROM pedido where estado like 'Pendiente';";   
         
         try
@@ -175,8 +178,10 @@ public class DataPedido {
                 p.setId(rs.getInt(1));
                 p.setFechaPedido(new java.sql.Date(rs.getDate(2).getTime()));
                 p.setFechaEntrega(new java.sql.Date(rs.getDate(3).getTime()));
-                p.setDetalle(rs.getString(4));
+                p.setTotal(rs.getFloat(4));
                 p.setEstado(rs.getString(5));
+                usu = ctrlU.obtenerUsuario(rs.getInt(6));
+                p.setUsuario(usu);
                 p.setCerrado(rs.getBoolean(7));
                 p.setLineasPedido(new DataLineaPedido().obtenerLineasPedido(p.getId()));
                 pedidosEncontrados.add(p);                  

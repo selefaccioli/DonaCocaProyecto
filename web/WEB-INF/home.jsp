@@ -153,7 +153,7 @@
                   <input type="hidden" name="nombreTorta" id="nombre" value="<%= t.getNombre() %>">
                  <% for(Detalle d: detalles) { %>
                     <p> <%= d.getNombre() %>: &nbsp 
-                       <%= d.getDetalle() %>
+                       <%= d.getDescripcion() %>
                     </p>
                     <% } %>
               </div>

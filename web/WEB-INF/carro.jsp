@@ -1,4 +1,5 @@
 
+<%@page import="entity.Cupon"%>
 <%@page import="entity.Usuario"%>
 <%@page import="entity.Detalle"%>
 <%@page import="entity.LineaPedido"%>
@@ -60,7 +61,8 @@
  
   <!-- Content -->
   <div class="row">
-      
+
+   
       <% if(request.getSession().getAttribute("exitoPedido") != null){ %>
             <div class="alert alert-success">
                 Pedido realizado con éxito!
@@ -71,33 +73,39 @@
                         Por favor ingrese una cantidad válida
                     </div>
                     <%session.setAttribute("cantidadInvalida",null);} 
-        else if(session.getAttribute("errorDias")!=null){%> 
+        else if(session.getAttribute("fechaIncorrecta")!=null){%> 
                     <div class="alert alert-danger">
                         Por favor ingrese una cantidad de días válida. 
                         No se permiten pedidos con menos de 7 dias de anticipación.
                     </div>
-                    <%session.setAttribute("errorDias", null);}  
+                    <%session.setAttribute("fechaIncorrecta", null);}  
         else if(request.getAttribute("ex") != null){%> 
                     <div class="alert alert-danger">
                         <%=request.getAttribute("ex")%>
                     </div>
+                    
   <% }else{ %>  
   </div>
-  
+        
   <div id="content"> 
- 
+    
     <!--======= PAGES INNER =========-->
     <section class="padding-top-100 padding-bottom-100 pages-in chart-page">
       <div class="container"> 
          
        <% Pedido ped = (Pedido)session.getAttribute("pedido");
        Usuario usu = (Usuario)session.getAttribute("usuario");
+       Cupon cuponActual = (Cupon)session.getAttribute("cuponActual");
        int contLineas=0;
        ArrayList<LineaPedido> lp = ped.getLineasPedido();
        
        
        %> 
         <!-- Payments Steps -->
+        
+       
+        <br><br>
+        
         <div class="shopping-cart text-center">
           <div class="cart-head">
             <ul class="row">
@@ -133,7 +141,7 @@
             <li class="col-sm-6">
               <div class="media"> 
                 <!-- Media Image -->
-                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="images/cart-img-1.jpg" alt=""> </a> </div>
+                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="ProcesadorImagenes?id=<%= linea.getTorta().getId() %>" alt=""> </a> </div>
                 
                 <!-- Item Name -->
                 <div class="media-body">
@@ -165,6 +173,7 @@
                    <input type="hidden"  name="form" value="ActualizarLineaComando"/>
                    <input type="hidden" name="idTorta" value="<%= linea.getTorta().getId() %>"/>
                    <input onchange="submit()" min="1" class="tamanio cart_quantity_input"type="number" name="cantidad" value="<%=linea.getCantidad()%>"/>
+                   
                    </form>
               </div>
                
@@ -173,7 +182,7 @@
             
             <!-- TOTAL PRICE -->
             <li class="col-sm-2">
-              <div class="position-center-center"> <span class="price"><small>$</small>299</span> </div>
+              <div class="position-center-center"> <span class="price"><small>$</small><%= (linea.getCantidad()*linea.getTorta().getPrecio() )  %></span> </div>
             </li>
             
             <!-- REMOVE -->
@@ -181,7 +190,7 @@
               <div class="position-center-center"> 
                   <form action="CtrlMaestro" method="post" id="eliminarLinea">
                       <input type="hidden" name="form" value="EliminarLineaComando">
-                      <input type="hidden" name="idTorta" value="<%= linea.getTorta().getId() %>">
+                      <input type="hidden" name="idTortaEliminar" value="<%= linea.getTorta().getId() %>">
                       <a href="javascript:;" type="submit" onclick="document.getElementById('eliminarLinea').submit()"><i class="icon-close"></i></a> 
                   </form>
                   
@@ -209,13 +218,28 @@
               <!-- DISCOUNT CODE -->
             <div class="col-sm-7">
               <h6>CUPON DE DESCUENTO</h6>
-              <form>
-                <input type="text" value="" placeholder="INGRESE EL CÓDIGO DE SU CUPÓN AQUÍ">
+              <form action="CtrlMaestro" method="post">
+                <input type="hidden" name="form" value="AplicarCuponComando">
+                <input type="text" name="cuponDto" <%if(cuponActual != null){ %>value="<%= cuponActual.getCodigo() %>" <% } %> placeholder="INGRESE EL CÓDIGO DE SU CUPÓN AQUÍ">
                 <button type="submit" class="btn btn-small btn-dark">APLICAR</button>
               </form>
+                  <% if(request.getSession().getAttribute("cuponActual") != null){ %>
+            <div class="alert alert-success">
+                Cupón aplicado con exito!
             </div>
+                <% session.setAttribute("cuponActual", null); }%>
+                
+              <% if(request.getSession().getAttribute("cuponFallido") != null){ %>
+            <div class="alert alert-danger">
+                El cupón ingresado no existe 
+            </div>
+                <% session.setAttribute("cuponFallido", null); }%>   
+                
+            </div>
+            
               
-              
+            
+            
           
                
               
@@ -226,14 +250,26 @@
               <h6>Total</h6>
               <div class="grand-total">
                 <div class="order-detail">
-                   <% for(LineaPedido linea: lp){
-           
+                   <% Float subtotal = 0.0f;
+                       for(LineaPedido linea: lp){
+                   subtotal = subtotal + linea.getTorta().getPrecio()*linea.getCantidad();
            %>
                   <p><%= linea.getTorta().getNombre()  %><span><%= linea.getTorta().getPrecio()*linea.getCantidad() %></span></p>
                   
                   <% } %>
                   <!-- SUB TOTAL -->
-                  <p class="all-total">TOTAL COST <span> $998</span></p>
+                  <p class="all-total"><%if(cuponActual != null){%>SUBTOTAL<%} else{%>TOTAL<% } %><span><%= subtotal %></span></p>
+                  <% session.setAttribute("total", subtotal); %>
+                  
+                  <% if(cuponActual != null){ %>
+                  <p class="all-total">PORCENTAJE DE DESCUENTO<span>%<%= cuponActual.getPorcDescuento() %></span></p>
+                  <% float descuento = (cuponActual.getPorcDescuento()*subtotal)/100; %>
+                  <p class="all-total">DESCUENTO EN $<span><%= descuento %></span></p>
+                  <% float total = subtotal - descuento; %>
+                  <p class="all-total">TOTAL<span><%= total %></span></p>
+                  <% session.setAttribute("total", total); %>
+                  
+                  <% } %> 
                 </div>
               </div>
             </div>
@@ -241,22 +277,35 @@
         </div>
         
             <div class="row">
-                  <form action="CtrlMaestro" method="post">
+                
+                <br>
+                
+                
+                <form action="CtrlMaestro" method="post">
+                     <input type="hidden"  name="form" value="FinalizarPedidoComando"/>
+                     <h5>Fecha de Entrega</h5>
+                     <h6>(Recuerde que los pedidos se deben realizar con una semana de anticipación como mínimo)</h6><br>
+                  <div class="row">
+                         <div class="col-sm-12 col-sm-offset-0">
+                             <input class="control form-control" type="date" name="fechaEntrega" style="width: 200px"  required>
+                        </div>                                   
+                  </div> <br>
+                     <input class="btn btn-default add-to-cart linea" type="submit" value="Finalizar Pedido" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
+                     
+                </form><br><br>
+                        
+                   <form action="CtrlMaestro" method="post">
                      
                         <input type="hidden"  name="form" value="RedireccionarComando"/>
                         <input type="hidden" name="destino"  value="/home.jsp"/>
                         <input class="btn btn-default add-to-cart linea" type="submit" value="Seguir Comprando">
                         
                         
-                </form> 
-                <br>
-                  <form action="CtrlMaestro" method="post">
+                  </form>         
                      
-                        <input type="hidden"  name="form" value="FinalizarPedidoComando"/>
-                        <input class="btn btn-default add-to-cart linea" type="submit" value="Finalizar Pedido" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
                         
                         
-                </form> 
+               
               </div>
       </div>
     </section>
@@ -267,7 +316,7 @@
  
 </div>
   <% } %>                    
-                        
+ </form>                         
 <script src="js/jquery-1.11.3.min.js"></script> 
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/own-menu.js"></script> 
@@ -278,6 +327,10 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="js/main.js"></script>
+<script src="../js/mainSele.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
+</script>
 </body>
 </html>

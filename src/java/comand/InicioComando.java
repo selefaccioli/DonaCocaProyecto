@@ -6,6 +6,7 @@
 package comand;
 
 import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import entity.Cupon;
 import entity.Detalle;
 import entity.LineaPedido;
 import entity.Parametro;
@@ -18,8 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logic.CtrlCupon;
 import logic.CtrlDetalle;
 import logic.CtrlParametro;
+import logic.CtrlPedido;
 import logic.CtrlTorta;
 import logic.CtrlUsuario;
 import util.DonaCocaException;
@@ -40,50 +43,39 @@ public class InicioComando extends Comando{
         // carga de tortas del home, carrusel y tablita de abajo
         CtrlTorta ctrlT= new CtrlTorta();
         CtrlUsuario ctrlU = new CtrlUsuario();
+        CtrlPedido ctrlP = new CtrlPedido();
+        CtrlCupon ctrlC = new CtrlCupon();
+        CtrlDetalle ctrlD = new CtrlDetalle();
+        CtrlParametro ctrlPar = new CtrlParametro();
         ArrayList<Torta> listaTortas=new ArrayList<Torta>();
         ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
         ArrayList<Torta> tortasCarrusel= new ArrayList<Torta>();
-        
-       try {
+        ArrayList<Pedido> listaPedPendientes = new ArrayList<Pedido>();
+        ArrayList<Cupon> listaCupones = new ArrayList<Cupon>();
+        ArrayList<Detalle> detalles = new  ArrayList<Detalle>();
+        Parametro parametros = new Parametro();
+       
+          try {
+           listaCupones = ctrlC.obtenerCupones();
            listaUsuarios = ctrlU.obtenerUsuarios();
+           listaPedPendientes = ctrlP.obtenerPedidosPendientes();
+           listaTortas = ctrlT.obtenerTortas();
+           detalles = ctrlD.obtenerDetalles();
+           parametros = ctrlPar.obtenerParametros();
        } catch (DonaCocaException ex) {
            request.getSession().setAttribute("ex", ex.getMessage());
            return "/home.jsp";
        }
+        
+        
+        
        
        request.getSession().setAttribute("listaUsuarios", listaUsuarios);
-        
-       
-
-        try
-        {   
-            listaTortas = ctrlT.obtenerTortas();
-           // listaTortas.add(ctrlT.obtenerDetalle(1, 0, 2));
-           /* listaTortas.add(ctrlT.obtenerDetalle(2, 0, 4));
-            listaTortas.add(ctrlT.obtenerDetalle(3, 0, 4));*/
-            
-            tortasCarrusel = ctrlT.obtenerTortas(1, 3); 
-        }
-        catch(DonaCocaException ex)
-        {
-            request.getSession().setAttribute("ex", ex.getMessage());
-            return "/home.jsp";
-        }
-        request.getSession().setAttribute("listaTortas", listaTortas);
-        request.getSession().setAttribute("tortasCarrusel", tortasCarrusel);
-        
-        //carga de detalles
-        CtrlDetalle ctrlD = new CtrlDetalle();
-        try
-        {
-            ArrayList<Detalle> detalles = ctrlD.obtenerDetalles();
-            request.getSession().setAttribute("detalles", detalles);
-        }
-        catch(DonaCocaException ex)
-        {
-            request.setAttribute("ex", ex.getMessage());
-            return "/home.jsp";
-        }
+       request.getSession().setAttribute("pendientes", listaPedPendientes);
+        request.getSession().setAttribute("listaTortas", listaTortas); 
+        request.getSession().setAttribute("detalles", detalles);
+        request.getSession().setAttribute("parametros", parametros);
+        request.getSession().setAttribute("listaCupones", listaCupones);
                
         //mantenerme conectado
         String nomUsu = null;
@@ -120,19 +112,8 @@ public class InicioComando extends Comando{
             }
         }
         
-        //carga de parámetros desde la BD
-        CtrlParametro ctrlP = new CtrlParametro();
-        Parametro parametros = new Parametro();
-        try
-        {
-            parametros = ctrlP.obtenerParametros();
-        } 
-        catch (DonaCocaException ex) 
-        {
-            request.getSession().setAttribute("ex", ex.getMessage());
-            return "/home.jsp";
-        }
-        request.getSession().setAttribute("parametros", parametros);
+        
+        
         
         return "/home.jsp";
         
