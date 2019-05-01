@@ -150,7 +150,7 @@
                     <% for(Detalle d: linea.getTorta().getDetalles()){ %> 
                     <p>
                         <%= d.getNombre() %>: &nbsp 
-                       <%= d.getDetalle() %>
+                       <%= d.getDescripcion() %>
                     </p>
                     <% }%>
                   </div>

@@ -95,6 +95,7 @@ public class DataCupon {
             ResultSet rs = ps.executeQuery();
             while(rs.next())
             {
+                c= new Cupon();
                 c.setId(rs.getInt(1));
                 c.setCodigo(rs.getString(2));
                 c.setActivo(rs.getBoolean(3));

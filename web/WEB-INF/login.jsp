@@ -96,19 +96,13 @@
                       <button type="submit" class="btn">INICIAR SESIÓN</button>
                     </li>
                     
-                    <!-- CREATE AN ACCOUNT -->
-                    <li class="col-md-4">
-                      <div class="checkbox margin-0 margin-top-20">
-                        <input id="checkbox1" class="styled" type="checkbox">
-                        <label for="checkbox1"> Stay me Login</label>
-                      </div>
-                    </li>
                     
-                    <!-- FORGET PASS -->
+                    
+                    <!-- FORGET PASS 
                     <li class="col-md-4">
                       <div class="checkbox margin-0 margin-top-20 text-right">
                         <a href="#.">Forget Password</a>
-                      </div>
+                      </div>-->
                     </li>
                   </ul>
                 </form>
