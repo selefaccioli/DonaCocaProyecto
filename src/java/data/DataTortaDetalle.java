@@ -17,7 +17,7 @@ public class DataTortaDetalle {
     
     public void agregarTortaDetalle(Torta torta) throws DonaCocaException{
         
-        String transac = "insert into finaljava.torta_detalle values ";
+        String transac = "insert into torta_detalle values ";
         
          for(int i=0; i<torta.getDetalles().size(); i++)
         {
@@ -41,7 +41,7 @@ public class DataTortaDetalle {
     }
     
     public void actualizarTortaDetalle(Torta torta)throws DonaCocaException{
-        String sql = "delete from finaljava.torta_detalle where id_torta=?;";
+        String sql = "delete from torta_detalle where id_torta=?;";
          try{
              Connection conec= conn.getConn();
              PreparedStatement ps= conec.prepareStatement(sql);

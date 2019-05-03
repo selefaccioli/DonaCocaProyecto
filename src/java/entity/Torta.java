@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Torta implements Serializable{
+public class Torta {
     private int id;
     private float precio;
     private String nombre;

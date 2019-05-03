@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class Pedido implements Serializable{
+public class Pedido {
         private int id;
 	private Date fechaPedido;
         private Date fechaEntrega;
