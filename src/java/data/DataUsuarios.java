@@ -1,4 +1,5 @@
 package data;
+import entity.Pedido;
 import entity.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -263,5 +264,7 @@ public class DataUsuarios {
              throw new DonaCocaException("Error al eliminar usuario",e);
          }
     }
+    
+   
     
 }

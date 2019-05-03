@@ -43,6 +43,8 @@ public class EditarTortaComando extends Comando{
         tortaEditada.setId(Integer.parseInt(request.getParameter("ID")));
         tortaEditada.setNombre(request.getParameter("nomTor"));
         tortaEditada.setPrecio(Float.parseFloat(request.getParameter("pvtaTor")));
+        Boolean esActivo = (request.getParameter("activo")!=null);
+        tortaEditada.setActivo(esActivo);
         
         
          Part imagen = null;

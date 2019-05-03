@@ -38,7 +38,9 @@ public class FactoriaDeComandos {
         mapa.put("EliminarLineaComando", EliminarLineaComando.class);
         mapa.put("RegistrarEnvioComando", RegistrarEnvioComando.class);
         mapa.put("AplicarCuponComando", AplicarCuponComando.class);
-        
+        mapa.put("SeleccionarCuponComando", SeleccionarCuponComando.class);
+        mapa.put("AgregarCuponComando", AgregarCuponComando.class);
+        mapa.put("EditarCuponComando", EditarCuponComando.class);
         
         
         

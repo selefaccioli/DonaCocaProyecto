@@ -7,6 +7,8 @@ package logic;
 
 import data.DataCupon;
 import entity.Cupon;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import util.DonaCocaException;
 
@@ -27,6 +29,14 @@ public class CtrlCupon {
     
     
      public Cupon obtenerCupon(String codCupon) throws DonaCocaException{
-       return dc.obtenerCupon(codCupon);
+       return dc.obtenerCupon(codCupon);}
    
-}}
+    public void agregarCupon(Cupon cupon) throws DonaCocaException{
+        dc.agregarCupon(cupon);
+        }
+        
+      public void actualizarCupon(Cupon cupon) throws DonaCocaException{      
+       
+         dc.actualizarCupon(cupon);
+    }
+}

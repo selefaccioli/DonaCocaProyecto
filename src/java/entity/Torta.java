@@ -12,6 +12,7 @@ public class Torta implements Serializable{
     private String nombre;
     private InputStream imagen;
     ArrayList<Detalle> detalles;
+    private boolean activo;
     
     public Torta(){
     this.detalles = new ArrayList<Detalle>();
@@ -79,6 +80,16 @@ public class Torta implements Serializable{
     {
         this.detalles.add(detalle);
     }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+       
+       
       
     @Override
     public int hashCode() {

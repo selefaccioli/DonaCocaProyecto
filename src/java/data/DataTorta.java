@@ -21,13 +21,14 @@ public class DataTorta {
     
     public void agregarTorta(Torta torta) throws DonaCocaException{
         PreparedStatement ps;
-        String transac = "insert into torta(nombre,precio,imagen) values (?,?,?);";
+        String transac = "insert into torta(nombre,precio,imagen,activo) values (?,?,?,?);";
         try{
            conec= conn.getConn();
            ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
            ps.setString(1, torta.getNombre());
            ps.setDouble(2, torta.getPrecio());
            ps.setBlob(3, torta.getImagen());
+           ps.setBoolean(4, true);
            
            ps.executeUpdate();
            ResultSet rs= ps.getGeneratedKeys();
@@ -49,7 +50,7 @@ public class DataTorta {
     
      public void actualizarTorta(Torta torta) throws DonaCocaException{      
         if(torta.getImagen() != null){
-            String sql="update torta set nombre=? , precio=?, imagen=?  where id_torta=?";  
+            String sql="update torta set nombre=? , precio=?, imagen=?, activo =? where id_torta=?";  
             try
             {
                 conec= conn.getConn();
@@ -57,7 +58,8 @@ public class DataTorta {
                 ps.setString(1, torta.getNombre());
                 ps.setDouble(2, torta.getPrecio());
                  ps.setBlob(3, torta.getImagen());
-                ps.setInt(4, torta.getId());
+                 ps.setBoolean(4, torta.isActivo());
+                ps.setInt(5, torta.getId());
                
                 
                 new DataTortaDetalle().actualizarTortaDetalle(torta);
@@ -70,14 +72,15 @@ public class DataTorta {
             }
         }
         else{
-            String sql="update torta set nombre=? , precio=?  where id_torta=?";  
+            String sql="update torta set nombre=? , precio=?, activo= ?  where id_torta=?";  
             try
             {
                 conec= conn.getConn();
                 PreparedStatement ps = conec.prepareStatement(sql);
                 ps.setString(1, torta.getNombre());
                 ps.setDouble(2, torta.getPrecio());
-                ps.setInt(3, torta.getId());
+                ps.setBoolean(3, torta.isActivo());
+                ps.setInt(4, torta.getId());
                
                 
                 new DataTortaDetalle().actualizarTortaDetalle(torta);
@@ -118,7 +121,7 @@ public class DataTorta {
      
      public ArrayList<Torta> obtenerTortas() throws DonaCocaException{
         ArrayList<Torta> listaTortas = new ArrayList<>();
-        String sql = "select * from torta";
+        String sql = "select * from torta where activo =1;";
         try
         {
             conec = conn.getConn();
@@ -132,6 +135,7 @@ public class DataTorta {
                 t.setId(rs.getInt(1));
                 t.setPrecio(rs.getFloat(2));
                 t.setNombre(rs.getString(3));
+                t.setActivo(true);
                 
                 ArrayList<Detalle> detalles = new CtrlDetalle().obtenerDetalles(t.getId());
                 t.setDetalles(detalles);

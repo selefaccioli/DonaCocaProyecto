@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -110,4 +111,56 @@ public class DataCupon {
         return c;
     }   
    
+      public void agregarCupon(Cupon cupon) throws DonaCocaException{
+        PreparedStatement ps;
+        String transac = "insert into cupon(codigo,activo,porc_descuento) values (?,?,?);";
+        try{
+           conec= conn.getConn();
+           ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
+           ps.setString(1, cupon.getCodigo());
+           ps.setBoolean(2, true);
+           ps.setFloat(3, cupon.getPorcDescuento());
+           
+           ps.executeUpdate();
+           ResultSet rs= ps.getGeneratedKeys();
+           
+           if(rs.next())
+            {
+                int id = rs.getInt(1);
+                cupon.setId(id);
+            }
+           
+            conec.close();
+           
+        }
+        catch(SQLException e){
+            throw new DonaCocaException("Error al agregar cupon ",e);
+        }
+        
+    }
+     public void actualizarCupon(Cupon cupon) throws DonaCocaException{      
+       
+            String sql="update cupon set  activo=?, porc_descuento=? where codigo=?";  
+            try
+            {
+                conec= conn.getConn();
+                PreparedStatement ps = conec.prepareStatement(sql);
+                ps.setBoolean(1, cupon.isActivo());
+                ps.setFloat(2, cupon.getPorcDescuento());
+                ps.setString(3, cupon.getCodigo());
+                
+              
+                ps.executeUpdate();
+           
+                conec.close();
+            }
+            catch(SQLException e){
+            throw new DonaCocaException("Error al actualizar cupon",e);
+            }
+        
+       
+            
+            
+    }
+      
 }

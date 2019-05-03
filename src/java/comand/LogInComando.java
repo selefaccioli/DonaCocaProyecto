@@ -8,6 +8,8 @@ package comand;
 import entity.Pedido;
 import entity.Usuario;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +29,7 @@ public class LogInComando extends Comando{
         String nomUsu = request.getParameter("nomUsu");
         String contra = request.getParameter("contra");
         Boolean recordar = (request.getParameter("recordarUsu")!=null);
+        CtrlPedido ctrlP = new CtrlPedido();
         
         Usuario usu = null;
         
@@ -38,13 +41,14 @@ public class LogInComando extends Comando{
             return "/login.jsp";
         }
         
+        
         Pedido p = (Pedido)request.getSession().getAttribute("pedido");
         
        
         
         if(usu != null)
         {      
-            
+           
         if(recordar)
             {
                 Cookie recordarNombre = new Cookie("nomUsuarioDonaCoca", nomUsu);

@@ -1,4 +1,5 @@
 
+<%@page import="entity.Cupon"%>
 <%@page import="entity.Parametro"%>
 <%@page import="entity.Detalle"%>
 <%@page import="entity.Torta"%>
@@ -75,31 +76,26 @@
   <!-- header -->
   <jsp:include page="header.jsp"/>
   
-        <%!ArrayList<Torta> tortas;%>
-        <%!ArrayList<Detalle> detalles;%>
-        <%!Parametro param;%>
-        <%!Torta torta;%>
-        <% if(session.getAttribute("parametros")!=null){ param = (Parametro) session.getAttribute("parametros"); }%>
-        <% if(session.getAttribute("listaTortas")!=null) { tortas = (ArrayList)session.getAttribute("listaTortas");}%>
-        <% if(session.getAttribute("detalles")!=null) { detalles = (ArrayList)session.getAttribute("detalles");}%>
-        <% torta = (Torta)session.getAttribute("TortaEdit"); 
-          //ArrayList<Detalle> detallesTor = torta.getDetalles();
-            if(request.getAttribute("tortaPorAgregar")!=null)        
-                torta = (Torta)request.getAttribute("tortaPorAgregar");  
+        <%!ArrayList<Cupon> cupones;
+        Cupon cupon;%>
+        <% if(session.getAttribute("listaCupones")!=null) { cupones = (ArrayList)session.getAttribute("listaCupones");}%>
+        <% cupon = (Cupon)session.getAttribute("CuponEdit"); 
+            if(request.getAttribute("cuponPorAgregar")!=null)        
+                cupon = (Cupon)request.getAttribute("cuponPorAgregar");  
                 
         %>
         <div class="cuenta">
             <div class="container"> 
-                <%if(request.getAttribute("ex")!=null && torta ==null ){ %>
+                <%if(request.getAttribute("ex")!=null && cupon ==null ){ %>
                 <div class="row">
                     <div class="alert alert-success fade in">
                         <%= request.getAttribute("ex")%>
                     </div>
                 </div>
                 <%}%>
-                <% if(tortas!=null) { %>
+                <% if(cupones!=null) { %>
                 <div class="row">
-                    <h2 class="title text-center">Lista de Tortas</h2> 
+                    <h2 class="title text-center">Lista de cupones</h2> 
                     <div class="col-sm-12">
                         <div class="table-responsive" style="height:400px; overflow:auto">
                             <div class="table-striped">
@@ -107,9 +103,9 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Precio</th>
-                                            <th>Agregar / Editar</th>
+                                            <th>Codigo</th>
+                                            <th>Porcentaje de descuento</th>
+                                            <th>Activo</th>
                                            
                                             <th></th>
                                         </tr>
@@ -123,22 +119,23 @@
                                             
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
-                                                    <input type="hidden"  name="form" value="SeleccionarTortaComando"/>
-                                                    <input type="hidden" name="idTortaEdit" value="0">
+                                                    <input type="hidden"  name="form" value="SeleccionarCuponComando"/>
+                                                    <input type="hidden" name="idCuponEdit" value="0">
                                                     <input type="submit" value="+ Nuevo">
                                                 </form>
                                             </td>
                                         </tr>
-                                        <%for(Torta t: tortas){
+                                        <%for(Cupon c: cupones){
                                         %>
                                         <tr>
-                                            <td><%= t.getId()%></td>
-                                            <td><%= t.getNombre()%></td>
-                                            <td><%= t.getPrecio()%></td>
+                                            <td><%= c.getId()%></td>
+                                            <td><%= c.getCodigo() %></td>
+                                            <td><%= c.getPorcDescuento()%></td>
+                                            <td><%if(c.isActivo()){%><img src="./images/check.png"><%}%></td>
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
-                                                    <input type="hidden"  name="form" value="SeleccionarTortaComando"/>
-                                                    <input type="hidden" name="idTortaEdit" value="<%= t.getId() %>">
+                                                    <input type="hidden"  name="form" value="SeleccionarCuponComando"/>
+                                                    <input type="hidden" name="idCuponEdit" value="<%= c.getId() %>">
                                                     <input type="submit" value="Editar">
                                                 </form>
                                             </td>
@@ -152,7 +149,7 @@
                 </div>
                 <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); }%> class="row">
                     <br/>         
-                    <h2 class="title text-center"><%if(torta!=null && request.getAttribute("tortaPorAgregar")==null){%>EDITAR<%} else{%>AGREGAR<%}%> TORTA</h2>
+                    <h2 class="title text-center"><%if(cupon!=null && request.getAttribute("cuponPorAgregar")==null){%>EDITAR<%} else{%>AGREGAR<%}%> CUPON</h2>
                     <br/>
                     <form action="CtrlMaestro" method="post" enctype="multipart/form-data">  
                         <div class="col-sm-6 ">
@@ -161,16 +158,16 @@
                                     <h4 class="text-left">ID</h4>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input class="control form-control"  type="text" placeholder="ID (Automático)" maxlength="15" name="ID" readonly="" value="<%if(torta!=null && request.getAttribute("tortaPorAgregar")==null )%><%=torta.getId()%>">
+                                    <input class="control form-control"  type="text" placeholder="ID (Automático)" maxlength="15" name="ID" readonly="" value="<%if(cupon!=null && request.getAttribute("cuponPorAgregar")==null )%><%= cupon.getId() %>">
                                 </div>
                             </div>
                            
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h4 class="text-left">Nombre</h4>
+                                    <h4 class="text-left">Codigo</h4>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="nomTor" placeholder="*"  required value="<%if(torta!=null || request.getAttribute("tortaPorAgregar")!=null)%><%=torta.getNombre()%>">
+                                    <input type="text" class="control form-control" name="codCup" placeholder="*"  required value="<%if(cupon!=null || request.getAttribute("cuponPorAgregar")!=null)%><%=cupon.getCodigo()%>">
                                 </div>
                             </div>
                            
@@ -183,46 +180,19 @@
                             <div class="row">
                                 
                                 <div class="col-sm-6">
-                                    <h4 class="text-left">Precio</h4>
-                                    <input type="text" class="control form-control" name="pvtaTor" placeholder="* (En $)" pattern="^[0-9]+(\.[0-9]+)?$" title="Numero" required value="<%if(torta!=null || request.getAttribute("tortaPorAgregar")!=null)%><%= torta.getPrecio() %>">
+                                    <h4 class="text-left">Porcentaje de descuento</h4>
+                                    <input type="text" class="control form-control" name="porcCup" placeholder="* (En $)" pattern="^[0-9]+(\.[0-9]+)?$" title="Numero" required value="<%if(cupon!=null || request.getAttribute("cuponPorAgregar")!=null)%><%= cupon.getPorcDescuento() %>">
                                 </div>
                             </div>                        
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h4 class="text-left">Foto</h4>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input type="file" class="control form-control" name="imgTor">
-                                </div>
-                            </div>
+                            
                             
                            <div class="row">
                                 <div class="col-sm-12">                                                           
-                                    <label class="puntero"><input class="enLinea" type="checkbox" name="activo" value="true" <% if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.isActivo()== true)%>checked<%;%>><h6 class="enLinea">Activo</h6></label>
+                                    <label class="puntero"><input class="enLinea" type="checkbox" name="activo" value="true" <% if((cupon!=null || request.getAttribute("cuponPorAgregar")!=null) && cupon.isActivo()== true)%>checked<%;%>><h6 class="enLinea">Activo</h6></label>
                                 </div>
                             </div>  
                             
-                            <div class="row">
-                                <div class="col-sm-6">
-                                <h4 class="text-left">Detalles</h4>
-
-                                  <div class="table-responsive" style="height:120px; overflow:auto;">
-                                        <table class="table-striped col-lg-12">
-                                            <tbody>
-                                            <% for(int i=0;i<detalles.size();i++){%>
-                                                <tr>
-                                                    <td>
-                                                        
-                                                        <label class="puntero"><input class="check" type="checkbox" name="detalles1" value="<%=detalles.get(i).getId()%>" <%if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.contieneDetalle(detalles.get(i)))%>checked<%;%>><%= detalles.get(i).getNombre() %>: &nbsp; <%= detalles.get(i).getDescripcion()  %></label>
-
-                                                    </td>
-                                                </tr>
-                                                <%}%>
-                                           </tbody>
-                                        </table>
-                                    </div> 
-                                </div>
-                            </div>
+                            
                             <br/>
                            
                             
@@ -233,20 +203,20 @@
                                             <p class="text-center"><%= request.getAttribute("ex")%></p>
                                         </div>
                                     <%}%>
-                                    <%if(request.getAttribute("ExitoTorta")!=null){
-                                        if((Boolean)request.getAttribute("ExitoTorta")){%>
+                                    <%if(request.getAttribute("ExitoCupon")!=null){
+                                        if((Boolean)request.getAttribute("ExitoCupon")){%>
                                        <div class="alert alert-success">
-                                           <p class="text-center">Torta <%if(torta==null && request.getAttribute("tortaPorAgregar")==null){ %>agregada<% }else{%>editada<%}%> con éxito.</p>        
+                                           <p class="text-center">Cupon <%if(cupon==null && request.getAttribute("cuponPorAgregar")==null){ %>agregado<% }else{%>editado<%}%> con éxito.</p>        
                                         </div>
-                                    <% }else if(!(Boolean)request.getAttribute("ExitoTorta")){ %>
+                                    <% }else if(!(Boolean)request.getAttribute("ExitoCupon")){ %>
                                         <div class="alert alert-danger ">
-                                            <p class="text-center">Ya existe una torta con el mismo nombre</p>        
+                                            <p class="text-center">Ya existe un cupon con el mismo codigo</p>        
                                         </div>           
                                     <% }}%>
                                 </div>
                             </div>
-                          <input type="hidden" name="form" value="<%if(torta!=null && request.getAttribute("tortaPorAgregar")==null) {%>EditarTortaComando<%}else{%>AgregarTortaComando<%}%>">
-                            <button type="submit" class="btn btn-default"><%if(torta!=null && request.getAttribute("tortaPorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar Torta<%}%></button>
+                          <input type="hidden" name="form" value="<%if(cupon!=null && request.getAttribute("cuponPorAgregar")==null) {%>EditarCuponComando<%}else{%>AgregarCuponComando<%}%>">
+                            <button type="submit" class="btn btn-default"><%if(cupon!=null && request.getAttribute("cuponPorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar Cupon<%}%></button>
                             
                             
                             

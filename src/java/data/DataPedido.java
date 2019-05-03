@@ -97,7 +97,7 @@ public class DataPedido {
     
     public ArrayList<Pedido> obtenerPedidos(int idUsuario) throws DonaCocaException{         
         ArrayList<Pedido> pedidosEncontrados = new ArrayList<>();
-        String sql = "select * pedido where id_usuario=?;";
+        String sql = "select * from  pedido where id_usuario=?;";
         
         try 
         {

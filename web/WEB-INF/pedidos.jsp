@@ -4,6 +4,8 @@
     Author     : selef
 --%>
 
+<%@page import="entity.Usuario"%>
+<%@page import="logic.CtrlPedido"%>
 <%-- 
     Document   : pedidos
     Created on : 30/04/2019, 06:48:22
@@ -72,8 +74,10 @@
 </head>
     <body onload="scrollDiv();">
         <jsp:include page="header.jsp"/>
-        <%!ArrayList<Pedido> pedidos;%>
-        <% pedidos = (ArrayList)request.getAttribute("pedidos"); %>
+        <%  Usuario usu = (Usuario)request.getSession().getAttribute("usuario");
+            CtrlPedido ctrlP = new CtrlPedido();
+         ArrayList<Pedido> pedidosUsu = ctrlP.obtenerPedidos(usu.getId());%>
+        <% %>
         <div class="cuenta">
             <div class="container"> 
                 <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); };%> class="row">
@@ -86,9 +90,9 @@
                                 </div>
                             </div>
                         </div>
-                        <%} else if(pedidos!=null){%>
+                        <%} else if(pedidosUsu!=null){%>
                         <h2 class="title text-center">Historial de Pedidos</h2>
-                        <%if(pedidos.isEmpty()){%>
+                        <%if(pedidosUsu.isEmpty()){%>
                         <div class="alert alert-danger">
                             Usted nunca ha realizado pedidos.       
                         </div>
@@ -99,22 +103,23 @@
                                     <thead>
                                         <tr>
                                             <th>ID Pedido</th>
-                                            <th>F Desde</th>
-                                            <th>F Hasta</th>
-                                            <th>Peliculas</th>
-                                            <th>Recargo</th>
+                                            <th>F Pedido</th>
+                                            <th>F Entrega</th>
+                                            <th>Total</th>
+                                            <th>Tortas</th>
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <%for(Pedido p:pedidos){%>
+                                    <%for(Pedido p: pedidosUsu){%>
                                         <tr>
                                             <td><%= p.getId()  %></td>
                                             <td><%= p.getFechaPedido() %></td>
                                             <td><%= p.getFechaEntrega() %></td>
+                                             <td><%= p.getTotal() %></td>
                                             <td>
                                             <% for(LineaPedido lp: p.getLineasPedido()){
-                                            %>Compra<%}%> <br>                                          
+                                              lp.getTorta().getNombre();   }%> <br>                                          
                                           
                                             </td>
                                             

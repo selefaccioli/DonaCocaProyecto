@@ -52,6 +52,8 @@ public class AgregarTortaComando extends Comando{
         torta = new Torta();
         torta.setNombre(request.getParameter("nomTor"));
         torta.setPrecio(Float.parseFloat(request.getParameter("pvtaTor")));
+        Boolean esActivo = (request.getParameter("activo")!=null);
+        torta.setActivo(esActivo);
         
         
         //Comparo todos los detalles con los seleccionados y los agrego a la torta

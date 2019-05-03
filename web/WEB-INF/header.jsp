@@ -53,11 +53,19 @@
                        <input type="hidden" name="destino" value="/ABMUsuarios.jsp">
                         <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formABMUsuario').submit()"> Usuarios</a> </li>
                     </form>
+                    
+                    
+                      <form action="CtrlMaestro" method="post" id="formCupones">
+                        <input type="hidden" name="form" value="RedireccionarComando">
+                       <input type="hidden" name="destino" value="/ABMCupones.jsp">
+                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formCupones').submit()"> Cupones</a> </li>
+                    </form>
                     <form action="CtrlMaestro" method="post" id="formPedidosPendientes">
                         <input type="hidden" name="form" value="RedireccionarComando">
                        <input type="hidden" name="destino" value="/envios.jsp">
                         <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formPedidosPendientes').submit()"> Pedidos Pendientes</a> </li>
                     </form>
+                    
                   
                 </ul>
               </li>
@@ -87,6 +95,13 @@
                         <input type="hidden" name="form" value="RedireccionarComando">
                         <input type="hidden" name="destino" value="/cuenta.jsp">
                         <li><a href="javascript:;" type="submit" onclick="document.getElementById('miCuentaForm').submit()">MI CUENTA</a></li>
+                        
+                    </form>
+                    
+                     <form id="misPedidosForm" action="CtrlMaestro" method="post">
+                        <input type="hidden" name="form" value="RedireccionarComando">
+                        <input type="hidden" name="destino" value="/pedidos.jsp">
+                        <li><a href="javascript:;" type="submit" onclick="document.getElementById('misPedidosForm').submit()">MIS PEDIDOS</a></li>
                         
                     </form>
                     
