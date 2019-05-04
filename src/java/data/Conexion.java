@@ -17,7 +17,7 @@ public class Conexion {
             String servidor = "jdbc:mysql://localhost:3309/finaljava"; 
          /*  String usuarioDB= "root";
             String passwordDB= "MGSbgy37491";
-            String servidor= "jdbc:mysql://node31552-donacoca.jelastic.saveincloud.net/finalJava";*/
+            String servidor= "jdbc:mysql://node31552-donacoca.jelastic.saveincloud.net/finalJava";  skksks*/
             
             conn= DriverManager.getConnection(servidor, usuarioDB, passwordDB);
             
