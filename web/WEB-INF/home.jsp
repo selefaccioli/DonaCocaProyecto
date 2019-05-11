@@ -1,4 +1,5 @@
 
+<%@page import="entity.Variante"%>
 <%@page import="entity.Detalle"%>
 <%@page import="entity.Torta"%>
 <%@page import="java.util.ArrayList"%>
@@ -94,23 +95,28 @@
         <div class="papular-block row row-eq-height"> 
             
             <% if(session.getAttribute("ex") != null) {%>
-        <!-- <div class="container">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-4">            
                     <div class="alert alert-danger fade in"> -->
                         <%= session.getAttribute("ex")%>
-                   <!-- </div>                    
+                    </div>                    
                 </div>
             </div>
-        </div> -->
+        </div><%} else if(request.getAttribute("tortatesting")!= null){
+        session.setAttribute("tortatesting", null);
+        %>
                         
         <%}else{
        
         
         session.setAttribute("ex", null);
         ArrayList<Torta> listaTortas = (ArrayList)session.getAttribute("listaTortas");
+        ArrayList<Detalle> detalles = (ArrayList)session.getAttribute("detalles");
+        ArrayList<Variante> variantes = (ArrayList)session.getAttribute("variantes");
+    
         for(Torta t: listaTortas){ 
-        ArrayList<Detalle> detalles = t.getDetalles(); 
+       
        
         %> 
           
@@ -118,51 +124,31 @@
           <div class="col-md-3">
             <div class="item"> 
               <!-- Item img -->
-              <div class="item-img"> <img class="img-1" src="ProcesadorImagenes?id=<%=t.getId()%>" alt="">
-                   
-                <!-- Overlay -->
-                
-               <!-- <div class="overlay">
-               <img class="img-1" src="images/product-2-1.jpg" alt="" > <img class="img-2" src="images/product-2.jpg" alt="" >
-                  <div class="position-center-center">
-                      <div class="inn"><a href="images/product-2-1.jpg" data-lighter></a>
-                         <a href="#" onClick="ready();" class="cd-add-to-cart"  id="torta<%= t.getId() %>"><i class="icon-basket"></i></a> <a href="#." ></a></div>
-                  </div>
-                </div> -->
-              </div>
-              <div class="cd-add-to-cart">
-                 <form action="CtrlMaestro" method="post">
-                     
-                        <input type="hidden"  name="form" value="AgregarLineaPedidoComando"/>
-                        <input type="hidden" name="idTorta"  value="<%= t.getId() %>"/>
-                        <center>
-                            <input class="btn btn-default add-to-cart linea" type="submit" name="tipoLinea"  value="Comprar">
-                        </center>
-                        
-                        
-                </form> 
-              
-              </div>
-              <!-- Price --> 
-              <span class="price" id="precio"><small>$</small><%= t.getPrecio() %></span>
-              <input type="hidden" name="precioTorta" value="<%= t.getPrecio() %>">
+              <div class="item-img"> <img class="img-1" style="width: 263px;height: 340px" src="../images/imagenesdc/<%= t.getRutaImg() %>" alt="">
+               
              
+              </div>
+            
+              
               
               <!-- Item Name -->
-              <div class="item-name"> <a href="#."  ><%= t.getNombre() %> </a>
+              <form action="CtrlMaestro" method="post" id="formProdu">
+                    <input type="hidden"  name="form" value="RedireccionarTortaComando"/>
+                    <input type="hidden"  name="destino" value="/producto.jsp"/>
+                    <input type="hidden" name="idTortaEdit" value="<%= t.getId() %>">
+                    <center>
+                            <input class="btn btn-default add-to-cart linea" type="submit" name="boton"  value="Comprar">
+                </center>
+                   <div class="item-name"> <a href="#."  ><%= t.getNombre() %> </a>
                   <input type="hidden" name="nombreTorta" id="nombre" value="<%= t.getNombre() %>">
-                 <% for(Detalle d: detalles) { %>
-                    <p> <%= d.getNombre() %>: &nbsp 
-                       <%= d.getDescripcion() %>
-                    </p>
-                    <% } %>
+                 
               </div>
-             
-               </div>
+              </form>
           </div>
           
-         <% } } %>
-          
+
+               </div>
+                  <% }  %>
          
         </div>
       </div>
@@ -170,7 +156,7 @@
     
    
   </div>
-
+<% }%>
   
   <!--======= RIGHTS =========--> 
   

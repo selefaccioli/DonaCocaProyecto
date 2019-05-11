@@ -41,9 +41,14 @@ public class FactoriaDeComandos {
         mapa.put("SeleccionarCuponComando", SeleccionarCuponComando.class);
         mapa.put("AgregarCuponComando", AgregarCuponComando.class);
         mapa.put("EditarCuponComando", EditarCuponComando.class);
-        
-        
-        
+        mapa.put("EditarDetalleComando", EditarDetalleComando.class);
+        mapa.put("SeleccionarDetalleComando", SeleccionarDetalleComando.class);
+        mapa.put("AgregarDetalleComando", AgregarDetalleComando.class);
+        mapa.put("EditarVarianteComando", EditarVarianteComando.class);
+        mapa.put("SeleccionarVarianteComando", SeleccionarVarianteComando.class);
+        mapa.put("AgregarVarianteComando", AgregarVarianteComando.class);
+        mapa.put("RedireccionarTortaComando", RedireccionarTortaComando.class);
+        mapa.put("CalcularPrecioComprarComando", CalcularPrecioComprarComando.class);
         
        
     

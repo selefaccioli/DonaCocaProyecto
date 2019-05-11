@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import entity.Torta;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -61,11 +62,14 @@ public class ProcesadorImagenes extends HttpServlet {
         CtrlTorta ct = new CtrlTorta();
         
         try
-        {   byte[]imgData= ct.buscarImagen(Integer.parseInt(request.getParameter("id")));
+        {  
+            Torta torta = ct.obtenerTorta(Integer.parseInt(request.getParameter("id")));
+            String src = torta.getRutaImg();
+            /*byte[]imgData= ct.buscarImagen(Integer.parseInt(request.getParameter("id"))); 
             OutputStream os = response.getOutputStream(); 
             os.write(imgData);
             os.flush();
-            os.close();
+            os.close();*/
         }
         catch(Exception ex)
         {

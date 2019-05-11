@@ -21,4 +21,21 @@ public class CtrlDetalle {
         return dd.obtenerDetalles(idTorta);
     }
     
+     public Detalle obtenerDetalle(int idDetalle) throws DonaCocaException{      
+        return dd.obtenerDetalle(idDetalle);
+    }   
+     
+     public boolean existeDetalle(String nombreDetalle) throws DonaCocaException{
+         
+      return dd.existeDetalle(nombreDetalle);
+     }
+
+     public void registrarDetalle(Detalle det)throws DonaCocaException{
+        dd.registrarDetalle(det);
+     }
+     
+      public void editarDetalle(Detalle det) throws DonaCocaException{
+          dd.editarDetalle(det);
+      }
 }
+

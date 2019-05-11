@@ -1,4 +1,5 @@
 
+<%@page import="entity.Variante"%>
 <%@page import="entity.Cupon"%>
 <%@page import="entity.Usuario"%>
 <%@page import="entity.Detalle"%>
@@ -68,6 +69,11 @@
                 Pedido realizado con éxito!
             </div>
 <% session.setAttribute("exitoPedido", null); }
+        else if(session.getAttribute("exitoMail")!= null){%> 
+                    <div class="alert alert-success">
+                        Un mail ha sido enviado a su casilla de correo!
+                    </div>
+                    <%session.setAttribute("exitoMail",null);} 
         else if(session.getAttribute("cantidadInvalida")!= null){%> 
                     <div class="alert alert-danger">
                         Por favor ingrese una cantidad válida
@@ -141,16 +147,16 @@
             <li class="col-sm-6">
               <div class="media"> 
                 <!-- Media Image -->
-                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="ProcesadorImagenes?id=<%= linea.getTorta().getId() %>" alt=""> </a> </div>
+                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="../images/imagenesdc/<%= linea.getTorta().getRutaImg() %>" alt=""> </a> </div>
                 
                 <!-- Item Name -->
                 <div class="media-body">
                   <div class="position-center-center">
                     <h5><%= linea.getTorta().getNombre() %></h5>
-                    <% for(Detalle d: linea.getTorta().getDetalles()){ %> 
+                    <% for(Variante v: linea.getTorta().getVariantes()){ %> 
                     <p>
-                        <%= d.getNombre() %>: &nbsp 
-                       <%= d.getDescripcion() %>
+                        <%= v.getDetalle().getNombre() %>: &nbsp 
+                       <%= v.getDescripcion() %>
                     </p>
                     <% }%>
                   </div>

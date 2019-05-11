@@ -7,7 +7,8 @@ import java.io.Serializable;
 public class Detalle {
     private int id;
     private String nombre;
-    private String descripcion;
+    private Boolean eligeUsuario;
+    private Boolean multiple;
 
     public int getId() {
         return id;
@@ -25,15 +26,23 @@ public class Detalle {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public Boolean getEligeUsuario() {
+        return eligeUsuario;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setEligeUsuario(Boolean eligeUsuario) {
+        this.eligeUsuario = eligeUsuario;
     }
-    
-    
+
+    public Boolean getMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(Boolean multiple) {
+        this.multiple = multiple;
+    }
+
+
     
     
 }

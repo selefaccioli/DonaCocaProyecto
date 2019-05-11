@@ -15,6 +15,7 @@ import javax.servlet.http.Cookie;
 import entity.Pedido;
 import entity.Torta;
 import entity.Usuario;
+import entity.Variante;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import logic.CtrlParametro;
 import logic.CtrlPedido;
 import logic.CtrlTorta;
 import logic.CtrlUsuario;
+import logic.CtrlVariante;
 import util.DonaCocaException;
 
 /**
@@ -46,12 +48,14 @@ public class InicioComando extends Comando{
         CtrlPedido ctrlP = new CtrlPedido();
         CtrlCupon ctrlC = new CtrlCupon();
         CtrlDetalle ctrlD = new CtrlDetalle();
+        CtrlVariante ctrlV = new CtrlVariante();
         CtrlParametro ctrlPar = new CtrlParametro();
         ArrayList<Torta> listaTortas=new ArrayList<Torta>();
         ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
         ArrayList<Torta> tortasCarrusel= new ArrayList<Torta>();
         ArrayList<Pedido> listaPedPendientes = new ArrayList<Pedido>();
         ArrayList<Cupon> listaCupones = new ArrayList<Cupon>();
+        ArrayList<Variante> variantes = new  ArrayList<Variante>();
         ArrayList<Detalle> detalles = new  ArrayList<Detalle>();
         Parametro parametros = new Parametro();
        
@@ -60,6 +64,7 @@ public class InicioComando extends Comando{
            listaUsuarios = ctrlU.obtenerUsuarios();
            listaPedPendientes = ctrlP.obtenerPedidosPendientes();
            listaTortas = ctrlT.obtenerTortas();
+           variantes = ctrlV.obtenerVariantes();
            detalles = ctrlD.obtenerDetalles();
            parametros = ctrlPar.obtenerParametros();
        } catch (DonaCocaException ex) {
@@ -73,6 +78,7 @@ public class InicioComando extends Comando{
        request.getSession().setAttribute("listaUsuarios", listaUsuarios);
        request.getSession().setAttribute("pendientes", listaPedPendientes);
         request.getSession().setAttribute("listaTortas", listaTortas); 
+        request.getSession().setAttribute("variantes", variantes);
         request.getSession().setAttribute("detalles", detalles);
         request.getSession().setAttribute("parametros", parametros);
         request.getSession().setAttribute("listaCupones", listaCupones);

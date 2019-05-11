@@ -11,11 +11,13 @@ public class Torta {
     private float precio;
     private String nombre;
     private InputStream imagen;
-    ArrayList<Detalle> detalles;
+    ArrayList<Variante> variantes;
     private boolean activo;
+    private String rutaImg;
+    private ArrayList<Imagen> rutasImg;
     
     public Torta(){
-    this.detalles = new ArrayList<Detalle>();
+    this.variantes = new ArrayList<Variante>();
     }
 
     public int getId() {
@@ -50,20 +52,20 @@ public class Torta {
         this.imagen = imagen;
     }
 
-    public ArrayList<Detalle> getDetalles() {
-        return detalles;
+    public ArrayList<Variante> getVariantes() {
+        return variantes;
     }
 
-    public void setDetalles(ArrayList<Detalle> detalles) {
-        this.detalles = detalles;
+    public void setVariantes(ArrayList<Variante> variantes) {
+        this.variantes = variantes;
     }
     
-       public boolean contieneDetalle(Detalle det)
+       public boolean contieneVariante(Variante var)
     {
         int cont=0;
-        for(Detalle d:detalles)
+        for(Variante v:variantes)
         {
-            if(d.getId()== det.getId()){
+            if(v.getId()== var.getId()){
                cont++;
             }
                 
@@ -76,9 +78,9 @@ public class Torta {
         }
     }
        
-       public void agregarDetalle(Detalle detalle)
+       public void agregarVariante(Variante variante)
     {
-        this.detalles.add(detalle);
+        this.variantes.add(variante);
     }
 
     public boolean isActivo() {
@@ -88,7 +90,24 @@ public class Torta {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    public String getRutaImg() {
+        return rutaImg;
+    }
+
+    public void setRutaImg(String rutaImg) {
+        this.rutaImg = rutaImg;
+    }
+
+    public ArrayList<Imagen> getRutasImg() {
+        return rutasImg;
+    }
+
+    public void setRutasImg(ArrayList<Imagen> rutasImg) {
+        this.rutasImg = rutasImg;
+    }
        
+    
        
       
     @Override

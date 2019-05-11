@@ -53,7 +53,17 @@
                        <input type="hidden" name="destino" value="/ABMUsuarios.jsp">
                         <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formABMUsuario').submit()"> Usuarios</a> </li>
                     </form>
+                    <form action="CtrlMaestro" method="post" id="formDetalles">
+                        <input type="hidden" name="form" value="RedireccionarComando">
+                       <input type="hidden" name="destino" value="/ABMDetalles.jsp">
+                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formDetalles').submit()"> Detalles</a> </li>
+                    </form>
                     
+                    <form action="CtrlMaestro" method="post" id="formVariantes">
+                        <input type="hidden" name="form" value="RedireccionarComando">
+                       <input type="hidden" name="destino" value="/ABMVariantes.jsp">
+                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formVariantes').submit()"> Variantes</a> </li>
+                    </form>
                     
                       <form action="CtrlMaestro" method="post" id="formCupones">
                         <input type="hidden" name="form" value="RedireccionarComando">

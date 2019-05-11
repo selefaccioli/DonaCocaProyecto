@@ -8,7 +8,12 @@ package comand;
 import data.DataTorta;
 import entity.Detalle;
 import entity.Torta;
+import entity.Variante;
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,16 +61,16 @@ public class AgregarTortaComando extends Comando{
         torta.setActivo(esActivo);
         
         
-        //Comparo todos los detalles con los seleccionados y los agrego a la torta
-        ArrayList<Detalle> detalles = (ArrayList)request.getSession().getAttribute("detalles");
-        String selecc[] = request.getParameterValues("detalles1");
-        for(Detalle d: detalles)
+        //Comparo todos los variantes con los seleccionados y los agrego a la torta
+        ArrayList<Variante> variantes = (ArrayList)request.getSession().getAttribute("variantes");
+        String selecc[] = request.getParameterValues("variantes1");
+        for(Variante v: variantes)
         {
             for(int i=0; i<selecc.length;i++)  
             {
-                if(d.getId()==Integer.parseInt(selecc[i]))
+                if(v.getId()==Integer.parseInt(selecc[i]))
                 {
-                    torta.agregarDetalle(d);
+                    torta.agregarVariante(v);
                 }
             }
         }    
@@ -84,10 +89,18 @@ public class AgregarTortaComando extends Comando{
         {
             if(request.getPart("imgTor")!=null)
             {
-                
+                File ruta = new File("C:\\Users\\selef\\OneDrive\\Documentos\\NetBeansProjects\\Curso Java\\JavaFinalWebSele\\web\\images\\imagenesdc");
                 InputStream inputStream = imagen.getInputStream();
-                if(inputStream!=null)
-                    torta.setImagen(inputStream);
+                String fileName =  Paths.get(imagen.getSubmittedFileName()).getFileName().toString();
+                File file = new File(ruta, fileName);
+                Files.copy(inputStream, file.toPath(),StandardCopyOption.REPLACE_EXISTING);
+                String rutaImg = fileName;
+                
+                if(inputStream!=null){
+                   // torta.setImagen(inputStream);
+                    torta.setRutaImg(rutaImg);
+                }
+                    
             }
         }
         catch (Exception ex)

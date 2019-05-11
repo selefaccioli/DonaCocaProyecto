@@ -7,7 +7,12 @@ package comand;
 
 import entity.Detalle;
 import entity.Torta;
+import entity.Variante;
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import logic.CtrlDetalle;
 import logic.CtrlTorta;
+import logic.CtrlVariante;
 import util.DonaCocaException;
 
 /**
@@ -28,13 +34,13 @@ public class EditarTortaComando extends Comando{
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
 
         CtrlTorta ct = new CtrlTorta();
-        CtrlDetalle cd = new CtrlDetalle();
+        CtrlVariante cv = new CtrlVariante();
         
         Torta tortaEditada = new Torta();
-        ArrayList<Detalle> detalles = new ArrayList<Detalle>();
+        ArrayList<Variante> variantes = new ArrayList<Variante>();
         
         try {
-            detalles = cd.obtenerDetalles();
+            variantes = cv.obtenerVariantes();
         } catch (DonaCocaException ex) {
             request.setAttribute("ex", ex.getMessage());
             return "/ABMTortas.jsp";
@@ -61,10 +67,17 @@ public class EditarTortaComando extends Comando{
         {
             if(request.getPart("imgTor")!=null)
             {
-                
+                File ruta = new File("C:\\Users\\selef\\OneDrive\\Documentos\\NetBeansProjects\\Curso Java\\JavaFinalWebSele\\web\\images\\imagenesdc");
                 InputStream inputStream = imagen.getInputStream();
-                if(inputStream!=null)
-                    tortaEditada.setImagen(inputStream);
+                String fileName =  Paths.get(imagen.getSubmittedFileName()).getFileName().toString();
+                File file = new File(ruta, fileName);
+                Files.copy(inputStream, file.toPath(),StandardCopyOption.REPLACE_EXISTING);
+                String rutaImg = fileName;
+                
+                if(inputStream!=null){
+                   // torta.setImagen(inputStream);
+                    tortaEditada.setRutaImg(rutaImg);
+                }
             }
         }
         catch (Exception ex)
@@ -73,14 +86,14 @@ public class EditarTortaComando extends Comando{
             return ("/ABMTortas.jsp");
         }
         
-        String selecc[] = request.getParameterValues("detalles1");
-        for(Detalle d: detalles)
+        String selecc[] = request.getParameterValues("variantes1");
+        for(Variante v: variantes)
         {
             for(int i=0; i<selecc.length;i++)  
             {
-                if(d.getId()==Integer.parseInt(selecc[i]))
+                if(v.getId()==Integer.parseInt(selecc[i]))
                 {
-                    tortaEditada.agregarDetalle(d);
+                    tortaEditada.agregarVariante(v);
                 }
             }
         }    

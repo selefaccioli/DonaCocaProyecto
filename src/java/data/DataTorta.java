@@ -3,6 +3,7 @@ package data;
 import entity.Detalle;
 import entity.Torta;
 import entity.Usuario;
+import entity.Variante;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import logic.CtrlDetalle;
+import logic.CtrlVariante;
 import util.DonaCocaException;
 
 
@@ -21,14 +23,14 @@ public class DataTorta {
     
     public void agregarTorta(Torta torta) throws DonaCocaException{
         PreparedStatement ps;
-        String transac = "insert into torta(nombre,precio,imagen,activo) values (?,?,?,?);";
+        String transac = "insert into torta(nombre,precio,activo,ruta_img) values (?,?,?,?);";
         try{
            conec= conn.getConn();
            ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
            ps.setString(1, torta.getNombre());
            ps.setDouble(2, torta.getPrecio());
-           ps.setBlob(3, torta.getImagen());
-           ps.setBoolean(4, true);
+           ps.setBoolean(3, true);
+           ps.setString(4, torta.getRutaImg());
            
            ps.executeUpdate();
            ResultSet rs= ps.getGeneratedKeys();
@@ -38,7 +40,8 @@ public class DataTorta {
                 int id = rs.getInt(1);
                 torta.setId(id);
             }
-            new DataTortaDetalle().agregarTortaDetalle(torta);
+            new DataTortaVariante().agregarTortaVariante(torta);
+            new DataTortaImagen().agregarTortaImagen(torta);
             conec.close();
            
         }
@@ -49,20 +52,20 @@ public class DataTorta {
     }
     
      public void actualizarTorta(Torta torta) throws DonaCocaException{      
-        if(torta.getImagen() != null){
-            String sql="update torta set nombre=? , precio=?, imagen=?, activo =? where id_torta=?";  
+        if(torta.getRutaImg() != null){
+            String sql="update torta set nombre=? , precio=?,  ruta_img=?, activo =? where id_torta=?";  
             try
             {
                 conec= conn.getConn();
                 PreparedStatement ps = conec.prepareStatement(sql);
                 ps.setString(1, torta.getNombre());
                 ps.setDouble(2, torta.getPrecio());
-                 ps.setBlob(3, torta.getImagen());
+                 ps.setString(3, torta.getRutaImg());
                  ps.setBoolean(4, torta.isActivo());
                 ps.setInt(5, torta.getId());
                
                 
-                new DataTortaDetalle().actualizarTortaDetalle(torta);
+                new DataTortaVariante().actualizarTortaVariante(torta);
                 ps.executeUpdate();
            
                 conec.close();
@@ -83,7 +86,7 @@ public class DataTorta {
                 ps.setInt(4, torta.getId());
                
                 
-                new DataTortaDetalle().actualizarTortaDetalle(torta);
+                new DataTortaVariante().actualizarTortaVariante(torta);
                 ps.executeUpdate();
            
                 conec.close();
@@ -136,9 +139,10 @@ public class DataTorta {
                 t.setPrecio(rs.getFloat(2));
                 t.setNombre(rs.getString(3));
                 t.setActivo(true);
+                t.setRutaImg(rs.getString(5));
                 
-                ArrayList<Detalle> detalles = new CtrlDetalle().obtenerDetalles(t.getId());
-                t.setDetalles(detalles);
+                ArrayList<Variante> variantes = new CtrlVariante().obtenerVariantes(t.getId());
+                t.setVariantes(variantes);
                 
                 
                 
@@ -172,9 +176,10 @@ public class DataTorta {
                 t.setId(rs.getInt(1));
                 t.setPrecio(rs.getFloat(2));
                 t.setNombre(rs.getString(3));
+                t.setRutaImg(rs.getString(5));
                 
-                ArrayList<Detalle> detalles= new DataTortaDetalle().obtenerDetallesTorta(t);
-                t.setDetalles(detalles);
+                ArrayList<Variante> variantes= new DataTortaVariante().obtenerVariantesTorta(t);
+                t.setVariantes(variantes);
                 
                 listaTortas.add(t);
 
@@ -207,9 +212,10 @@ public class DataTorta {
                 t.setId(rs.getInt(1));
                 t.setPrecio(rs.getFloat(2));
                 t.setNombre(rs.getString(3));
+                t.setRutaImg(rs.getString(5));
                
-                ArrayList<Detalle> detalles= new DataTortaDetalle().obtenerDetallesTorta(t);
-                t.setDetalles(detalles);
+                 ArrayList<Variante> variantes= new DataTortaVariante().obtenerVariantesTorta(t);
+                t.setVariantes(variantes);
                 
                 listaTortas.add(t);
 
@@ -240,8 +246,9 @@ public class DataTorta {
                 t.setId(rs.getInt(1));
                 t.setNombre(rs.getString(3));
                 t.setPrecio(rs.getFloat(2));
-                ArrayList<Detalle> detalles= new DataTortaDetalle().obtenerDetallesTorta(t);
-                t.setDetalles(detalles);
+                 ArrayList<Variante> variantes= new DataTortaVariante().obtenerVariantesTorta(t);
+                t.setVariantes(variantes);
+                t.setRutaImg(rs.getString(5));
             }
             conec.close();
         }
@@ -280,15 +287,15 @@ public class DataTorta {
         }
     }
     
-     public ArrayList<Torta> obtenerDetalle(int idDetalle) throws DonaCocaException{
+     public ArrayList<Torta> obtenerVariante(int idVariante) throws DonaCocaException{
         ArrayList<Torta> listaTortas = new ArrayList<>();
-        String sql = "select td.id_torta from torta_detalle td inner join torta t on td.id_torta= t.id_torta where td.id_detalle=? ";
+        String sql = "select tv.id_torta from torta_variante tv inner join torta t on tv.id_torta= t.id_torta where tv.id_variante=? ";
         
         try
         {
             conec = conn.getConn();
             PreparedStatement ps = conec.prepareStatement(sql);
-            ps.setInt(1, idDetalle);
+            ps.setInt(1, idVariante);
             ResultSet rs = ps.executeQuery();
                    
             while(rs.next())
@@ -302,7 +309,7 @@ public class DataTorta {
             conec.close();
         }
         catch(SQLException e){
-            throw new DonaCocaException("Error al obtener lista de torta segun detalle",e);
+            throw new DonaCocaException("Error al obtener lista de torta segun variante",e);
         }        
         return listaTortas;
     }

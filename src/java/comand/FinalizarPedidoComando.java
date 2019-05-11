@@ -12,6 +12,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlPedido;
@@ -69,10 +79,11 @@ public class FinalizarPedidoComando extends Comando{
                 p.setUsuario(u);
                 p.setEstado("Pendiente");
                 p.setTotal(total);
+               
+                
                 
                 try{
                     ctrlP.registrarPedido(p);
-                    
                 }
                 catch (DonaCocaException ex){
                     request.setAttribute("ex", ex.getMessage());
@@ -80,6 +91,7 @@ public class FinalizarPedidoComando extends Comando{
                     
                 }
                 request.getSession().setAttribute("exitoPedido", true);
+               
                 Pedido ped = new Pedido();
                 request.getSession().setAttribute("pedido", ped);
             } 

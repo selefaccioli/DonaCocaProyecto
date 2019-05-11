@@ -1,9 +1,8 @@
 
+<%@page import="entity.Detalle"%>
 <%@page import="entity.Variante"%>
 <%@page import="entity.Parametro"%>
-<%@page import="entity.Detalle"%>
 <%@page import="entity.Torta"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,31 +58,31 @@
   <!-- header -->
   <jsp:include page="header.jsp"/>
   
-        <%!ArrayList<Torta> tortas;%>
         <%!ArrayList<Variante> variantes;%>
+        <%!ArrayList<Detalle> detalles;%>
         <%!Parametro param;%>
-        <%!Torta torta;%>
+        <%!Variante variante;%>
         <% if(session.getAttribute("parametros")!=null){ param = (Parametro) session.getAttribute("parametros"); }%>
-        <% if(session.getAttribute("listaTortas")!=null) { tortas = (ArrayList)session.getAttribute("listaTortas");}%>
         <% if(session.getAttribute("variantes")!=null) { variantes = (ArrayList)session.getAttribute("variantes");}%>
-        <% torta = (Torta)session.getAttribute("TortaEdit"); 
-          //ArrayList<Detalle> detallesTor = torta.getDetalles();
-            if(request.getAttribute("tortaPorAgregar")!=null)        
-                torta = (Torta)request.getAttribute("tortaPorAgregar");  
+        <% if(session.getAttribute("detalles")!=null) { detalles = (ArrayList)session.getAttribute("detalles");}%>
+        <% variante = (Variante)session.getAttribute("VarianteEdit"); 
+          //ArrayList<Variante> variantesTor = variante.getVariantes();
+            if(request.getAttribute("variantePorAgregar")!=null)        
+                variante = (Variante)request.getAttribute("variantePorAgregar");  
                 
         %>
         <div class="cuenta">
             <div class="container"> 
-                <%if(request.getAttribute("ex")!=null && torta ==null ){ %>
+                <%if(request.getAttribute("ex")!=null && variante ==null ){ %>
                 <div class="row">
                     <div class="alert alert-success fade in">
                         <%= request.getAttribute("ex")%>
                     </div>
                 </div>
                 <%}%>
-                <% if(tortas!=null) { %>
+                <% if(variantes!=null) { %>
                 <div class="row">
-                    <h2 class="title text-center">Lista de Tortas</h2> 
+                    <h2 class="title text-center">Lista de variantes</h2> 
                     <div class="col-sm-12">
                         <div class="table-responsive" style="height:400px; overflow:auto">
                             <div class="table-striped">
@@ -91,7 +90,8 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Nombre</th>
+                                            <th>Descripcion</th>
+                                            <th>Detalle asociado</th>
                                             <th>Precio</th>
                                             <th>Agregar / Editar</th>
                                            
@@ -104,25 +104,30 @@
                                             <td> - </td>
                                             <td> - </td>
                                             <td> - </td>
+                                            <td> - </td>
                                             
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
-                                                    <input type="hidden"  name="form" value="SeleccionarTortaComando"/>
-                                                    <input type="hidden" name="idTortaEdit" value="0">
+                                                    <input type="hidden"  name="form" value="SeleccionarVarianteComando"/>
+                                                    <input type="hidden" name="idVarianteEdit" value="0">
                                                     <input type="submit" value="+ Nuevo">
                                                 </form>
                                             </td>
                                         </tr>
-                                        <%for(Torta t: tortas){
+                                        <%for(Variante v: variantes){
                                         %>
+                                       
                                         <tr>
-                                            <td><%= t.getId()%></td>
-                                            <td><%= t.getNombre()%></td>
-                                            <td><%= t.getPrecio()%></td>
+                                            <td><%= v.getId() %></td>
+                                            <td><%= v.getDescripcion() %></td>
+                                            <td><%= v.getDetalle().getNombre() %></td>
+                                            <td><%= v.getPrecio() %></td>
+                                            
+                                            
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
-                                                    <input type="hidden"  name="form" value="SeleccionarTortaComando"/>
-                                                    <input type="hidden" name="idTortaEdit" value="<%= t.getId() %>">
+                                                    <input type="hidden"  name="form" value="SeleccionarVarianteComando"/>
+                                                    <input type="hidden" name="idVarianteEdit" value="<%= v.getId() %>">
                                                     <input type="submit" value="Editar">
                                                 </form>
                                             </td>
@@ -136,77 +141,65 @@
                 </div>
                 <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); }%> class="row">
                     <br/>         
-                    <h2 class="title text-center"><%if(torta!=null && request.getAttribute("tortaPorAgregar")==null){%>EDITAR<%} else{%>AGREGAR<%}%> TORTA</h2>
+                    <h2 class="title text-center"><%if(variante!=null && request.getAttribute("variantePorAgregar")==null){%>EDITAR<%} else{%>AGREGAR<%}%> variante</h2>
                     <br/>
                     <form action="CtrlMaestro" method="post" enctype="multipart/form-data">  
                         <div class="col-sm-6 ">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h4 class="text-left">ID</h4>
+                                    <h6 class="text-left">ID</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input class="control form-control"  type="text" placeholder="ID (Automático)" maxlength="15" name="ID" readonly="" value="<%if(torta!=null && request.getAttribute("tortaPorAgregar")==null )%><%=torta.getId()%>">
+                                    <input class="control form-control"  type="text" placeholder="ID (Automático)" maxlength="15" name="ID" readonly="" value="<%if(variante!=null && request.getAttribute("variantePorAgregar")==null )%><%=variante.getId()%>">
                                 </div>
                             </div>
-                           
+                                <br>
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <h4 class="text-left">Nombre</h4>
+                                <div class="col-sm-6">
+                                    <h6 class="text-left">Descripción</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="nomTor" placeholder="*"  required value="<%if(torta!=null || request.getAttribute("tortaPorAgregar")!=null)%><%=torta.getNombre()%>">
+                                    <input type="text" class="control form-control" name="descVar" placeholder="*"  required value="<%if(variante!=null || request.getAttribute("variantePorAgregar")!=null)%><%= variante.getDescripcion() %>">
                                 </div>
                             </div>
-                           
-                            
+                               <br>
+                           <div class="row">
+                                <div class="col-sm-6">
+                                    <h6 class="text-left">Precio</h6>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="control form-control" name="precVar" placeholder="*"  required value="<%if(variante!=null || request.getAttribute("variantePorAgregar")!=null)%><%= variante.getPrecio() %>">
+                                </div>
+                            </div>      
+                        <br>
+                        <div class="row">
+                                <div class="col-sm-6">
+                                    <h6 class="text-left">Detalle asociado</h6>
+                                </div>
+                            <select class="form-control" name="detVar">
+                                <%if(variante!=null || request.getAttribute("variantePorAgregar")!=null){%>
+                                <option value="<%= variante.getDetalle().getId() %>"><%= variante.getDetalle().getNombre() %></option><%  
+                                for(Detalle d: detalles){  
+                                if(d.getId() != variante.getDetalle().getId())%><option  value="<%= d.getId() %>"><%= d.getNombre()  %> </option>
+                                 <% }%>
+                                
+                                
+                              <% } else{ %>
+                                
+                                    <% for(Detalle d: detalles){   %>
+                                <option  value="<%= d.getId() %>"><%= d.getNombre()  %> </option>    
+                                    
+                                     
+                                    <% } }%>
+                                </select>
+                            </div>  
+                           <br><br><br><br>  
                            
                         </div>
+                       <div class="row">      
                         <div class="col-sm-6 ">
                             
-
-                            <div class="row">
-                                
-                                <div class="col-sm-6">
-                                    <h4 class="text-left">Precio</h4>
-                                    <input type="text" class="control form-control" name="pvtaTor" placeholder="* (En $)" pattern="^[0-9]+(\.[0-9]+)?$" title="Numero" required value="<%if(torta!=null || request.getAttribute("tortaPorAgregar")!=null)%><%= torta.getPrecio() %>">
-                                </div>
-                            </div>                        
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h4 class="text-left">Foto</h4>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input type="file" class="control form-control" name="imgTor">
-                                </div>
-                            </div>
-                            
-                           <div class="row">
-                                <div class="col-sm-12">                                                           
-                                    <label class="puntero"><input class="enLinea" type="checkbox" name="activo" value="true" <% if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.isActivo()== true)%>checked<%;%>><h6 class="enLinea">Activo</h6></label>
-                                </div>
-                            </div>  
-                            
-                            <div class="row">
-                                <div class="col-sm-6">
-                                <h4 class="text-left">Variantes</h4>
-
-                                  <div class="table-responsive" style="height:120px; overflow:auto;">
-                                        <table class="table-striped col-lg-12">
-                                            <tbody>
-                                            <% for(int i=0;i<variantes.size();i++){%>
-                                                <tr>
-                                                    <td>
-                                                        
-                                                        <label class="puntero"><input class="check" type="checkbox" name="variantes1" value="<%=variantes.get(i).getId()%>" <%if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.contieneVariante(variantes.get(i)))%>checked<%;%>><%= variantes.get(i).getDetalle().getNombre()  %>: &nbsp; <%= variantes.get(i).getDescripcion()  %></label>
-
-                                                    </td>
-                                                </tr>
-                                                <%}%>
-                                           </tbody>
-                                        </table>
-                                    </div> 
-                                </div>
-                            </div>
+                         
                             <br/>
                            
                             
@@ -217,24 +210,24 @@
                                             <p class="text-center"><%= request.getAttribute("ex")%></p>
                                         </div>
                                     <%}%>
-                                    <%if(request.getAttribute("ExitoTorta")!=null){
-                                        if((Boolean)request.getAttribute("ExitoTorta")){%>
+                                    <%if(request.getAttribute("ExitoVariante")!=null){
+                                        if((Boolean)request.getAttribute("ExitoVariante")){%>
                                        <div class="alert alert-success">
-                                           <p class="text-center">Torta <%if(torta==null && request.getAttribute("tortaPorAgregar")==null){ %>agregada<% }else{%>editada<%}%> con éxito.</p>        
+                                           <p class="text-center">variante <%if(variante==null && request.getAttribute("variantePorAgregar")==null){ %>agregada<% }else{%>editada<%}%> con éxito.</p>        
                                         </div>
-                                    <% }else if(!(Boolean)request.getAttribute("ExitoTorta")){ %>
+                                    <% }else if(!(Boolean)request.getAttribute("ExitoVariante")){ %>
                                         <div class="alert alert-danger ">
-                                            <p class="text-center">Ya existe una torta con el mismo nombre</p>        
+                                            <p class="text-center">Ya existe una variante con el mismo nombre</p>        
                                         </div>           
                                     <% }}%>
                                 </div>
                             </div>
-                          <input type="hidden" name="form" value="<%if(torta!=null && request.getAttribute("tortaPorAgregar")==null) {%>EditarTortaComando<%}else{%>AgregarTortaComando<%}%>">
-                            <button type="submit" class="btn btn-default"><%if(torta!=null && request.getAttribute("tortaPorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar Torta<%}%></button>
+                          <input type="hidden" name="form" value="<%if(variante!=null && request.getAttribute("variantePorAgregar")==null) {%>EditarVarianteComando<%}else{%>AgregarVarianteComando<%}%>">
+                            <button type="submit" class="btn btn-default"><%if(variante!=null && request.getAttribute("variantePorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar variante<%}%></button>
                             
                             
                             
-                                
+                         </div>        
                         </div>
                                 
                                 
