@@ -78,12 +78,17 @@ public class CalcularPrecioComprarComando extends Comando{
            
        }
         tortaVarActivas.setVariantes(variantesActivas);
+        tortaVarActivas.setId(t.getId());
+        tortaVarActivas.setActivo(t.isActivo());
+        tortaVarActivas.setRutaImg(t.getRutaImg());
+        tortaVarActivas.setNombre(t.getNombre());
+        tortaVarActivas.setPrecio(total);
         request.getSession().setAttribute("tortaVarActivas", tortaVarActivas);
         request.getSession().setAttribute("totalTor", total);
         return "/producto.jsp";
       } else{
-          
-        int idTorta = t.getId();
+        Torta tortaAgregar = (Torta)request.getSession().getAttribute("tortaVarActivas");  
+        int idTorta = tortaAgregar.getId();
         Pedido pedido = (Pedido)request.getSession().getAttribute("pedido");
         int lineaExiste = 0;
    
@@ -108,7 +113,7 @@ public class CalcularPrecioComprarComando extends Comando{
         try {
             Torta tnueva = dt.obtenerTorta(idTorta);
             lp.setCantidad(1); //porque no estaba antes en el carro va a ser 1
-            lp.setTorta(t);
+            lp.setTorta(tortaAgregar);
             pedido.setLinea(lp);
             request.getSession().setAttribute("exitoTortaAgregada", true);
             

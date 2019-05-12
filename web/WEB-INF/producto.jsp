@@ -120,7 +120,7 @@
               <h4><%= t.getNombre()  %></h4>
               <% if(session.getAttribute("totalTor") != null){ %>
               <span class="price"><small>$</small><%= session.getAttribute("totalTor") %></span> 
-              <% session.setAttribute("totalTor", null);  %> 
+             
               <%} 
               if(detallesTorta.size() > 0){ %>
                
@@ -167,7 +167,13 @@
                   <input type="hidden" name="form" value="CalcularPrecioComprarComando">
                   <input type="hidden" name="idTorta" value="<%= t.getId() %>">
                   <input class="btn btn-default add-to-cart linea" type="submit" name="calcPrecio"  value="Calcular Precio"><br><br>
+                  <% if(session.getAttribute("totalTor") != null){   %>
                   <input class="btn btn-default add-to-cart linea" type="submit" name="comprar"  value="Comprar">
+                  <% } else{ %>
+                  <input class="btn btn-default add-to-cart linea" type="submit" name="comprar" disabled value="Comprar">
+                  <% } %>
+                  
+                   <% session.setAttribute("totalTor", null);  %> 
              </div>
             </div>
              
