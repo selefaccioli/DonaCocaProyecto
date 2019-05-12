@@ -21,8 +21,7 @@
 <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
 <link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
 
-<!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
+
 
 <!-- Custom CSS -->
 <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,6 +29,9 @@
 <link href="css/main.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 <link href="css/responsive.css" rel="stylesheet">
+
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
 <!-- JavaScripts -->
 <script src="js/modernizr.js"></script>
@@ -92,7 +94,7 @@
                 <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); };%> class="row">
                     <div class="col-lg-12">
                         <% if(pendientes!=null){%>
-                        <h2 class="title text-center">Pedidos pendientes de envío</h2>
+                        <h2 class="title text-center">Pedidos</h2>
                         <%if(pendientes.isEmpty()){%>
                         <div class="alert alert-success fade<%if(pendientes.isEmpty()){ %> in <%session.setAttribute("pendientes", null);} %>">
                             No existen pedidos pendientes de envío.       
@@ -103,10 +105,12 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                        <th>ID Pedido</th>
+                                       
                                         <th>F Pedido</th>
+                                        <th>F Entrega</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
                                         <th>Socio</th>
-                                        <th>Tortas</th>
                                         <th>Destino</th>
                                         <th></th>
                                     </tr>
@@ -114,20 +118,27 @@
                                     <tbody>
                                         <%for(Pedido p:pendientes){%>
                                         <tr>
-                                            <td><%= p.getId()%></td>
+                                          
                                             <td><%= p.getFechaPedido() %></td>
+                                            <td><%= p.getFechaEntrega() %></td>
+                                            <td><%= p.getTotal() %></td>
+                                            <% if(p.getEstado().equals("Pendiente")){   %>
+                                            <td><button type="button" class="btn btn-primary btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } else if(p.getEstado().equals("Seña pagada")){   %>
+                                            <td><button type="button" class="btn btn-success btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } else if(p.getEstado().equals("Cancelado")){  %>
+                                            <td><button type="button" class="btn btn-danger btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } else{  %>
+                                            <td><button type="button" class="btn btn-info btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } %>
                                             <td><%= p.getUsuario().getApellido()%>, <%= p.getUsuario().getNombre()%></td>
-                                            <td>
-                                            <% for(LineaPedido lp: p.getLineasPedido() ){%>                                           
-                                            <%= lp.getTorta().getNombre() %><br>
-                                            <%}%> 
-                                            </td>
+                                          
                                             <td><%= p.getUsuario().getDireccion()%></td>
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="RegistrarEnvioComando"/>
                                                     <input type="hidden" name="idPedido" value="<%= p.getId()%>">
-                                                    <input type="submit" value="Registrar Envío">
+                                                    <input type="submit" class="btn btn-default" value="Ver pedido">
                                                 </form>
                                             </td>
                                         </tr>

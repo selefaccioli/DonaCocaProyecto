@@ -162,7 +162,7 @@ public class DataPedido {
         ArrayList<Pedido> pedidosEncontrados = new ArrayList<>();
         CtrlUsuario ctrlU = new CtrlUsuario();
         Usuario usu = new Usuario();
-        String sql = "SELECT * FROM pedido where estado like 'Pendiente';";   
+        String sql = "select * from pedido order by pedido.`fecha_entrega` asc, pedido.`estado`= \"Seña pagada\";";   
         
         try
         {
