@@ -5,7 +5,10 @@
  */
 package comand;
 
+import data.DataTorta;
 import entity.Detalle;
+import entity.LineaPedido;
+import entity.Pedido;
 import entity.Torta;
 import entity.Variante;
 import java.util.ArrayList;
@@ -31,8 +34,8 @@ public class CalcularPrecioComprarComando extends Comando{
         ArrayList<Variante> varianteDetalle = new ArrayList<Variante>();
         ArrayList<Variante> variantesActivas = new ArrayList<Variante>();
         Torta tortaVarActivas = new Torta();
-        
-        float total =0;
+      if(request.getParameter("calcPrecio") != null){
+           float total =0;
         
         if(detallesTorta.size() > 0){
              for(Detalle d: detallesTorta){
@@ -44,7 +47,7 @@ public class CalcularPrecioComprarComando extends Comando{
                  }
                  if(d.getMultiple()){
                        String selecc[] = request.getParameterValues("variantesD");
-                       if(selecc.length > 0){
+                       if(selecc !=  null){
                           for(Variante vd: varianteDetalle){
                                             
                             for(int i=0; i<selecc.length;i++){  
@@ -56,7 +59,8 @@ public class CalcularPrecioComprarComando extends Comando{
                             }        
                             }
                             }  
-                       } 
+                       }
+                       
                } else{
                      try {
                          Variante selecVar = ctrlV.obtenerVariante(Integer.parseInt(request.getParameter(d.getNombre())));
@@ -77,7 +81,50 @@ public class CalcularPrecioComprarComando extends Comando{
         request.getSession().setAttribute("tortaVarActivas", tortaVarActivas);
         request.getSession().setAttribute("totalTor", total);
         return "/producto.jsp";
-              
+      } else{
+          
+        int idTorta = t.getId();
+        Pedido pedido = (Pedido)request.getSession().getAttribute("pedido");
+        int lineaExiste = 0;
+   
+        for(LineaPedido lp : pedido.getLineasPedido()){
+        
+        if(lp.getTorta().getId() == idTorta){  //ya estaba en el carro 
+            lp.setCantidad(lp.getCantidad() + 1);
+            request.getSession().setAttribute("exitoTortaAgregada", true);
+            
+            lineaExiste = 1;
+        }
+        
+        
+    }
+    
+    
+    
+    if(lineaExiste == 0){
+        DataTorta dt = new DataTorta();
+        LineaPedido lp = new LineaPedido();
+        
+        try {
+            Torta tnueva = dt.obtenerTorta(idTorta);
+            lp.setCantidad(1); //porque no estaba antes en el carro va a ser 1
+            lp.setTorta(t);
+            pedido.setLinea(lp);
+            request.getSession().setAttribute("exitoTortaAgregada", true);
+            
+        } catch (DonaCocaException ex) {
+           request.getSession().setAttribute("exitoTortaAgregada", false);
+        }
+    }
+    
+    request.getSession().setAttribute("pedido", pedido);
+    
+   
+
+    return "/producto.jsp";
+      }
+       
+           
 
 
     }

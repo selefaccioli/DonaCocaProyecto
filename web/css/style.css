@@ -3364,10 +3364,10 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
       SUB BANNER
 ========================================================*/
 .sub-bnr {
-	background: url(../images/sub-bnr-bg.jpg) no-repeat;
+	background: url(../images/portada.jpeg) no-repeat;
 	background-size: cover !important;
 	min-height: 610px;
-	text-align: center;
+	text-align: left;
 	position: relative;
 }
 .sub-bnr h4 {

@@ -15,6 +15,8 @@ function calcHash()
         
     }
 }
+
+
 /*Validación para el cambio de contraseña*/
 function validarCambioPass()
 {
@@ -45,6 +47,28 @@ function validarChecks()
     else
     {
         alert("Seleccione alg\u00fan detalle para la torta");
+        return false;
+    }
+}
+
+function validarChecks2()
+{
+    cant = 0;
+    for(i=0; i<document.datosVariantes.variantesD.length; i++)
+    {
+        if(document.datosVariantes.variantesD[i].checked)
+        {
+            cant++;
+        }
+    }
+    
+    if(cant!==0)
+    {
+        return true;
+    }
+    else
+    {
+        alert("Seleccione alg\u00fan checkbox");
         return false;
     }
 }

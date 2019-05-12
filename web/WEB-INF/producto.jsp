@@ -57,6 +57,13 @@
   
   <!-- header -->
  <jsp:include page="header.jsp"/>
+  <div class="logo">
+               <% if(session.getAttribute("exitoTortaAgregada") != null){ %>
+        <div class="alert alert-success ">
+        <p class="text-center">Torta agregada al carro</p>        
+         </div>
+               <% session.setAttribute("exitoTortaAgregada", null); } %>
+        </div>
   
   <% if(session.getAttribute("tortaAmpliada") != null) {
       
@@ -98,13 +105,24 @@
             </div>
             
             <!-- COntent -->
-             <form action="CtrlMaestro" method="post"> 
+             <form action="CtrlMaestro" name="datosVariantes" method="post" enctype="multipart/form-data" onsubmit="return validarChecks2()"> 
             <div class="col-md-5">
+                <% if(session.getAttribute("ex")!= null){   %>
+                <div class="container">
+            <div class="row">
+                <div class="col-sm-4">            
+                    <div class="alert alert-danger fade in"> -->
+                        <%= session.getAttribute("ex")%>
+                    </div>                    
+                </div>
+            </div>
+        </div> <%} %>
               <h4><%= t.getNombre()  %></h4>
               <% if(session.getAttribute("totalTor") != null){ %>
               <span class="price"><small>$</small><%= session.getAttribute("totalTor") %></span> 
               <% session.setAttribute("totalTor", null);  %> 
-              <%} if(detallesTorta.size() > 0){ %>
+              <%} 
+              if(detallesTorta.size() > 0){ %>
                
                <%  for(Detalle d: detallesTorta){%>
                 <h6><%= d.getNombre() %></h6> 
@@ -117,7 +135,7 @@
                                                 <tr>
                                                     <td>
                                                         
-                                                        <label class="puntero"><input class="check" type="checkbox" name="variantesD" value="<%= vd.getId() %>" <% if(tortaVarActivas != null && tortaVarActivas.contieneVariante(vd)){%> checked <% }; %> required ><%= vd.getDescripcion()  %></label>
+                                                        <label class="puntero"><input class="check" type="checkbox" name="variantesD" value="<%= vd.getId() %>" <% if(tortaVarActivas != null && tortaVarActivas.contieneVariante(vd)){%> checked <% }; %>><%= vd.getDescripcion()  %></label>
 
                                                     </td>
                                                 </tr>
@@ -147,6 +165,7 @@
               <!-- Short By -->
               <div class="some-info">
                   <input type="hidden" name="form" value="CalcularPrecioComprarComando">
+                  <input type="hidden" name="idTorta" value="<%= t.getId() %>">
                   <input class="btn btn-default add-to-cart linea" type="submit" name="calcPrecio"  value="Calcular Precio"><br><br>
                   <input class="btn btn-default add-to-cart linea" type="submit" name="comprar"  value="Comprar">
              </div>
@@ -179,6 +198,10 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="js/main.js"></script>
+<script src="../js/mainSele.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
+</script>
 </body>
 </html>
