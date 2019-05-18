@@ -17,6 +17,7 @@ public class Pedido {
 	private Usuario usuario;
         private boolean cerrado;
         private ArrayList<LineaPedido> lineasPedido;
+        private float sena;
         
      
         public Pedido(){
@@ -105,6 +106,14 @@ public class Pedido {
      public void setLinea(LineaPedido lp)
     {
         getLineasPedido().add(lp);
+    }
+
+    public float getSena() {
+        return sena;
+    }
+
+    public void setSena(float sena) {
+        this.sena = sena;
     }
     
    

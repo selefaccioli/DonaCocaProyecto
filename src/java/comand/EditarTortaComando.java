@@ -65,7 +65,7 @@ public class EditarTortaComando extends Comando{
        
         try
         {
-            if(request.getPart("imgTor")!=null)
+            if(imagen.getSize() > 0 )
             {
                 File ruta = new File("C:\\Users\\selef\\OneDrive\\Documentos\\NetBeansProjects\\Curso Java\\JavaFinalWebSele\\web\\images\\imagenesdc");
                 InputStream inputStream = imagen.getInputStream();

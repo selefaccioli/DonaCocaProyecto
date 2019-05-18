@@ -56,7 +56,6 @@ public class AgregarTortaComando extends Comando{
         
         torta = new Torta();
         torta.setNombre(request.getParameter("nomTor"));
-        torta.setPrecio(Float.parseFloat(request.getParameter("pvtaTor")));
         Boolean esActivo = (request.getParameter("activo")!=null);
         torta.setActivo(esActivo);
         
@@ -87,7 +86,7 @@ public class AgregarTortaComando extends Comando{
        
         try
         {
-            if(request.getPart("imgTor")!=null)
+            if(imagen.getSize() > 0 )
             {
                 File ruta = new File("C:\\Users\\selef\\OneDrive\\Documentos\\NetBeansProjects\\Curso Java\\JavaFinalWebSele\\web\\images\\imagenesdc");
                 InputStream inputStream = imagen.getInputStream();

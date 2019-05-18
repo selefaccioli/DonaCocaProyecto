@@ -125,9 +125,17 @@
         ArrayList<Torta> listaTortas = (ArrayList)session.getAttribute("listaTortas");
         ArrayList<Detalle> detalles = (ArrayList)session.getAttribute("detalles");
         ArrayList<Variante> variantes = (ArrayList)session.getAttribute("variantes");
+
+        if(session.getAttribute("tortaAmpliada") != null || session.getAttribute("detallesTorta") != null ||
+            session.getAttribute("tortaVarActivas")!= null){
+        session.setAttribute("tortaAmpliada", null);
+        session.setAttribute("detallesTorta", null);
+        session.setAttribute("tortaVarActivas", null);
+        }
     
         for(Torta t: listaTortas){ 
-       
+        if(t.isActivo()){
+
        
         %> 
           
@@ -159,7 +167,7 @@
           
 
                </div>
-                  <% }  %>
+                  <% } }  %>
          
         </div>
       </div>
@@ -167,7 +175,7 @@
     
    
   </div>
-<% }%>
+<% } %>
   
   <!--======= RIGHTS =========--> 
   

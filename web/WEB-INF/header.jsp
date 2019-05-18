@@ -1,3 +1,4 @@
+<%@page import="entity.LineaPedido"%>
 <%@page import="entity.Usuario"%>
 <%@page import="entity.Pedido"%>
 <%@page import="java.util.ArrayList"%>
@@ -138,7 +139,7 @@
                 </ul>
               
               </li>
-              
+ <!     
               
                                     
                                    
@@ -150,10 +151,18 @@
              
               <li class="dropdown user-basket"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> </a>
                 <ul class="dropdown-menu">
-                    <div class='cart-items'>
-                       <!-- los productos van aqui -->
+                     <% if(session.getAttribute("exitoTortaAgregada") != null){ 
+                         for(LineaPedido lp : pedido.getLineasPedido()){
+                      %>
+                    <li>
+                    <div class="media-left">
+                      <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="../images/imagenesdc/<%= lp.getTorta().getRutaImg() %>"alt="..."> </a> </div>
                     </div>
-                  
+                    <div class="media-body">
+                      <h6 class="media-heading"><%= lp.getTorta().getNombre() %></h6>
+                      <span class="price">$ <%= lp.getTorta().getPrecio()  %></span> <span class="qty">QTY: <%= lp.getCantidad()  %></span> </div>
+                  </li>
+                  <% }} %>
                   <li class="margin-0">
                     <div class="row">
                         <form action="CtrlMaestro" method="post" class="formNav">

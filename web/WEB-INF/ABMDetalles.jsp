@@ -7,44 +7,7 @@
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="M_Adnan">
-<title>PAVSHOP - Multipurpose eCommerce HTML5 Template</title>
-
-<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-<link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
-
-<!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom CSS -->
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="css/ionicons.min.css" rel="stylesheet">
-<link href="css/main.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/responsive.css" rel="stylesheet">
-
-<!-- JavaScripts -->
-<script src="js/modernizr.js"></script>
-<script
-  src="https://code.jquery.com/jquery-3.4.0.min.js"
-  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-  crossorigin="anonymous"></script>
-
-<!-- Online Fonts -->
-<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
-
-
-
-
-
-
-</head>
+<jsp:include page="head.jsp"/>
  <body onload="scrollDiv()">
      <!-- LOADER -->
 <div id="loader">
@@ -109,7 +72,7 @@
                                                 <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="SeleccionarDetalleComando"/>
                                                     <input type="hidden" name="idDetalleEdit" value="0">
-                                                    <input type="submit" value="+ Nuevo">
+                                                    <input type="submit" value="+ Nuevo" class="btn btn-info btn-sm">
                                                 </form>
                                             </td>
                                         </tr>
@@ -124,7 +87,7 @@
                                                 <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="SeleccionarDetalleComando"/>
                                                     <input type="hidden" name="idDetalleEdit" value="<%= d.getId() %>">
-                                                    <input type="submit" value="Editar">
+                                                    <input type="submit" value="Editar" class="btn btn-default btn-sm">
                                                 </form>
                                             </td>
                                         </tr>
@@ -193,7 +156,7 @@
                                 </div>
                             </div>
                           <input type="hidden" name="form" value="<%if(detalle!=null && request.getAttribute("detallePorAgregar")==null) {%>EditarDetalleComando<%}else{%>AgregarDetalleComando<%}%>">
-                            <button type="submit" class="btn btn-default"><%if(detalle!=null && request.getAttribute("detallePorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar detalle<%}%></button>
+                            <button type="submit" class="btn btn-info"><%if(detalle!=null && request.getAttribute("detallePorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar detalle<%}%></button>
                             
                             
                             

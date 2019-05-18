@@ -23,7 +23,7 @@ public class DataTorta {
     
     public void agregarTorta(Torta torta) throws DonaCocaException{
         PreparedStatement ps;
-        String transac = "insert into torta(nombre,precio,activo,ruta_img) values (?,?,?,?);";
+        String transac = "insert into torta(nombre,precio,activo,ruta_img,eliminado) values (?,?,?,?,?);";
         try{
            conec= conn.getConn();
            ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
@@ -31,6 +31,7 @@ public class DataTorta {
            ps.setDouble(2, torta.getPrecio());
            ps.setBoolean(3, true);
            ps.setString(4, torta.getRutaImg());
+           ps.setBoolean(5, false);
            
            ps.executeUpdate();
            ResultSet rs= ps.getGeneratedKeys();
@@ -41,7 +42,10 @@ public class DataTorta {
                 torta.setId(id);
             }
             new DataTortaVariante().agregarTortaVariante(torta);
-            new DataTortaImagen().agregarTortaImagen(torta);
+            if(torta.getRutasImg() != null){
+              new DataTortaImagen().agregarTortaImagen(torta);  
+            }
+            
             conec.close();
            
         }
@@ -124,7 +128,7 @@ public class DataTorta {
      
      public ArrayList<Torta> obtenerTortas() throws DonaCocaException{
         ArrayList<Torta> listaTortas = new ArrayList<>();
-        String sql = "select * from torta where activo =1;";
+        String sql = "select * from torta where eliminado =0;";
         try
         {
             conec = conn.getConn();
@@ -138,7 +142,7 @@ public class DataTorta {
                 t.setId(rs.getInt(1));
                 t.setPrecio(rs.getFloat(2));
                 t.setNombre(rs.getString(3));
-                t.setActivo(true);
+                t.setActivo(rs.getBoolean(4));
                 t.setRutaImg(rs.getString(5));
                 
                 ArrayList<Variante> variantes = new CtrlVariante().obtenerVariantes(t.getId());
@@ -260,7 +264,7 @@ public class DataTorta {
     }   
    
     public boolean existeTorta(String nombreTorta) throws DonaCocaException{      
-        String sql = "select count(*) from torta where nombre=?";        
+        String sql = "select count(*) from torta where nombre=? and eliminado = 0;";        
         
         int cantidad=0;
         
@@ -316,11 +320,12 @@ public class DataTorta {
    
        public void eliminarTorta(Torta t) throws DonaCocaException{
          
-         String sql="delete from torta where id_torta=?;";
+         String sql="update torta set eliminado=? where id_torta=?;";
          try{
             Connection conec= conn.getConn();
             PreparedStatement ps = conec.prepareStatement(sql);
-            ps.setInt(1, t.getId());
+            ps.setBoolean(1, true);
+            ps.setInt(2, t.getId());
             ps.executeUpdate();
          }
          catch(SQLException e){

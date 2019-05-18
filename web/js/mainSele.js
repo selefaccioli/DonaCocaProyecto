@@ -26,15 +26,27 @@ function validarCambioPass()
     document.getElementById("passAnt").value = hashObj.getHash("HEX");
     return validarPass();
 }
+/*Valida que el usuario quiera eliminar la torta */
+function validarEliminacion(){
+    var nombre = document.getElementById('nomTorta');
+    var id = document.getElementById('idTortaElim');
 
+    if (confirm("Est\u00e1  seguro que desea eliminar la torta " + id.value + ": "+ nombre.value + "?")){ 
+       document.eliminarTorta.submit(); 
+    }
+    else{
+        return false;
+    }
+   
+}
 
 /*Validacion checkBoxs*/
 function validarChecks()
 {
     cant = 0;
-    for(i=0; i<document.DatosTorta.detalles.length; i++)
+    for(i=0; i<document.datosTorta.variantes1.length; i++)
     {
-        if(document.DatosTorta.detalles[i].checked)
+        if(document.datosTorta.variantes1[i].checked)
         {
             cant++;
         }
@@ -142,3 +154,15 @@ $(document).ready(function(){
                                             });
         });
 });
+
+
+$("#btnAbmTorta").on("click", function () {
+
+   if ($('#imgTor').get(0).files.length === 0) {
+      
+         
+         document.getElementById("imgf").value = "vacio";
+
+    }
+    
+} ) ;

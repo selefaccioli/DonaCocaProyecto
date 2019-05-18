@@ -30,7 +30,7 @@ public class DataVariante {
         try
         {
             conec= conn.getConn();
-            String sql = "select * from variante;";
+            String sql = "select v.`id_variante`,v.`descripcion`, v.`id_detalle`,v.`precio` from variante v inner join detalle d on v.id_detalle = d.id_detalle order by d.`nombre` asc;";
             PreparedStatement ps= conec.prepareStatement(sql);
             ResultSet rs= ps.executeQuery();
                 

@@ -15,6 +15,7 @@ public class Torta {
     private boolean activo;
     private String rutaImg;
     private ArrayList<Imagen> rutasImg;
+    private Boolean eliminado;
     
     public Torta(){
     this.variantes = new ArrayList<Variante>();
@@ -105,6 +106,14 @@ public class Torta {
 
     public void setRutasImg(ArrayList<Imagen> rutasImg) {
         this.rutasImg = rutasImg;
+    }
+
+    public Boolean getEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(Boolean eliminado) {
+        this.eliminado = eliminado;
     }
        
     

@@ -7,44 +7,7 @@
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="M_Adnan">
-<title>PAVSHOP - Multipurpose eCommerce HTML5 Template</title>
-
-<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-<link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
-
-<!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom CSS -->
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="css/ionicons.min.css" rel="stylesheet">
-<link href="css/main.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/responsive.css" rel="stylesheet">
-
-<!-- JavaScripts -->
-<script src="js/modernizr.js"></script>
-<script
-  src="https://code.jquery.com/jquery-3.4.0.min.js"
-  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-  crossorigin="anonymous"></script>
-
-<!-- Online Fonts -->
-<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
-
-
-
-
-
-
-</head>
+<jsp:include page="head.jsp"/>
  <body onload="scrollDiv()">
      <!-- LOADER -->
 <div id="loader">
@@ -93,7 +56,9 @@
                                             <th>ID</th>
                                             <th>Nombre</th>
                                             <th>Precio</th>
+                                            <th>Activo</th>
                                             <th>Agregar / Editar</th>
+                                            <th>Eliminar</th>
                                            
                                             <th></th>
                                         </tr>
@@ -104,12 +69,13 @@
                                             <td> - </td>
                                             <td> - </td>
                                             <td> - </td>
+                                            <td> - </td>
                                             
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="SeleccionarTortaComando"/>
                                                     <input type="hidden" name="idTortaEdit" value="0">
-                                                    <input type="submit" value="+ Nuevo">
+                                                    <input type="submit" value="+ Nuevo" class="btn btn-info btn-sm">
                                                 </form>
                                             </td>
                                         </tr>
@@ -118,12 +84,20 @@
                                         <tr>
                                             <td><%= t.getId()%></td>
                                             <td><%= t.getNombre()%></td>
-                                            <td><%= t.getPrecio()%></td>
+                                            <td><%if(t.isActivo()){%><img src="./images/check.png"><%}%></td>
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="SeleccionarTortaComando"/>
                                                     <input type="hidden" name="idTortaEdit" value="<%= t.getId() %>">
-                                                    <input type="submit" value="Editar">
+                                                    <input type="submit" value="Editar" class="btn btn-default btn-sm">
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form action="CtrlMaestro" method="post" name="eliminarTorta" onsubmit="return validarEliminacion()">
+                                                    <input type="hidden"  name="form" value="EliminarTortaComando"/>
+                                                    <input type="hidden" name="idTortaElim" id="idTortaElim" value="<%= t.getId() %>">
+                                                    <input type="hidden" name="nomTorta" id="nomTorta" value="<%= t.getNombre() %>">
+                                                    <input type="submit" value="Eliminar" class="btn btn-danger btn-sm">
                                                 </form>
                                             </td>
                                         </tr>
@@ -138,7 +112,7 @@
                     <br/>         
                     <h2 class="title text-center"><%if(torta!=null && request.getAttribute("tortaPorAgregar")==null){%>EDITAR<%} else{%>AGREGAR<%}%> TORTA</h2>
                     <br/>
-                    <form action="CtrlMaestro" method="post" enctype="multipart/form-data">  
+                    <form action="CtrlMaestro" method="post" enctype="multipart/form-data" name="datosTorta"  onsubmit="return validarChecks()">  
                         <div class="col-sm-6 ">
                             <div class="row">
                                 <div class="col-sm-3">
@@ -164,19 +138,13 @@
                         <div class="col-sm-6 ">
                             
 
-                            <div class="row">
-                                
-                                <div class="col-sm-6">
-                                    <h4 class="text-left">Precio</h4>
-                                    <input type="text" class="control form-control" name="pvtaTor" placeholder="* (En $)" pattern="^[0-9]+(\.[0-9]+)?$" title="Numero" required value="<%if(torta!=null || request.getAttribute("tortaPorAgregar")!=null)%><%= torta.getPrecio() %>">
-                                </div>
-                            </div>                        
+                                                
                             <div class="row">
                                 <div class="col-sm-3">
                                     <h4 class="text-left">Foto</h4>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="file" class="control form-control" name="imgTor">
+                                    <input type="file" class="control form-control" name="imgTor" id="imgTor">
                                 </div>
                             </div>
                             
@@ -190,14 +158,14 @@
                                 <div class="col-sm-6">
                                 <h4 class="text-left">Variantes</h4>
 
-                                  <div class="table-responsive" style="height:120px; overflow:auto;">
+                                  <div class="table-responsive" style="height:150px; width: 350px; overflow:auto;">
                                         <table class="table-striped col-lg-12">
                                             <tbody>
                                             <% for(int i=0;i<variantes.size();i++){%>
                                                 <tr>
                                                     <td>
                                                         
-                                                        <label class="puntero"><input class="check" type="checkbox" name="variantes1" value="<%=variantes.get(i).getId()%>" <%if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.contieneVariante(variantes.get(i)))%>checked<%;%>><%= variantes.get(i).getDetalle().getNombre()  %>: &nbsp; <%= variantes.get(i).getDescripcion()  %></label>
+                                                        <label class="puntero"><input class="check" type="checkbox" name="variantes1" value="<%=variantes.get(i).getId()%>" <%if((torta!=null || request.getAttribute("tortaPorAgregar")!=null) && torta.contieneVariante(variantes.get(i)))%>checked<%;%>><%= variantes.get(i).getDetalle().getNombre()  %>: &nbsp; <%= variantes.get(i).getDescripcion()  %> &nbsp; <%= variantes.get(i).getPrecio()  %></label>
 
                                                     </td>
                                                 </tr>
@@ -229,8 +197,9 @@
                                     <% }}%>
                                 </div>
                             </div>
+                                <input type="hidden" name="imgf" id="imgf">
                           <input type="hidden" name="form" value="<%if(torta!=null && request.getAttribute("tortaPorAgregar")==null) {%>EditarTortaComando<%}else{%>AgregarTortaComando<%}%>">
-                            <button type="submit" class="btn btn-default"><%if(torta!=null && request.getAttribute("tortaPorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar Torta<%}%></button>
+                            <button type="submit" id="btnAbmTorta" class="btn btn-info"><%if(torta!=null && request.getAttribute("tortaPorAgregar")==null) {%>Guardar Cambios<%}else{%>Agregar Torta<%}%></button>
                             
                             
                             
@@ -256,11 +225,10 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="js/main.js"></script>
 <script src="../js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
 </script>
-    </body>
+</body>
 </html>

@@ -49,7 +49,7 @@ public class FactoriaDeComandos {
         mapa.put("AgregarVarianteComando", AgregarVarianteComando.class);
         mapa.put("RedireccionarTortaComando", RedireccionarTortaComando.class);
         mapa.put("CalcularPrecioComprarComando", CalcularPrecioComprarComando.class);
-        
+        mapa.put("EliminarTortaComando", EliminarTortaComando.class);
        
     
     }
