@@ -25,6 +25,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlPedido;
+import logic.CtrlUsuario;
 import util.DonaCocaException;
 
 /**
@@ -35,9 +36,14 @@ public class FinalizarPedidoComando extends Comando{
 
     @Override
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-        
+        CtrlUsuario ctrlU = new CtrlUsuario();
         Pedido p = (Pedido)request.getSession().getAttribute("pedido");
+        String aclaraciones = request.getParameter("aclaraciones");
+        String envio = request.getParameter("radio1");
+        float total = (float) request.getSession().getAttribute("total");
+        String mailUsu;
         
+        p.setAclaraciones(aclaraciones);
        
         SimpleDateFormat formato =  new SimpleDateFormat("yyyy-MM-dd");
         Date fecha = null;
@@ -61,22 +67,54 @@ public class FinalizarPedidoComando extends Comando{
             fechasok = true; }
             else{
                 request.getSession().setAttribute("fechaIncorrecta", true);
-                return "/carro.jsp";
+                return "/Checkout.jsp";
             }
             
         if(p.getLineasPedido().size() > 0){
             if(request.getSession().getAttribute("usuario") == null ){
-                request.getSession().setAttribute("usuarioNoLogueado", true);
-                return "/login.jsp";
+                String nombre = request.getParameter("nomUsu");
+                String apellido= request.getParameter("apeUsu");
+                String mail = request.getParameter("mailUsu");
+                String direcc = request.getParameter("direcUsu");
+                String tel = request.getParameter("telUsu");
+                
+                Usuario usuNuevo = new Usuario();
+                
+                usuNuevo.setNombre(nombre);
+                usuNuevo.setActivo(true);
+                usuNuevo.setApellido(apellido);
+                usuNuevo.setDireccion(direcc);
+                usuNuevo.setTelefono(tel);
+                usuNuevo.setMail(mail);
+                mailUsu = usuNuevo.getMail();
+                
+                try {
+                    ctrlU.registrarUsuario(usuNuevo);
+                    p.setUsuario(usuNuevo);
+                    
+                } catch (DonaCocaException ex) {
+                    request.setAttribute("ex", ex.getMessage());
+                    return "/Checkout.jsp";
+                }
+                
             }
             else{
                     
                     
                 Usuario u = (Usuario)request.getSession().getAttribute("usuario");
-                float total = (float) request.getSession().getAttribute("total");
+                mailUsu = u.getMail();
+                p.setUsuario(u); 
+            }
+                
                 
                 CtrlPedido ctrlP = new CtrlPedido();
-                p.setUsuario(u);
+                
+                if(envio.equals("domicilio")){
+                    p.setEnvioDomicilio(true);
+                }
+                else{
+                    p.setEnvioDomicilio(false);
+                }
                 p.setEstado("Pendiente");
                 p.setTotal(total);
                
@@ -87,20 +125,24 @@ public class FinalizarPedidoComando extends Comando{
                 }
                 catch (DonaCocaException ex){
                     request.setAttribute("ex", ex.getMessage());
-                    return "/carro.jsp";
+                    return "/Checkout.jsp";
                     
                 }
                 request.getSession().setAttribute("exitoPedido", true);
+                request.getSession().setAttribute("mailUsu", mailUsu);
+               
                
                 Pedido ped = new Pedido();
                 request.getSession().setAttribute("pedido", ped);
+                 return "/pedidoExito.jsp";
             } 
             
-        }
+        
         else{
             request.getSession().setAttribute("pedidoVacio", true);
+            return "/Checkout.jsp";
         }
-        return "/carro.jsp";
+        
     }
     
 }

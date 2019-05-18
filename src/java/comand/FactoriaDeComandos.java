@@ -22,7 +22,6 @@ public class FactoriaDeComandos {
         
         mapa.put("InicioComando", InicioComando.class);
         mapa.put("RedireccionarComando", RedireccionarComando.class);
-        mapa.put("AgregarLineaPedidoComando", AgregarLineaPedidoComando.class);
         mapa.put("LogInComando",LogInComando.class);
         mapa.put("FinalizarPedidoComando", FinalizarPedidoComando.class);
         mapa.put("LogOutComando", LogOutComando.class);
@@ -36,7 +35,7 @@ public class FactoriaDeComandos {
         mapa.put("EditarUsuarioComando", EditarUsuarioComando.class);
         mapa.put("ActualizarLineaComando", ActualizarLineaComando.class);
         mapa.put("EliminarLineaComando", EliminarLineaComando.class);
-        mapa.put("RegistrarEnvioComando", RegistrarEnvioComando.class);
+        mapa.put("RegistrarCierreCancelComando", RegistrarCierreCancelComando.class);
         mapa.put("AplicarCuponComando", AplicarCuponComando.class);
         mapa.put("SeleccionarCuponComando", SeleccionarCuponComando.class);
         mapa.put("AgregarCuponComando", AgregarCuponComando.class);
@@ -50,7 +49,7 @@ public class FactoriaDeComandos {
         mapa.put("RedireccionarTortaComando", RedireccionarTortaComando.class);
         mapa.put("CalcularPrecioComprarComando", CalcularPrecioComprarComando.class);
         mapa.put("EliminarTortaComando", EliminarTortaComando.class);
-       
+        mapa.put("RegistrarSenaComando", RegistrarSenaComando.class);
     
     }
     /**

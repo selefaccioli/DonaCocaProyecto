@@ -3,6 +3,8 @@ package logic;
 
 import data.DataPedido;
 import entity.Pedido;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import util.DonaCocaException;
 
@@ -37,5 +39,8 @@ public class CtrlPedido {
         return dp.obtenerPedidosPendientes();
     }
     
+    public void registrarSena(Pedido p) throws DonaCocaException{
+        dp.registrarSena(p);
+    }
     
 }

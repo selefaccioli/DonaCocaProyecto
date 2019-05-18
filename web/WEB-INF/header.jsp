@@ -73,8 +73,8 @@
                     </form>
                     <form action="CtrlMaestro" method="post" id="formPedidosPendientes">
                         <input type="hidden" name="form" value="RedireccionarComando">
-                       <input type="hidden" name="destino" value="/envios.jsp">
-                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formPedidosPendientes').submit()"> Pedidos Pendientes</a> </li>
+                       <input type="hidden" name="destino" value="/pedidosAdmin.jsp">
+                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formPedidosPendientes').submit()"> Pedidos</a> </li>
                     </form>
                     
                   
@@ -151,7 +151,7 @@
              
               <li class="dropdown user-basket"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> </a>
                 <ul class="dropdown-menu">
-                     <% if(session.getAttribute("exitoTortaAgregada") != null){ 
+                     <% if(pedido.getLineasPedido().size() > 0){ 
                          for(LineaPedido lp : pedido.getLineasPedido()){
                       %>
                     <li>

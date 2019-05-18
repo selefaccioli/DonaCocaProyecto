@@ -83,7 +83,8 @@
             </div>
         </div> <%} %>
               <h4><%= t.getNombre()  %></h4>
-              <% if(session.getAttribute("totalTor") != null){ %>
+              <% if(session.getAttribute("totalTor") != null){ 
+              %>
               <span class="price"><small>$</small><%= session.getAttribute("totalTor") %></span> 
              
               <%} 

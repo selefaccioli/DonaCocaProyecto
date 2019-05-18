@@ -96,6 +96,7 @@ public class CalcularPrecioComprarComando extends Comando{
         
         if(lp.getTorta().getId() == idTorta){  //ya estaba en el carro 
             lp.setCantidad(lp.getCantidad() + 1);
+            lp.setSubtotal(tortaAgregar.getPrecio() * lp.getCantidad());
             request.getSession().setAttribute("exitoTortaAgregada", true);
             
             lineaExiste = 1;
@@ -114,6 +115,7 @@ public class CalcularPrecioComprarComando extends Comando{
             Torta tnueva = dt.obtenerTorta(idTorta);
             lp.setCantidad(1); //porque no estaba antes en el carro va a ser 1
             lp.setTorta(tortaAgregar);
+            lp.setSubtotal(tortaAgregar.getPrecio());
             pedido.setLinea(lp);
             request.getSession().setAttribute("exitoTortaAgregada", true);
             

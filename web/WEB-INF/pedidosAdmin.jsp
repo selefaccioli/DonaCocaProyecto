@@ -44,17 +44,81 @@
                             No existen pedidos pendientes de envío.       
                         </div>
                         <%}else{%>
-                        <div class="table-responsive">
+                       <!-- Tab links -->
+                            <div class="tab">
+                            <button class="tablinks" id="defaultOpen" onclick="openCity(event, 'realizar')">Pedidos a realizar</button>
+                            <button class="tablinks" onclick="openCity(event, 'todos')">Todos los pedidos</button>
+                            </div>
+
+                      <!-- Tab content -->
+                      <div id="realizar" class="tabcontent">
+                            <h3>Pedidos a realizar</h3>
+                             <div class="table-responsive">
                             <div class="table-striped">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                       
+                                        <th>ID</th>
                                         <th>F Pedido</th>
                                         <th>F Entrega</th>
                                         <th>Total</th>
                                         <th>Estado</th>
-                                        <th>Socio</th>
+                                        <th>Total seña</th>
+                                        <th>Restan pagar</th>
+                                        <th>Usuario</th>
+                                        <th>Destino</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%for(Pedido p:pendientes){
+                                        if(p.getEstado().equals("Aprobado")){ %>
+                                        <tr>
+                                            <td><%= p.getId() %></td>
+                                            <td><%= p.getFechaPedido() %></td>
+                                            <td><%= p.getFechaEntrega() %></td>
+                                            <td><%= p.getTotal() %></td>
+                                            <td><button type="button" class="btn btn-success btn-sm"><%= p.getEstado() %></button></td>
+                                            <td><%= p.getSena() %></td>
+                                            <td><%= p.getTotal() - p.getSena() %></td>
+                                            <td><%= p.getUsuario().getApellido()%>, <%= p.getUsuario().getNombre()%></td>
+                                          
+                                            <td><%= p.getUsuario().getDireccion()%></td>
+                                            <td>
+                                                <form action="CtrlMaestro" method="post">
+                                                    <input type="hidden"  name="form" value="RedireccionarComando"/>
+                                                    <input type="hidden"  name="destino" value="/pedidoDetalle.jsp"/>
+                                                    <input type="hidden" name="idPedido" value="<%= p.getId()%>">
+                                                    <input type="submit" class="btn btn-default" value="Ver pedido">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <%}}%>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                            
+                    </div>               
+                      
+                      
+                      
+                      
+                            <div id="todos" class="tabcontent">
+                            <h3>Todos los pedidos</h3>
+                             <div class="table-responsive">
+                            <div class="table-striped">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                        <th>ID</th>
+                                        <th>F Pedido</th>
+                                        <th>F Entrega</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th>Total seña</th>
+                                        <th>Condición Seña</th>
+                                        <th>Usuario</th>
                                         <th>Destino</th>
                                         <th></th>
                                     </tr>
@@ -62,25 +126,28 @@
                                     <tbody>
                                         <%for(Pedido p:pendientes){%>
                                         <tr>
-                                          
+                                            <td><%= p.getId() %></td>
                                             <td><%= p.getFechaPedido() %></td>
                                             <td><%= p.getFechaEntrega() %></td>
                                             <td><%= p.getTotal() %></td>
                                             <% if(p.getEstado().equals("Pendiente")){   %>
                                             <td><button type="button" class="btn btn-primary btn-sm"><%= p.getEstado() %></button></td>
-                                            <% } else if(p.getEstado().equals("Seña pagada")){   %>
+                                            <% } else if(p.getEstado().equals("Aprobado")){   %>
                                             <td><button type="button" class="btn btn-success btn-sm"><%= p.getEstado() %></button></td>
                                             <% } else if(p.getEstado().equals("Cancelado")){  %>
                                             <td><button type="button" class="btn btn-danger btn-sm"><%= p.getEstado() %></button></td>
                                             <% } else{  %>
                                             <td><button type="button" class="btn btn-info btn-sm"><%= p.getEstado() %></button></td>
                                             <% } %>
+                                            <td><%= p.getSena() %></td>
+                                            <td><%= p.getCondicionSena() %></td>
                                             <td><%= p.getUsuario().getApellido()%>, <%= p.getUsuario().getNombre()%></td>
                                           
                                             <td><%= p.getUsuario().getDireccion()%></td>
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
-                                                    <input type="hidden"  name="form" value="RegistrarEnvioComando"/>
+                                                    <input type="hidden"  name="form" value="RedireccionarComando"/>
+                                                    <input type="hidden"  name="destino" value="/pedidoDetalle.jsp"/>
                                                     <input type="hidden" name="idPedido" value="<%= p.getId()%>">
                                                     <input type="submit" class="btn btn-default" value="Ver pedido">
                                                 </form>
@@ -91,6 +158,17 @@
                                 </table>
                             </div>
                         </div>
+                            
+                            
+                            
+                            
+                            </div>
+                                    
+                       
+
+
+
+
                         <%}}%>
                     </div>
                 </div>
@@ -103,6 +181,7 @@
 <script src="js/owl.carousel.min.js"></script> 
 
 <!-- SLIDER REVOLUTION 4.x SCRIPTS  --> 
+
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 

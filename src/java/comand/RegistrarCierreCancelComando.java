@@ -17,7 +17,7 @@ import util.DonaCocaException;
  *
  * @author selef
  */
-public class RegistrarEnvioComando extends Comando{
+public class RegistrarCierreCancelComando extends Comando{
 
     @Override
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
@@ -34,8 +34,14 @@ public class RegistrarEnvioComando extends Comando{
                 pedAEnviar=p;      
         } 
         
-       
-        pedAEnviar.setEstado("Cerrado");
+        if(request.getParameter("cerrar") != null){
+            pedAEnviar.setEstado("Cerrado");
+           
+        }
+        else{
+            pedAEnviar.setEstado("Cancelado");
+        }
+        
         
         try
         {
@@ -44,7 +50,7 @@ public class RegistrarEnvioComando extends Comando{
         catch(DonaCocaException ex)
         {
             request.setAttribute("ex", ex.getMessage());
-            return "/envios.jsp";     
+            return "/pedidoDetalle.jsp";     
         }
 
         try
@@ -54,13 +60,19 @@ public class RegistrarEnvioComando extends Comando{
         catch(DonaCocaException ex)
         {
             request.setAttribute("ex", ex.getMessage());
-            return "/envios.jsp";    
+            return "/pedidoDetalle.jsp";    
         }
         
         request.getSession().setAttribute("pendientes",pendientes);
-        request.setAttribute("ExitoEnvio", true);
+        if(pedAEnviar.getEstado().equals("Cancelado")){
+            request.setAttribute("ExitoCancel", true);
+        }
+        else{
+            request.setAttribute("ExitoCierre", true);
+        }
+       
         
-        return "/envios.jsp";
+        return "/pedidoDetalle.jsp";
 
 
     }

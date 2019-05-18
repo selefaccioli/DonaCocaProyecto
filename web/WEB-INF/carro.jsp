@@ -8,42 +8,7 @@
 <%@page import="entity.Pedido"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="M_Adnan">
-<title>PAVSHOP - Multipurpose eCommerce HTML5 Template</title>
-
-<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-<link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
-
-<!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom CSS -->
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="css/ionicons.min.css" rel="stylesheet">
-<link href="css/main.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/responsive.css" rel="stylesheet">
-
-<!-- JavaScripts -->
-<script src="js/modernizr.js"></script>
-
-<!-- Online Fonts -->
-<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-
-</head>
+<jsp:include page="head.jsp"/>
 <body>
 
 <!-- LOADER -->
@@ -64,12 +29,7 @@
   <div class="row">
 
    
-      <% if(request.getSession().getAttribute("exitoPedido") != null){ %>
-            <div class="alert alert-success">
-                Pedido realizado con éxito!
-            </div>
-<% session.setAttribute("exitoPedido", null); }
-        else if(session.getAttribute("exitoMail")!= null){%> 
+      <% if(session.getAttribute("exitoMail")!= null){%> 
                     <div class="alert alert-success">
                         Un mail ha sido enviado a su casilla de correo!
                     </div>
@@ -233,7 +193,9 @@
             <div class="alert alert-success">
                 Cupón aplicado con exito!
             </div>
-                <% session.setAttribute("cuponActual", null); }%>
+                <% 
+                 
+                  session.setAttribute("cuponActual", null); }%>
                 
               <% if(request.getSession().getAttribute("cuponFallido") != null){ %>
             <div class="alert alert-danger">
@@ -267,13 +229,18 @@
                   <p class="all-total"><%if(cuponActual != null){%>SUBTOTAL<%} else{%>TOTAL<% } %><span><%= subtotal %></span></p>
                   <% session.setAttribute("total", subtotal); %>
                   
-                  <% if(cuponActual != null){ %>
+                  <% if(cuponActual != null){ 
+                    session.setAttribute("cuponSi", true);   
+                  float porcDescuento = cuponActual.getPorcDescuento(); 
+                  session.setAttribute("porcDescuento", porcDescuento);%>
                   <p class="all-total">PORCENTAJE DE DESCUENTO<span>%<%= cuponActual.getPorcDescuento() %></span></p>
-                  <% float descuento = (cuponActual.getPorcDescuento()*subtotal)/100; %>
+                  <% float descuento = (cuponActual.getPorcDescuento()*subtotal)/100; 
+                   session.setAttribute("descuentoPesos", descuento); %>
                   <p class="all-total">DESCUENTO EN $<span><%= descuento %></span></p>
-                  <% float total = subtotal - descuento; %>
+                  <% float total = subtotal - descuento; 
+                  session.setAttribute("total", total); %>
                   <p class="all-total">TOTAL<span><%= total %></span></p>
-                  <% session.setAttribute("total", total); %>
+                  
                   
                   <% } %> 
                 </div>
@@ -285,18 +252,29 @@
             <div class="row">
                 
                 <br>
-                
-                
+                <h5>
+                    Si posee una cuenta puede <h5> 
+                    <form action="CtrlMaestro" method="post" id="formLogin">
+                        <input type="hidden" name="form" value="RedireccionarComando">
+                       <input type="hidden" name="destino" value="/login.jsp">
+                       <u><a href="javascript:;" type="submit" syle="" onclick="document.getElementById('formLogin').submit()"> LOGUEARSE</a></u>
+                    </form>
+                        <h5>De lo contrario puede </h5> 
+                     <form action="CtrlMaestro" method="post" id="formRegistro">
+                        <input type="hidden" name="form" value="RedireccionarComando">
+                       <input type="hidden" name="destino" value="/signup.jsp">
+                       <u> <a href="javascript:;" type="submit" onclick="document.getElementById('formRegistro').submit()"> REGISTRARSE</a> </u>
+                    </form>
+                    <h5> para recibir novedades. 
+                </h5>
+              
+                <br>
                 <form action="CtrlMaestro" method="post">
-                     <input type="hidden"  name="form" value="FinalizarPedidoComando"/>
-                     <h5>Fecha de Entrega</h5>
-                     <h6>(Recuerde que los pedidos se deben realizar con una semana de anticipación como mínimo)</h6><br>
-                  <div class="row">
-                         <div class="col-sm-12 col-sm-offset-0">
-                             <input class="control form-control" type="date" name="fechaEntrega" style="width: 200px"  required>
-                        </div>                                   
-                  </div> <br>
-                     <input class="btn btn-default add-to-cart linea" type="submit" value="Finalizar Pedido" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
+                     <input type="hidden"  name="form" value="RedireccionarComando"/>
+                     <input type="hidden"  name="destino" value="/Checkout.jsp"/>
+                
+                 
+                     <input class="btn btn-default add-to-cart linea" type="submit" value="No, gracias. continuar al checkout" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
                      
                 </form><br><br>
                         

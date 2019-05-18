@@ -18,7 +18,9 @@ public class Pedido {
         private boolean cerrado;
         private ArrayList<LineaPedido> lineasPedido;
         private float sena;
-        
+        private String aclaraciones;
+        private String condicionSena;
+        private Boolean envioDomicilio;
      
         public Pedido(){
         lineasPedido = new ArrayList<LineaPedido>();
@@ -115,6 +117,32 @@ public class Pedido {
     public void setSena(float sena) {
         this.sena = sena;
     }
+
+    public String getAclaraciones() {
+        return aclaraciones;
+    }
+
+    public void setAclaraciones(String aclaraciones) {
+        this.aclaraciones = aclaraciones;
+    }
+
+    public String getCondicionSena() {
+        return condicionSena;
+    }
+
+    public void setCondicionSena(String condicionSena) {
+        this.condicionSena = condicionSena;
+    }
+
+    public Boolean getEnvioDomicilio() {
+        return envioDomicilio;
+    }
+
+    public void setEnvioDomicilio(Boolean envioDomicilio) {
+        this.envioDomicilio = envioDomicilio;
+    }
+
+  
     
    
         
