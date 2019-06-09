@@ -38,8 +38,9 @@ public class AgregarDetalleComando extends Comando{
         Detalle detNuevo = new Detalle();
         
         detNuevo.setNombre(request.getParameter("nomDet"));
-        Boolean eligeUsuario = (request.getParameter("eligeUsu")!=null);
-        detNuevo.setEligeUsuario(eligeUsuario);
+        Boolean multiple = (request.getParameter("multipleUsu")!=null);
+        detNuevo.setMultiple(multiple);
+        detNuevo.setEligeUsuario(true);
         
         ArrayList<Detalle> detalles;
         

@@ -8,6 +8,7 @@ package comand;
 import entity.Detalle;
 import entity.Torta;
 import entity.Variante;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -16,6 +17,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -48,7 +51,6 @@ public class EditarTortaComando extends Comando{
  
         tortaEditada.setId(Integer.parseInt(request.getParameter("ID")));
         tortaEditada.setNombre(request.getParameter("nomTor"));
-        tortaEditada.setPrecio(Float.parseFloat(request.getParameter("pvtaTor")));
         Boolean esActivo = (request.getParameter("activo")!=null);
         tortaEditada.setActivo(esActivo);
         
@@ -67,16 +69,29 @@ public class EditarTortaComando extends Comando{
         {
             if(imagen.getSize() > 0 )
             {
-                File ruta = new File("C:\\Users\\selef\\OneDrive\\Documentos\\NetBeansProjects\\Curso Java\\JavaFinalWebSele\\web\\images\\imagenesdc");
+                /*File ruta = new File("C:\\Users\\selef\\OneDrive\\Documentos\\NetBeansProjects\\Curso Java\\JavaFinalWebSele\\web\\images\\imagenesdc");
                 InputStream inputStream = imagen.getInputStream();
                 String fileName =  Paths.get(imagen.getSubmittedFileName()).getFileName().toString();
                 File file = new File(ruta, fileName);
                 Files.copy(inputStream, file.toPath(),StandardCopyOption.REPLACE_EXISTING);
-                String rutaImg = fileName;
+                String rutaImg = fileName; */
+                
+                InputStream inputStream = imagen.getInputStream();
+                ServletContext servletContext = request.getServletContext();
+                String absoluteDiskPath = servletContext.getRealPath("/images/imagenesdc");
+                String fileName = tortaEditada.getNombre()+" Imagen "+".jpg"; // MSIE fix.
+                InputStream input = imagen.getInputStream();
+                           BufferedImage bi = ImageIO.read(input);
+                           if(bi != null){
+                            ImageIO.write(bi, "jpg", new File(absoluteDiskPath, fileName));
+                           
+                            }
+                
                 
                 if(inputStream!=null){
                    // torta.setImagen(inputStream);
-                    tortaEditada.setRutaImg(rutaImg);
+                    //tortaEditada.setRutaImg(rutaImg);
+                    tortaEditada.setRutaImg(fileName);
                 }
             }
         }

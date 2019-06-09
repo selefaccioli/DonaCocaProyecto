@@ -128,7 +128,7 @@ public class DataTorta {
      
      public ArrayList<Torta> obtenerTortas() throws DonaCocaException{
         ArrayList<Torta> listaTortas = new ArrayList<>();
-        String sql = "select * from torta where eliminado =0;";
+        String sql = "select * from torta where eliminado =0 order by torta.`id_torta` desc;;";
         try
         {
             conec = conn.getConn();
@@ -327,6 +327,8 @@ public class DataTorta {
             ps.setBoolean(1, true);
             ps.setInt(2, t.getId());
             ps.executeUpdate();
+            
+            conec.close();
          }
          catch(SQLException e){
              throw new DonaCocaException("Error al eliminar torta",e);

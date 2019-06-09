@@ -21,11 +21,11 @@
           <div class="row">
 
    
-      <% if(request.getSession().getAttribute("exitoPedido") != null){ %>
-            <div class="alert alert-success">
-                Pedido realizado con éxito!
+      <% if(request.getAttribute("FailSena") != null){ %>
+            <div class="alert alert-danger">
+                La seña no puede ser mayor al total del pedido. 
             </div>
-<% session.setAttribute("exitoPedido", null); }
+<% request.setAttribute("FailSena", null); }
         else if(session.getAttribute("exitoMail")!= null){%> 
                     <div class="alert alert-success">
                         Un mail ha sido enviado a su casilla de correo!
@@ -54,15 +54,10 @@ else { if(request.getAttribute("ex") != null){%>
         ArrayList<LineaPedido> lineasP;
         
         CtrlPedido cp = new CtrlPedido();
-        int idPedido = Integer.parseInt(request.getParameter("idPedido"));
-        Pedido pedActual = new Pedido();
-        for(Pedido p : pendientes){
-            if(p.getId() == idPedido){
-                pedActual = p; }
-            
-        }
+        Pedido pedActual = (Pedido)session.getAttribute("pedidoAmpliado");
+        lineasP = (ArrayList)session.getAttribute("lineasP");
        
-            lineasP = pedActual.getLineasPedido(); 
+       
             %>
         <div class="cuenta">
             <div class="container"> 
@@ -95,18 +90,15 @@ else { if(request.getAttribute("ex") != null){%>
            
               <div class="col-sm-7">
                   
-          
-                            
-                <h6>Usuario</h6>
-                
+     
                     
-               
+               <h6>REGISTRO SEÑA</h6>
                  <form action="CtrlMaestro" method="post">     
                   <ul class="row">
-                   
+                       
                     <!-- Name -->
                     <li class="col-md-6">
-                          <h6>REGISTRO SEÑA</h6>
+                      
                       <label> *TOTAL PEDIDO
                         <input type="text"  required name="totalPed"  <%if(pedActual!= null){ %>value="<%= pedActual.getTotal()   %>" disabled <% } %> placeholder="">
                       </label>
@@ -114,7 +106,7 @@ else { if(request.getAttribute("ex") != null){%>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> *INGRESAR SEÑA
-                        <input type="text"  required name="senaPed" placeholder="" required>
+                        <input type="text"  required name="senaPed" pattern="^^\d{0,4}(\.\d{0,2})?$" title="Numero de maximo 4 digitos. Opcionalmente con 2 decimales (ejemplo: 1000.50)" placeholder="" required>
                       </label>
                     </li>
                   
@@ -146,7 +138,7 @@ else { if(request.getAttribute("ex") != null){%>
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
+<script src="js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');

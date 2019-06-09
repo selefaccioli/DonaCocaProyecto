@@ -63,7 +63,7 @@
               <!-- Images Slider -->
               <div class="images-slider">
                 <ul class="slides">
-                  <li> <img class="img-responsive" style="width: 653px;height: 662px" src="../images/imagenesdc/<%=  t.getRutaImg() %>"  alt=""> </li>
+                  <li> <img class="img-responsive" style="width: 653px;height: 662px" src="images\imagenesdc\<%=  t.getRutaImg() %>"  alt=""> </li>
                 </ul>
               </div>
            
@@ -71,7 +71,7 @@
             
             <!-- COntent -->
              <form action="CtrlMaestro" name="datosVariantes" method="post" enctype="multipart/form-data" onsubmit="return validarChecks2()"> 
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <% if(session.getAttribute("ex")!= null){   %>
                 <div class="container">
             <div class="row">
@@ -170,7 +170,7 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
+<script src="js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');

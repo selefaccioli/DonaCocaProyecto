@@ -26,6 +26,8 @@ public class EditarCuponComando extends Comando{
         
      
         Boolean esActivo = (request.getParameter("activo")!=null);
+        cupEditado.setCodigo(request.getParameter("codCup"));
+        cupEditado.setId(Integer.parseInt(request.getParameter("ID")));
         cupEditado.setActivo(esActivo);
         cupEditado.setPorcDescuento(Float.parseFloat(request.getParameter("porcCup")));
         

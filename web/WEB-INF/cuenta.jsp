@@ -108,40 +108,40 @@
                     <!-- Name -->
                     <li class="col-md-6">
                       <label> NOMBRE
-                        <input type="text" name="nombre"  value="<%= usu.getNombre() %>">
+                        <input type="text" name="nombre" pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" value="<%= usu.getNombre() %>">
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> APELLIDO
-                        <input type="text" name="apellido"  value="<%= usu.getApellido() %>">
+                        <input type="text" name="apellido" pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" value="<%= usu.getApellido() %>">
                       </label>
                     </li>
                     
                     <!-- EMAIL ADDRESS -->
                     <li class="col-md-6">
                       <label> EMAIL
-                        <input type="text" name="email"  value="<%= usu.getMail()  %>">
+                        <input type="text" name="email" pattern="^[\s\S]{0,40}$" title="Solo se permiten hasta 40 caracteres" value="<%= usu.getMail()  %>">
                       </label>
                     </li>
                     <!-- PHONE -->
                     <li class="col-md-6">
                       <label> TELEFONO
-                        <input type="text" name="telefono"  value="<%= usu.getTelefono() %>">
+                        <input type="text" name="telefono" pattern="^\d{0,20}" title="Solo se permiten numeros. Hasta 20 digitos" value="<%= usu.getTelefono() %>">
                       </label>
                     </li>
                     
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> DIRECCION
-                        <input type="text" name="direccion"  value="<%= usu.getDireccion() %>">
+                        <input type="text" name="direccion" pattern="^[\s\S]{0,45}$" title="Solo se permiten hasta 45 caracteres" value="<%= usu.getDireccion() %>">
                       </label>
                     </li>
                     
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                         <label> DNI
-                            <input type="text" name="dni"  value="<%= usu.getDni() %>">
+                            <input type="text" name="dni" pattern="^\d{0,8}" title="Solo se permiten numeros. Hasta 8 digitos" value="<%= usu.getDni() %>">
                         </label>
                         
                     </li>

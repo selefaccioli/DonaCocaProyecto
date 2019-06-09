@@ -34,7 +34,7 @@ body
 ========================================================*/
 * {
 	margin: 0px;
-	padding: 0px;
+	padding: 3px;
 }
 body {
 	background: #FFF;
@@ -3364,7 +3364,8 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
       SUB BANNER
 ========================================================*/
 .sub-bnr {
-	background: url(../images/portada.jpeg) no-repeat;
+	background: url(../images/nuevaportada2.jpeg) no-repeat;
+        
 	background-size: cover !important;
 	min-height: 610px;
 	text-align: left;

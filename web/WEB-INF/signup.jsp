@@ -58,7 +58,7 @@
   <div id="content"> 
     
     <!--======= PAGES INNER =========-->
-    <section class="chart-page padding-top-100 padding-bottom-100">
+    <section class="chart-page padding-top-0 padding-bottom-100">
       <div class="container"> 
         
         <!-- Payments Steps -->
@@ -77,34 +77,42 @@
                     <!-- Name -->
                     <li class="col-md-6">
                       <label> *NOMBRE
-                        <input type="text" name="nomUsu" value="" placeholder="Nombre">
+                        <input type="text" name="nomUsu" pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" value="" placeholder="Nombre">
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> *APELLIDO
-                        <input type="text" name="apeUsu" value="" placeholder="Apellido">
+                        <input type="text" name="apeUsu" pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" value="" placeholder="Apellido">
                       </label>
                     </li>
                     
                      <!-- DNI -->
                     <li class="col-md-6">
                       <label> *DNI
-                        <input type="text" name="dniUsu" value="" placeholder="DNI">
+                        <input type="text" name="dniUsu" value="" pattern="^\d{0,8}" title="Solo se permiten numeros. Hasta 8 digitos" placeholder="DNI">
                       </label>
                     </li>
                     
+                     <!-- fecha nacimiento -->
+                    <li class="col-md-6">
+                      <label> *FECHA NACIMIENTO
+                        <input type="date" name="fecNac" value="" placeholder="DNI">
+                      </label>
+                    </li>
+                    
+                     
                      <!-- MAIL -->
                     <li class="col-md-6">
                       <label> *EMAIL
-                        <input type="text" name="mailUsu" value="" placeholder="Email">
+                        <input type="email" name="mailUsu" pattern="^[\s\S]{0,40}$" title="Solo se permiten hasta 40 caracteres" value="" placeholder="Email">
                       </label>
                     </li>
                     
                     <!-- Name -->
                     <li class="col-md-6">
                       <label> *USUARIO
-                        <input type="text" name="usuUsu" value="" placeholder="Nombre de usuario">
+                        <input type="text" name="usuUsu" pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" value="" placeholder="Nombre de usuario">
                       </label>
                     </li>
                     
@@ -128,17 +136,28 @@
                     <!-- EMAIL ADDRESS -->
                     <li class="col-md-6">
                       <label> *DIRECCION
-                        <input type="text" name="direcUsu" value="" placeholder="">
+                        <input type="text" name="direcUsu" pattern="^[\s\S]{0,45}$" title="Solo se permiten hasta 45 caracteres" value="" placeholder="">
                       </label>
                     </li>
                     <!-- PHONE -->
                     <li class="col-md-6">
                       <label> *TELEFONO
-                        <input type="text" name="telUsu" value="" placeholder="">
+                        <input type="text" name="telUsu" pattern="^\d{0,20}" title="Solo se permiten numeros. Hasta 20 digitos" value="" placeholder="">
                       </label>
                     </li>
                     
-                
+                <!-- Como conocio a doña coca -->
+                    
+                    <li class="col-md-6">
+                         <label>CÓMO CONOCIÓ A DOÑA COCA</label>
+                       <select class="form-control"  name="conocimiento" required>
+                       <option value="instagram">Instagram</option>     
+                       <option value="facebook">Facebook</option>
+                        <option value="recomendacion">Recomendación</option>
+                        <option value="boca en boca">Boca en Boca</option>
+                        <option value="otro">Otro</option>
+                       </select> 
+                    </li>
                     
                     
                     <li class="col-md-6">
@@ -182,7 +201,7 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
-<script src="../js/sha.js" type="text/javascript"></script>
+<script src="js/mainSele.js" type="text/javascript"></script>
+<script src="js/sha.js" type="text/javascript"></script>
 </body>
 </html>

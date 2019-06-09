@@ -21,8 +21,8 @@
                 <input type="hidden" name="form" value="RedireccionarComando">
                 <input type="hidden" name="destino" value="/home.jsp">
                 <a href="javascript:;" type="submit" onclick="document.getElementById('formLogo').submit()">
-                <img class="img-responsive" src="../images/logoDonaCocam.png" alt="" >
                 
+                <img class="img-responsive" src="images\imagenesdc\logoDonaCocam.png" alt=""/>
               </a>    
             </form>
            
@@ -71,12 +71,20 @@
                        <input type="hidden" name="destino" value="/ABMCupones.jsp">
                         <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formCupones').submit()"> Cupones</a> </li>
                     </form>
-                    <form action="CtrlMaestro" method="post" id="formPedidosPendientes">
+                    <form action="CtrlMaestro" method="post" id="formPedidosArealizar">
                         <input type="hidden" name="form" value="RedireccionarComando">
-                       <input type="hidden" name="destino" value="/pedidosAdmin.jsp">
-                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formPedidosPendientes').submit()"> Pedidos</a> </li>
+                       <input type="hidden" name="destino" value="/pedidosARealizar.jsp">
+                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formPedidosArealizar').submit()"> Pedidos a realizar</a> </li>
                     </form>
-                    
+                      <form action="CtrlMaestro" method="post" id="formPedidosTodos">
+                        <input type="hidden" name="form" value="RedireccionarComando">
+                       <input type="hidden" name="destino" value="/pedidosTodos.jsp">
+                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formPedidosTodos').submit()"> Todos los Pedidos</a> </li>
+                    </form>
+                    <form action="https://app.powerbi.com/groups/me/reports/0b5725d1-e586-441f-a3b1-4db6b9e5dc49/ReportSectionbc258e82e909276ba207?redirectedFromSignup=1&ctid=a447b9c2-a213-4ec1-8103-3ea69a516a59" method="post" id="reportes" target="blank">
+                      
+                        <li> <a href="javascript:;" type="submit" onclick="document.getElementById('reportes').submit()"> Estadísticas</a> </li>
+                    </form>
                   
                 </ul>
               </li>
@@ -151,24 +159,28 @@
              
               <li class="dropdown user-basket"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> </a>
                 <ul class="dropdown-menu">
-                     <% if(pedido.getLineasPedido().size() > 0){ 
+                     <% if((pedido.getLineasPedido().size() > 0) && (pedido.getLineasPedido().size() <= 3)){ 
                          for(LineaPedido lp : pedido.getLineasPedido()){
                       %>
                     <li>
                     <div class="media-left">
-                      <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="../images/imagenesdc/<%= lp.getTorta().getRutaImg() %>"alt="..."> </a> </div>
+                      <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="images\imagenesdc\<%= lp.getTorta().getRutaImg() %>"alt="..."> </a> </div>
                     </div>
                     <div class="media-body">
                       <h6 class="media-heading"><%= lp.getTorta().getNombre() %></h6>
                       <span class="price">$ <%= lp.getTorta().getPrecio()  %></span> <span class="qty">QTY: <%= lp.getCantidad()  %></span> </div>
                   </li>
-                  <% }} %>
+                  <% }}
+                        else{%>
+                        <div class="media-body">
+                      <h6 class="media-heading">Cantidad de tortas en el carro: <%= pedido.getLineasPedido().size() %></h6>
+                      <% } %>
                   <li class="margin-0">
                     <div class="row">
                         <form action="CtrlMaestro" method="post" class="formNav">
                                     <input type="hidden"  name="form" value="RedireccionarComando"/>
                                     <input type="hidden"  name="destino" value="/carro.jsp"/>
-                                    <input class="btn btn-default" type="submit" name="tipoLinea" value="Ver Carro">
+                                    <input class="btn btn" type="submit" name="tipoLinea" value="Ver Carro">
                                    
                                      
                         </form>

@@ -21,6 +21,8 @@ public class Pedido {
         private String aclaraciones;
         private String condicionSena;
         private Boolean envioDomicilio;
+        private float porcentajeDescuento;
+        private float descuento;
      
         public Pedido(){
         lineasPedido = new ArrayList<LineaPedido>();
@@ -140,6 +142,22 @@ public class Pedido {
 
     public void setEnvioDomicilio(Boolean envioDomicilio) {
         this.envioDomicilio = envioDomicilio;
+    }
+
+    public float getPorcentajeDescuento() {
+        return porcentajeDescuento;
+    }
+
+    public void setPorcentajeDescuento(float porcentajeDescuento) {
+        this.porcentajeDescuento = porcentajeDescuento;
+    }
+
+    public float getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(float descuento) {
+        this.descuento = descuento;
     }
 
   

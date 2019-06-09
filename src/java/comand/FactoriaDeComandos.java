@@ -50,7 +50,9 @@ public class FactoriaDeComandos {
         mapa.put("CalcularPrecioComprarComando", CalcularPrecioComprarComando.class);
         mapa.put("EliminarTortaComando", EliminarTortaComando.class);
         mapa.put("RegistrarSenaComando", RegistrarSenaComando.class);
-    
+        mapa.put("RedireccionarPedidoComando", RedireccionarPedidoComando.class);
+        mapa.put("FiltrosComando", FiltrosComando.class);
+        mapa.put("EnviarConsultaComando", EnviarConsultaComando.class);
     }
     /**
      * Metodo de clase devuelve la instancia de FactoriaDeComandos

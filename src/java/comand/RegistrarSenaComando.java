@@ -24,34 +24,43 @@ public class RegistrarSenaComando extends Comando{
     @Override
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
         ArrayList<Pedido> pendientes;
+        ArrayList<LineaPedido> lineasP = new ArrayList<LineaPedido>();
         pendientes = (ArrayList)request.getSession().getAttribute("pendientes");
-        ArrayList<LineaPedido> lineasP;
+        Pedido pedActual = (Pedido)request.getSession().getAttribute("pedidoAmpliado");
+        
+        lineasP = pedActual.getLineasPedido();
+       
         float sena = Float.parseFloat(request.getParameter("senaPed"));
         
         CtrlPedido cp = new CtrlPedido();
-        int idPedido = Integer.parseInt(request.getParameter("idPedido"));
-        Pedido pedActual = new Pedido();
-        for(Pedido p : pendientes){
-            if(p.getId() == idPedido){
-                pedActual = p; }
+       
+        if(pedActual.getTotal() >= sena){
+             pedActual.setSena(sena);
+             pedActual.setEstado("Aprobado");
+          try {
+            cp.registrarSena(pedActual);
+            pendientes = cp.obtenerPedidosPendientes();
+           } catch (DonaCocaException ex) {
+             request.setAttribute("ex", "Ha ocurrido un error registrando la seña");
+             return "/pedidoDetalle.jsp"; 
+           }
+    
+       request.getSession().setAttribute("pendientes", pendientes);
+       request.getSession().setAttribute("pedidoAmpliado", pedActual);
+       request.setAttribute("ExitoSena", true);
+       return "/pedidoDetalle.jsp";
+             
+             
+        }
+        else{
+            request.setAttribute("FailSena", true);
+            return "/registrarSena.jsp";
             
         }
        
-        lineasP = pedActual.getLineasPedido(); 
-        
-        pedActual.setSena(sena);
-        try {
-            cp.registrarSena(pedActual);
-            pendientes = cp.obtenerPedidosPendientes();
-        } catch (DonaCocaException ex) {
-             request.setAttribute("ex", "Ha ocurrido un error registrando la seña");
-             return "/pedidoDetalle.jsp"; 
-        }
-    
-       request.getSession().setAttribute("pendientes", pendientes);
-       request.setAttribute("ExitoSena", true);
+       
 
-       return "/pedidoDetalle.jsp";
+       
     }
     
 }

@@ -4,6 +4,7 @@
     Author     : selef
 --%>
 
+<%@page import="entity.Usuario"%>
 <%@page import="entity.Variante"%>
 <%@page import="logic.CtrlPedido"%>
 <%@page import="entity.LineaPedido"%>
@@ -40,28 +41,46 @@
                      <%=request.getAttribute("ex")%>
                     </div>
                     <%request.setAttribute("ex",null);} %>                 
-       
+       <% if(request.getAttribute("exitoConsulta")!= null){%> 
+                    <div class="alert alert-succsess">
+                     Consulta enviada con éxito, puede revisar su casilla para ver mas detalle.
+                    </div>
+                    <%request.setAttribute("exitoConsulta",null);} %> 
   </div>
         <%!ArrayList<Pedido> pendientes;%>
         <% pendientes = (ArrayList)request.getSession().getAttribute("pendientes");
-        ArrayList<LineaPedido> lineasP;
+        ArrayList<LineaPedido> lineasP = new ArrayList<LineaPedido>();
         
         CtrlPedido cp = new CtrlPedido();
-        int idPedido = Integer.parseInt(request.getParameter("idPedido"));
-        Pedido pedActual = new Pedido();
-        for(Pedido p : pendientes){
-            if(p.getId() == idPedido){
-                pedActual = p; }
-            
-        }
-       
-            lineasP = pedActual.getLineasPedido();
-           
+        Pedido pedActual = (Pedido)session.getAttribute("pedidoAmpliado");
+        //Pedido pedActual = (Pedido)request.getSession().getAttribute("pedConSena");
+         Usuario usu = (Usuario)session.getAttribute("usuario");
+        lineasP = pedActual.getLineasPedido();
+              
+   
+        
+      
+           double subtotal = 0.0f;
+              for(LineaPedido linea: lineasP){
+          
+          subtotal = subtotal + linea.getSubtotal();
+              }
         
         
         %>  
         <div class="cuenta">
             <div class="container"> 
+                <form action="CtrlMaestro" method="post"> 
+                     <div class="row">
+                         <input  type="hidden" name="form" value="RedireccionarComando">
+                          <input type="hidden"  name="destino" value="/consulta.jsp"/>
+                    <input type="submit" class="btn-info" value="Realizar consulta a cliente">
+                    
+                </div>  
+                </form>
+                         
+                
+                
        
         <!-- Payments Steps -->
   <div class="row">
@@ -132,7 +151,8 @@
               <li class="col-sm-1"> </li>
             </ul>
           </div>
-          <% for(LineaPedido linea: lineasP){
+          <% 
+              for(LineaPedido linea: lineasP){
           
            %>
           <!-- Cart Details -->
@@ -140,18 +160,19 @@
             <li class="col-sm-6">
               <div class="media"> 
                 <!-- Media Image -->
-                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="../images/imagenesdc/<%= linea.getTorta().getRutaImg() %>" alt=""> </a> </div>
+                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="images\imagenesdc\<%= linea.getTorta().getRutaImg() %>" alt=""> </a> </div>
                 
                 <!-- Item Name -->
                 <div class="media-body">
                   <div class="position-center-center">
-                    <h5><%= linea.getTorta().getNombre() %></h5>
-                    <% for(Variante v: linea.getTorta().getVariantes()){ %> 
+                    <h5><%= linea.getTorta().getNombre()%> 
+                       <% if(linea.getVariantes() != null){ %></h5>
+                    <% for(Variante v: linea.getVariantes()){ %> 
                     <p>
                         <%= v.getDetalle().getNombre() %>: &nbsp 
                        <%= v.getDescripcion() %>
                     </p>
-                    <% }%>
+                    <%}  }%>
                   </div>
                 </div>
               </div>
@@ -159,7 +180,9 @@
             
             <!-- PRICE -->
             <li class="col-sm-2">
-              <div class="position-center-center"> <span class="price"><small>$</small><%= linea.getSubtotal() / linea.getCantidad() %></span> </div>
+                     <div class="position-center-center"> 
+                  <p class="all-total"><span><%= linea.getSubtotal() %></span></p>
+                     </div>
             </li>
             
             <!-- QTY -->
@@ -181,7 +204,16 @@
             
             <!-- TOTAL PRICE -->
             <li class="col-sm-2">
-              <div class="position-center-center"> <span class="price"><small>$</small><%= linea.getSubtotal()  %></span> </div>
+              <div class="position-center-center"> 
+                 <p class="all-total"><span><%= linea.getSubtotal()* linea.getCantidad() %></span></p>
+                  
+               
+
+              
+              
+              
+              
+              </div>
             </li>
             
          
@@ -266,7 +298,7 @@
                       <h6>Aclaraciones adicionales o preferencias</h6>
                      <h7>(Nombre a poner en la torta, cambio de colores, cuadro de futbol, edad, etc )</h7><br>
                   <textarea name="aclaraciones" disabled rows="10" cols="80"><%if(pedActual.getAclaraciones()!= null){ %><%= pedActual.getAclaraciones()   %><% } %></textarea><br>
-                       
+                    <% if(usu != null && usu.isEsAdmin()){  %>   
                     <% if(pedActual.getEstado().equals("Aprobado") || pedActual.getEstado().equals("Pendiente")){ %>
                     <input type="hidden" name="form" value="RegistrarCierreCancelComando">
                     <input type="hidden" name="idPedido" value="<%=  pedActual.getId()  %>">
@@ -284,7 +316,7 @@
                     <input type="hidden" name="idPedido" value="<%=  pedActual.getId()  %>">
                     <input class="btn btn-default" style="width: 150px; margin-left: 90px;" type="submit" name="sena"  value="Registrar Seña">
                 </form>
-                <% } %>
+                <% } }%>
              
               </div>
               
@@ -296,7 +328,19 @@
                  
                     
                     <!-- SUB TOTAL -->
-                    <p class="all-total">TOTAL <span> $<%=  pedActual.getTotal()   %></span></p>
+                     <p class="all-total"><%if(pedActual.getPorcentajeDescuento() != 0){%>SUBTOTAL<%} else{%>TOTAL<% } %><span><%= subtotal %></span></p>
+                  
+                  
+                  <% if(pedActual.getPorcentajeDescuento() != 0){ %>
+                  <p class="all-total">PORCENTAJE DE DESCUENTO<span><%= pedActual.getPorcentajeDescuento() %></span></p>
+                
+                  <p class="all-total">DESCUENTO EN $<span><%= pedActual.getDescuento() %></span></p>
+                 
+                  <p class="all-total">TOTAL<span><%= pedActual.getTotal() %></span></p>
+                 
+                  
+                  <% } %> 
+                    
                     <p class="all-total">TOTAL SEÑA<span> $<%=  pedActual.getSena()   %></span></p>
                     <p class="all-total">RESTAN PAGAR <span> $<%= pedActual.getTotal() -  pedActual.getSena()   %></span></p>
                   </div>
@@ -339,7 +383,7 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
+<script src="js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');

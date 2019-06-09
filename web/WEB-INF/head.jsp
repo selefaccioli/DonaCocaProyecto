@@ -7,6 +7,8 @@
   <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="M_Adnan">
@@ -24,8 +26,11 @@
 <link href="css/style.css" rel="stylesheet">
 <link href="css/responsive.css" rel="stylesheet">
 
+
 <!-- Bootstrap Core CSS -->
+
 <link href="css/bootstrap.min.css" rel="stylesheet">
+
 
 <!-- JavaScripts -->
 <script src="js/modernizr.js"></script>
@@ -41,6 +46,28 @@
 <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
 
 
+
+
+	
+	
+<link href="css/seletest.css" rel="stylesheet" type="text/css"/>
+	
+	<style type="text/css" class="init">
+	
+	</style>
+	
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	
+	<script type="text/javascript" class="init">
+	
+$(document).ready(function() {
+	$('#example').DataTable( {
+		"pagingType": "full_numbers"
+	} );
+} );
+
+	</script>
 
 
 </head>

@@ -2,6 +2,7 @@ package data;
 import entity.Pedido;
 import entity.Usuario;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +38,8 @@ public class DataUsuarios {
                 usu.setMail(rs.getString(9));
                 usu.setTelefono(rs.getString(10));
                 usu.setDireccion(rs.getString(11));
+                usu.setFechaNacimiento(new java.sql.Date(rs.getDate(12).getTime()));
+                usu.setConocimiento(rs.getString(13));
             }
             
             conec.close();
@@ -72,6 +75,8 @@ public class DataUsuarios {
                 usu.setMail(rs.getString(9));
                 usu.setTelefono(rs.getString(10));
                 usu.setDireccion(rs.getString(11));
+                usu.setFechaNacimiento(new java.sql.Date(rs.getDate(12).getTime()));
+                usu.setConocimiento(rs.getString(13));
             }
             
             conec.close();
@@ -143,6 +148,8 @@ public class DataUsuarios {
                 usu.setMail(rs.getString(9));
                 usu.setTelefono(rs.getString(10));
                 usu.setDireccion(rs.getString(11));
+                usu.setFechaNacimiento(new java.sql.Date(rs.getDate(12).getTime()));
+                usu.setConocimiento(rs.getString(13));
                 resultado.add(usu);
                 
             }
@@ -178,6 +185,8 @@ public class DataUsuarios {
                 usu.setMail(rs.getString(9));
                 usu.setTelefono(rs.getString(10));
                 usu.setDireccion(rs.getString(11));
+                usu.setFechaNacimiento(new java.sql.Date(rs.getDate(12).getTime()));
+                usu.setConocimiento(rs.getString(13));
                 resultado.add(usu);
             }
             
@@ -191,7 +200,7 @@ public class DataUsuarios {
     }
     
     public void editarUsuario(Usuario usu) throws DonaCocaException{
-        String sql="update usuario set nombre=? , apellido=? , direccion=? ,telefono=? , mail=?, dni=?,activo=?,es_admin=?,usuario=?, contrasenia=? where id_usuario=?";
+        String sql="update usuario set nombre=? , apellido=? , direccion=? ,telefono=? , mail=?, dni=?,activo=?,es_admin=?,usuario=?, contrasenia=?, fechanacimiento=?, conocimiento= ? where id_usuario=?";
                
         try{
             Connection conec= conn.getConn();
@@ -207,6 +216,9 @@ public class DataUsuarios {
             ps.setString(9,usu.getUsuario());
             ps.setString(10, usu.getContrasenia());
             ps.setInt(11, usu.getId());
+            ps.setDate(12, new java.sql.Date(usu.getFechaNacimiento().getTime()));
+            ps.setString(13, usu.getConocimiento());
+           
             ps.executeUpdate();
             conec.close();
           
@@ -218,7 +230,7 @@ public class DataUsuarios {
     
     public void registrarUsuario(Usuario usu)throws DonaCocaException{
         PreparedStatement ps;
-        String transac = "insert into usuario(nombre,apellido,dni,usuario,contrasenia,es_admin,activo,mail,telefono,direccion) values (?,?,?,?,?,?,?,?,?,?);";
+        String transac = "insert into usuario(nombre,apellido,dni,usuario,contrasenia,es_admin,activo,mail,telefono,direccion,fechanacimiento,conocimiento) values (?,?,?,?,?,?,?,?,?,?,?,?);";
         try{
             Connection conec= conn.getConn();
             ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
@@ -232,6 +244,8 @@ public class DataUsuarios {
             ps.setString(8, usu.getMail());
             ps.setString(9, usu.getTelefono());
             ps.setString(10, usu.getDireccion());
+            ps.setDate(11, new java.sql.Date(usu.getFechaNacimiento().getTime()));
+            ps.setString(12, usu.getConocimiento());
             
             ps.executeUpdate();
             ResultSet rs= ps.getGeneratedKeys();

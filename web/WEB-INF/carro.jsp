@@ -36,7 +36,7 @@
                     <%session.setAttribute("exitoMail",null);} 
         else if(session.getAttribute("cantidadInvalida")!= null){%> 
                     <div class="alert alert-danger">
-                        Por favor ingrese una cantidad válida
+                        Por favor ingrese una cantidad válida. Solo se permiten números del 1 al 10.
                     </div>
                     <%session.setAttribute("cantidadInvalida",null);} 
         else if(session.getAttribute("fechaIncorrecta")!=null){%> 
@@ -84,7 +84,7 @@
                 <h6>NOMBRE</h6>
               </li>
               <!-- PRICE -->
-              <li class="col-sm-2">
+              <li class="col-sm-1">
                 <h6>PRECIO</h6>
               </li>
               <!-- QTY -->
@@ -93,7 +93,7 @@
               </li>
               
               <!-- TOTAL PRICE -->
-              <li class="col-sm-2">
+              <li class="col-sm-1">
                 <h6>TOTAL</h6>
               </li>
               <li class="col-sm-1"> </li>
@@ -103,11 +103,11 @@
            
            %>
           <!-- Cart Details -->
-          <ul class="row cart-details">
+          <ul class="row cart-details" style=" padding-left: 0px;">
             <li class="col-sm-6">
               <div class="media"> 
                 <!-- Media Image -->
-                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="../images/imagenesdc/<%= linea.getTorta().getRutaImg() %>" alt=""> </a> </div>
+                <div class="media-left media-middle"> <a href="#." class="item-img"> <img class="media-object" src="images\imagenesdc\<%= linea.getTorta().getRutaImg() %>" alt=""> </a> </div>
                 
                 <!-- Item Name -->
                 <div class="media-body">
@@ -125,7 +125,7 @@
             </li>
             
             <!-- PRICE -->
-            <li class="col-sm-2">
+            <li class="col-sm-1">
               <div class="position-center-center"> <span class="price"><small>$</small><%= linea.getTorta().getPrecio() %></span> </div>
             </li>
             
@@ -138,7 +138,7 @@
                    <form action="CtrlMaestro" method="post">
                    <input type="hidden"  name="form" value="ActualizarLineaComando"/>
                    <input type="hidden" name="idTorta" value="<%= linea.getTorta().getId() %>"/>
-                   <input onchange="submit()" min="1" class="tamanio cart_quantity_input"type="number" name="cantidad" value="<%=linea.getCantidad()%>"/>
+                   <input onchange="submit()" min="1" class="tamanio cart_quantity_input"type="number"  name="cantidad" value="<%=linea.getCantidad()%>"/>
                    
                    </form>
               </div>
@@ -147,17 +147,17 @@
             </li>
             
             <!-- TOTAL PRICE -->
-            <li class="col-sm-2">
+            <li class="col-sm-1">
               <div class="position-center-center"> <span class="price"><small>$</small><%= (linea.getCantidad()*linea.getTorta().getPrecio() )  %></span> </div>
             </li>
             
             <!-- REMOVE -->
-            <li class="col-sm-1">
+            <li class="col-sm-2">
               <div class="position-center-center"> 
                   <form action="CtrlMaestro" method="post" id="eliminarLinea">
                       <input type="hidden" name="form" value="EliminarLineaComando">
                       <input type="hidden" name="idTortaEliminar" value="<%= linea.getTorta().getId() %>">
-                      <a href="javascript:;" type="submit" onclick="document.getElementById('eliminarLinea').submit()"><i class="icon-close"></i></a> 
+                      <input class="btn btn-danger"  type="submit" value="Eliminar">
                   </form>
                   
               </div>
@@ -232,17 +232,24 @@
                   <% if(cuponActual != null){ 
                     session.setAttribute("cuponSi", true);   
                   float porcDescuento = cuponActual.getPorcDescuento(); 
+                  ped.setPorcentajeDescuento(porcDescuento);
                   session.setAttribute("porcDescuento", porcDescuento);%>
                   <p class="all-total">PORCENTAJE DE DESCUENTO<span>%<%= cuponActual.getPorcDescuento() %></span></p>
                   <% float descuento = (cuponActual.getPorcDescuento()*subtotal)/100; 
-                   session.setAttribute("descuentoPesos", descuento); %>
+                   session.setAttribute("descuentoPesos", descuento);
+                  ped.setDescuento(descuento);  %>
                   <p class="all-total">DESCUENTO EN $<span><%= descuento %></span></p>
                   <% float total = subtotal - descuento; 
-                  session.setAttribute("total", total); %>
+                  session.setAttribute("total", total); 
+                  ped.setTotal(total); %>
                   <p class="all-total">TOTAL<span><%= total %></span></p>
                   
                   
-                  <% } %> 
+                  <% } else{
+                    ped.setPorcentajeDescuento(0);
+                    ped.setDescuento(0);
+                       }
+                                    %> 
                 </div>
               </div>
             </div>
@@ -252,6 +259,18 @@
             <div class="row">
                 
                 <br>
+                 <% if(usu != null){  %>
+                <form action="CtrlMaestro" method="post">
+                     <input type="hidden"  name="form" value="RedireccionarComando"/>
+                     <input type="hidden"  name="destino" value="/Checkout.jsp"/>
+                
+                 
+                     <input class="btn btn-default add-to-cart linea" type="submit" value="Checkout" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
+                     
+                </form><br><br>
+                
+                
+                <% } else{ %>
                 <h5>
                     Si posee una cuenta puede <h5> 
                     <form action="CtrlMaestro" method="post" id="formLogin">
@@ -269,6 +288,9 @@
                 </h5>
               
                 <br>
+               
+
+
                 <form action="CtrlMaestro" method="post">
                      <input type="hidden"  name="form" value="RedireccionarComando"/>
                      <input type="hidden"  name="destino" value="/Checkout.jsp"/>
@@ -277,7 +299,7 @@
                      <input class="btn btn-default add-to-cart linea" type="submit" value="No, gracias. continuar al checkout" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
                      
                 </form><br><br>
-                        
+                     <% } %>   
                    <form action="CtrlMaestro" method="post">
                      
                         <input type="hidden"  name="form" value="RedireccionarComando"/>
@@ -311,7 +333,7 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
+<script src="js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');

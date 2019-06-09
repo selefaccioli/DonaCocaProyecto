@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 public class Usuario {
@@ -15,6 +16,8 @@ public class Usuario {
     private String mail;
     private String telefono;
     private String direccion;
+    private Date fechaNacimiento;
+    private String conocimiento;
     
     public Usuario(){}
 
@@ -106,6 +109,22 @@ public class Usuario {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getConocimiento() {
+        return conocimiento;
+    }
+
+    public void setConocimiento(String conocimiento) {
+        this.conocimiento = conocimiento;
     }
     
     

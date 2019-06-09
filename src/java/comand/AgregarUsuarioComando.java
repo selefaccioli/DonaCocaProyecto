@@ -6,7 +6,10 @@
 package comand;
 
 import entity.Usuario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +50,15 @@ public class AgregarUsuarioComando extends Comando{
         usNuevo.setMail(request.getParameter("mailUsu"));
         usNuevo.setTelefono(request.getParameter("telUsu"));
         usNuevo.setDireccion(request.getParameter("dicUsu"));
+         SimpleDateFormat formato =  new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date fecha = formato.parse(request.getParameter("fecNac"));
+            usNuevo.setFechaNacimiento(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(RegistroComando.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
+        usNuevo.setConocimiento(request.getParameter("conocimiento"));
         ArrayList<Usuario> usuarios;
         
         if(!existeUsuario){

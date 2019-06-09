@@ -1,28 +1,86 @@
 
 <%@page import="entity.Usuario"%>
 <%@page import="entity.Parametro"%>
-<%@page import="entity.Detalle"%>
+<%@page import="entity.Parametro"%>
+<%@page import="entity.Variante"%>
 <%@page import="entity.Torta"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="entity.Torta"%>
+<%@page import="entity.Cupon"%>
+<%@page import="entity.Cupon"%>
+<%@page import="entity.Pedido"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
-<html lang="en">
- <jsp:include page="head.jsp"/>
- <body onload="scrollDiv()">
-     <!-- LOADER -->
-<div id="loader">
-  <div class="position-center-center">
-    <div class="ldr"></div>
-  </div>
-</div>
+<html>
+  <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="M_Adnan">
+<title>PAVSHOP - Multipurpose eCommerce HTML5 Template</title>
 
-<!-- Wrap -->
-<div id="wrap"> 
+<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
+<link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
+
+
+
+<!-- Custom CSS -->
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="css/ionicons.min.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
+
+
+<!-- Bootstrap Core CSS -->
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+<!-- JavaScripts -->
+<script src="js/modernizr.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous"></script>
   
-  <!-- header -->
-  <jsp:include page="header.jsp"/>
-  
-        <%!ArrayList<Usuario> usuarios;%>
+
+
+<!-- Online Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+	
+	
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	
+	<style type="text/css" class="init">
+	
+	</style>
+	
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	
+	<script type="text/javascript" class="init">
+	
+$(document).ready(function() {
+	$('#example').DataTable( {
+		"pagingType": "full_numbers"
+	} );
+} );
+
+	</script>
+
+
+</head>
+<body class="wide comments example" onload="scrollDiv()">
+     <jsp:include page="header.jsp"/>
+      <%!ArrayList<Usuario> usuarios;%>
         <%!Parametro param;%>
         <%!Usuario usuario;%>
         <% if(session.getAttribute("parametros")!=null){ param = (Parametro) session.getAttribute("parametros"); }%>
@@ -33,25 +91,34 @@
                 usuario = (Usuario)request.getAttribute("usuarioPorAgregar");  
                 
         %>
-        <div class="cuenta">
-            <div class="container"> 
-                <%if(request.getAttribute("ex")!=null && usuario ==null ){ %>
+	<a name="top" id="top"></a>
+	<div class="fw-background">
+		<div></div>
+	</div>
+	<div class="fw-container">
+          
+                        
+      <%if(request.getAttribute("ex")!=null && usuario ==null){ %>
                 <div class="row">
                     <div class="alert alert-success fade in">
                         <%= request.getAttribute("ex")%>
+                        <% request.setAttribute("ex", null);}%>
                     </div>
                 </div>
-                <%}%>
-                <% if(usuarios!=null) { %>
-                <div class="row">
-                    <h2 class="title text-center">Lista de Usuarios</h2> 
-                    <div class="col-sm-12">
-                        <div class="table-responsive" style="height:400px; overflow:auto">
-                            <div class="table-striped">
-                                <table class="table table-striped">
-                                    <thead>
+	
+		
+		<div class="fw-body">
+			<div class="content">
+                              
+                            <h2 class="title text-center">Usuarios</h2> 
+				
+		<% if(usuarios!=null) { %>
+                 
+				<table id="example" class="display" style="width:100%">
+					  <thead>
                                         <tr>
-                                            <th>ID</th>
+                                       
+                                       
                                             <th>Nombre</th>
                                             <th>Apellido</th>
                                             <th>DNI</th>
@@ -62,12 +129,13 @@
                                             <th>Telefono</th>
                                             <th>Direccion</th>
                                             <th></th>
-                                           
-                                            <th></th>
-                                        </tr>
+                                          
+                                    </tr>
                                     </thead>
+                                    
                                     <tbody>
-                                        <tr>
+                                         <tr>
+                                           
                                             <td> - </td>
                                             <td> - </td>
                                             <td> - </td>
@@ -77,7 +145,7 @@
                                             <td> - </td>
                                             <td> - </td>
                                             <td> - </td>
-                                            <td> - </td>
+                                           
                                             
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
@@ -87,16 +155,17 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                        <%for(Usuario u: usuarios){
+                                         <%for(Usuario u : usuarios){
                                         %>
                                         <tr>
-                                            <td><%= u.getId() %></td>
+                                          
+                                           
                                             <td><%= u.getNombre()%></td>
                                             <td><%= u.getApellido() %></td>
                                             <td><%= u.getDni() %></td>
                                             <td><%= u.getUsuario() %></td>
-                                            <td><%if(u.isActivo()){%><img src="./images/check.png"><%}%></td>
-                                            <td><%if(u.isEsAdmin()){%><img src="./images/check.png"><%}%></td>
+                                            <td><%if(u.isActivo()){%><img src="images\check.png"><%}%></td>
+                                            <td><%if(u.isEsAdmin()){%><img src="images\check.png"><%}%></td>
                                             <td><%= u.getMail() %></td>
                                             <td><%= u.getTelefono() %></td>
                                             <td><%= u.getDireccion() %></td>
@@ -109,13 +178,20 @@
                                             </td>
                                         </tr>
                                         <%}%>
+                                   
                                     </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div> 
-                </div>
-                <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); }%> class="row">
+					
+					
+				</table>
+				
+				<%} %>
+			
+			</div>
+                                
+                                
+		</div>
+                  
+                   <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); }%> class="row">
                     <br/>         
                     <h2 class="title text-center"><%if(usuario!=null && request.getAttribute("usuarioPorAgregar")==null){%>EDITAR<%} else{%>AGREGAR<%}%> USUARIO</h2>
                     <br/>
@@ -135,7 +211,7 @@
                                     <h6 class="text-left">Nombre</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="nomUsu" placeholder="*"  required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getNombre()%>">
+                                    <input type="text" class="control form-control" name="nomUsu" placeholder="*" pattern="^[\s\S]{0,30}$" title="Solo se permiten hasta 30 caracteres" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getNombre()%>">
                                 </div>
                             </div>
                            
@@ -149,7 +225,7 @@
                                 
                                 <div class="col-sm-6">
                                     <h6 class="text-left">Apellido</h6>
-                                 <input type="text" class="control form-control" name="apeUsu" placeholder="*"  required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%= usuario.getApellido() %>">
+                                 <input type="text" class="control form-control" name="apeUsu" placeholder="*" pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%= usuario.getApellido() %>">
 
                                 </div>
                             </div>                        
@@ -159,7 +235,7 @@
                                     <h6 class="text-left">DNI</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="dniUsu" placeholder="*"  required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getDni()%>">
+                                    <input type="text" class="control form-control" name="dniUsu" placeholder="*" pattern="^\d{0,8}" title="Solo se permiten numeros. Hasta 8 digitos" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getDni()%>">
                                 </div>
                             </div>
                                 
@@ -172,7 +248,7 @@
                                     <h6 class="text-left">Nombre Usuario</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="usuUsu" placeholder="*"  required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getUsuario()%>">
+                                    <input type="text" class="control form-control" name="usuUsu" placeholder="*" pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getUsuario()%>">
                                 </div>
                             </div>      
                                  
@@ -197,7 +273,7 @@
                                     <h6 class="text-left">Mail</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="mailUsu" placeholder="*"  required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getMail()%>">
+                                    <input type="email" class="control form-control" name="mailUsu" placeholder="*" pattern="^[\s\S]{0,40}$" title="Solo se permiten hasta 40 caracteres" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getMail()%>">
                                 </div>
                             </div>
                                 
@@ -206,7 +282,7 @@
                                     <h6 class="text-left">Telefono</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="telUsu" placeholder="*"  required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getTelefono()%>">
+                                    <input type="text" class="control form-control" name="telUsu" placeholder="*" pattern="^\d{0,20}" title="Solo se permiten numeros. Hasta 20 digitos" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getTelefono()%>">
                                 </div>
                             </div>
                                 
@@ -217,13 +293,40 @@
                                     <h6 class="text-left">Direccion</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="dicUsu" placeholder="*"  required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getDireccion()%>">
+                                    <input type="text" class="control form-control" name="dicUsu" placeholder="*" pattern="^[\s\S]{0,45}$" title="Solo se permiten hasta 45 caracteres" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%=usuario.getDireccion()%>">
                                 </div>
                             </div>
                                 
                               </div>
+                            <div class="col-sm-6 ">
+                                <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="text-left">Fecha de Nacimiento</h6>
+                                </div>
+                                <div class="col-sm-9">
+                                     <input type="date" name="fecNac" value="" placeholder="DNI" required value="<%if(usuario!=null || request.getAttribute("usuarioPorAgregar")!=null)%><%= usuario.getFechaNacimiento() %>">
+                                   
+                                </div>
+                            </div>
                                 
+                              </div>    
+                              <div class="col-sm-6 ">
+                                <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="text-left">Como Conoció a Doña Coca</h6>
+                                </div>
+                                <div class="col-sm-9">
+                                       <select class="form-control"  name="conocimiento" required>
+                                    <option value="instagram">Instagram</option>     
+                                     <option value="facebook">Facebook</option>
+                                    <option value="recomendacion">Recomendación</option>
+                                    <option value="boca en boca">Boca en Boca</option>
+                                    <option value="otro">Otro</option>
+                                    </select> 
+                                </div>
+                            </div>
                                 
+                              </div>   
                             <br/>
                              <% if(usuario==null) {%>
                               <div class="col-sm-6 ">
@@ -282,21 +385,40 @@
                       
                     
                 </div>
-                <% }%>
-            </div>
-        </div>
-<script src="js/jquery-1.11.3.min.js"></script> 
+                                
+                                
+                </div>
+	</div>
+	<script type="text/javascript">
+$(".dataTables_filter").hide();
+</script>
+	<script type="text/javascript">
+				  var _gaq = _gaq || [];
+				  _gaq.push(['_setAccount', 'UA-365466-5']);
+				  _gaq.push(['_trackPageview']);
+
+				  (function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				  })();
+	</script>
+   
 <script src="js/bootstrap.min.js"></script> 
-<script src="js/own-menu.js"></script> 
+
 <script src="js/jquery.lighter.js"></script> 
-<script src="js/owl.carousel.min.js"></script> 
+
 
 <!-- SLIDER REVOLUTION 4.x SCRIPTS  --> 
-<!-- SLIDER REVOLUTION 4.x SCRIPTS  --> 
-<script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
-<script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
-<script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
-<script src="../js/sha.js" type="text/javascript"></script>
+
+
+
+
+
+<script>
+	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
+</script>
+
+<script src="js/mainSele.js" type="text/javascript"></script>
 </body>
 </html>

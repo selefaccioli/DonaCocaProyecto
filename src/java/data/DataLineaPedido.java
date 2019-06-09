@@ -15,7 +15,7 @@ public class DataLineaPedido {
     Connection conec= null;
     
     public ArrayList<LineaPedido> obtenerLineasPedido (int idPedido) throws DonaCocaException{
-        String sql = "select * from linea_pedido where id_pedido =? ;";
+        String sql = "select * from linea_pedido1 where id_pedido =? ;";
         Connection con = null;      
         ArrayList<LineaPedido> lineas = new ArrayList<>();
         
@@ -34,6 +34,8 @@ public class DataLineaPedido {
                 lp.setCantidad(rs.getInt(3));
                 lp.setTorta(new DataTorta().obtenerTorta(rs.getInt(2)));
                 lp.setSubtotal(rs.getDouble(4));
+                DataLineaPedidoVariante dlpv = new DataLineaPedidoVariante();
+                lp.setVariantes(dlpv.obtenerVariantesLp(lp));
                 lineas.add(lp);
                 
             }    
@@ -51,7 +53,7 @@ public class DataLineaPedido {
         
         for(LineaPedido lp: lineas ) 
         {   
-            String sql = "insert into linea_pedido(id_pedido,cantidad,id_torta,subtotal) values (?,?,?,?);";
+            String sql = "insert into linea_pedido1(id_pedido,cantidad,id_torta,subtotal) values (?,?,?,?);";
            
             try
             {
@@ -71,6 +73,7 @@ public class DataLineaPedido {
         }      
     }      
     
+       
       
       
 }

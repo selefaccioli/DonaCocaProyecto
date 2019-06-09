@@ -31,7 +31,7 @@ function validarEliminacion(){
     var nombre = document.getElementById('nomTorta');
     var id = document.getElementById('idTortaElim');
 
-    if (confirm("Est\u00e1  seguro que desea eliminar la torta " + id.value + ": "+ nombre.value + "?")){ 
+    if (confirm("Est\u00e1  seguro que desea eliminar la torta?")){ 
        document.eliminarTorta.submit(); 
     }
     else{
@@ -44,7 +44,8 @@ function validarEliminacion(){
 function validarChecks()
 {
     cant = 0;
-    for(i=0; i<document.datosTorta.variantes1.length; i++)
+   
+        for(i=0; i<document.datosTorta.variantes1.length; i++)
     {
         if(document.datosTorta.variantes1[i].checked)
         {
@@ -52,27 +53,8 @@ function validarChecks()
         }
     }
     
-    if(cant!==0)
-    {
-        return true;
-    }
-    else
-    {
-        alert("Seleccione alg\u00fan detalle para la torta");
-        return false;
-    }
-}
-
-function validarChecks2()
-{
-    cant = 0;
-    for(i=0; i<document.datosVariantes.variantesD.length; i++)
-    {
-        if(document.datosVariantes.variantesD[i].checked)
-        {
-            cant++;
-        }
-    }
+    
+    
     
     if(cant!==0)
     {
@@ -80,9 +62,39 @@ function validarChecks2()
     }
     else
     {
-        alert("Seleccione alg\u00fan checkbox");
+        alert("Seleccione alguna variante para la torta");
         return false;
     }
+}
+
+function validarChecks2()
+{
+    var cant = 0;
+    
+       
+    
+    
+        /*for(i=0; i < $('[name=variantesD]').length; i++){
+    
+        if($('[name=variantesD]').prop('checked'))
+        {
+            cant++;
+        }
+    }*/
+    
+    if($('.check').length > 0){
+        if($('.check:checked').length > 0)
+    {
+        return true;
+    }
+    else
+    {
+        alert("Seleccione alg\u00fan checkbox");
+        return false;
+    } 
+    }
+    
+   
 }
 /*Validación de que coinciden las password*/
 function validarPass()
@@ -189,7 +201,11 @@ function openCity(evt, cityName) {
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
+  
+ 
 }
 
-document.getElementById("defaultOpen").click();
-     
+
+
+
+

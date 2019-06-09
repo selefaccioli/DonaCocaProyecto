@@ -91,16 +91,32 @@ public class CalcularPrecioComprarComando extends Comando{
         int idTorta = tortaAgregar.getId();
         Pedido pedido = (Pedido)request.getSession().getAttribute("pedido");
         int lineaExiste = 0;
-   
-        for(LineaPedido lp : pedido.getLineasPedido()){
         
-        if(lp.getTorta().getId() == idTorta){  //ya estaba en el carro 
+        for(LineaPedido lp : pedido.getLineasPedido()){
+            int cont = 0;
+            if(tortaAgregar.getVariantes().size() == lp.getTorta().getVariantes().size()){
+                 for(int i =0; i < tortaAgregar.getVariantes().size() ; i++){
+             
+                   if(tortaAgregar.getVariantes().get(i).getId() == lp.getTorta().getVariantes().get(i).getId()){
+                       ++cont;
+                   }
+             
+                } 
+                 
+            if(cont == tortaAgregar.getVariantes().size()){ //ya existia la torta
             lp.setCantidad(lp.getCantidad() + 1);
             lp.setSubtotal(tortaAgregar.getPrecio() * lp.getCantidad());
             request.getSession().setAttribute("exitoTortaAgregada", true);
             
             lineaExiste = 1;
-        }
+                 }
+            } 
+           
+         
+        
+       /* if(lp.getTorta().getId() == idTorta){  //ya estaba en el carro 
+           
+        }*/
         
         
     }
@@ -116,6 +132,7 @@ public class CalcularPrecioComprarComando extends Comando{
             lp.setCantidad(1); //porque no estaba antes en el carro va a ser 1
             lp.setTorta(tortaAgregar);
             lp.setSubtotal(tortaAgregar.getPrecio());
+            lp.setVariantes(tortaAgregar.getVariantes());
             pedido.setLinea(lp);
             request.getSession().setAttribute("exitoTortaAgregada", true);
             

@@ -1,14 +1,17 @@
 
 package entity;
 
+import java.util.ArrayList;
+
 
 public class LineaPedido {
     private int idPedido;
     private int cantidad;
     private Torta torta;
     private double subtotal;
+    private ArrayList<Variante> variantes;
     
-    public LineaPedido(){}
+    public LineaPedido(){ }
 
     public int getIdPedido() {
         return idPedido;
@@ -40,6 +43,14 @@ public class LineaPedido {
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public ArrayList<Variante> getVariantes() {
+        return variantes;
+    }
+
+    public void setVariantes(ArrayList<Variante> variantes) {
+        this.variantes = variantes;
     }
 
     

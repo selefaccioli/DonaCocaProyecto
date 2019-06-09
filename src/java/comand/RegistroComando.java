@@ -6,6 +6,9 @@
 package comand;
 
 import entity.Usuario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +47,14 @@ public class RegistroComando extends Comando{
         usu.setTelefono(request.getParameter("telUsu"));
         usu.setActivo(true);
         usu.setEsAdmin(false);
+        SimpleDateFormat formato =  new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date fecha = formato.parse(request.getParameter("fecNac"));
+            usu.setFechaNacimiento(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(RegistroComando.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        usu.setConocimiento(request.getParameter("conocimiento"));
         
         if(!existeUsuario){
             try {

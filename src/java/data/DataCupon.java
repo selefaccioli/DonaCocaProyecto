@@ -46,7 +46,7 @@ public class DataCupon {
                 
                 cupones.add(c);
             }
-            
+            conec.close();
         } catch (SQLException ex) {
             throw new DonaCocaException("Error al obtener cupones all",ex);
         }
@@ -140,7 +140,7 @@ public class DataCupon {
     }
      public void actualizarCupon(Cupon cupon) throws DonaCocaException{      
        
-            String sql="update cupon set  activo=?, porc_descuento=? where codigo=?";  
+            String sql="update cupon set  activo=?, porc_descuento=?, codigo=? where id_cupon=?";  
             try
             {
                 conec= conn.getConn();
@@ -148,6 +148,7 @@ public class DataCupon {
                 ps.setBoolean(1, cupon.isActivo());
                 ps.setFloat(2, cupon.getPorcDescuento());
                 ps.setString(3, cupon.getCodigo());
+                ps.setInt(4, cupon.getId());
                 
               
                 ps.executeUpdate();

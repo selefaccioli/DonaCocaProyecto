@@ -6,6 +6,7 @@ import entity.Pedido;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import util.DonaCocaException;
 
 /**
@@ -41,6 +42,10 @@ public class CtrlPedido {
     
     public void registrarSena(Pedido p) throws DonaCocaException{
         dp.registrarSena(p);
+    }
+    
+    public ArrayList<Pedido> filtrosPedidos(Date fDesde, Date fHasta, String estado, String usuario) throws DonaCocaException, SQLException{
+       return dp.filtrosPedidos(fDesde, fHasta, estado, usuario);
     }
     
 }

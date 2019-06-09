@@ -132,12 +132,13 @@ public class DataDetalle {
     }
       public void registrarDetalle(Detalle det)throws DonaCocaException{
         PreparedStatement ps;
-        String transac = "insert into detalle(nombre,elige_usuario) values (?,?);";
+        String transac = "insert into detalle(nombre,elige_usuario,multiple) values (?,?,?);";
         try{
             Connection conec= conn.getConn();
             ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, det.getNombre());
             ps.setBoolean(2, det.getEligeUsuario());
+            ps.setBoolean(3, det.getMultiple());
             
             ps.executeUpdate();
             ResultSet rs= ps.getGeneratedKeys();
@@ -157,14 +158,15 @@ public class DataDetalle {
     }
       
     public void editarDetalle(Detalle det) throws DonaCocaException{
-        String sql="update detalle set nombre=? , elige_usuario=?  where id_detalle=?";
+        String sql="update detalle set nombre=? , elige_usuario=?, multiple =?  where id_detalle=?";
                
         try{
             Connection conec= conn.getConn();
             PreparedStatement ps = conec.prepareStatement(sql);
             ps.setString(1, det.getNombre());
             ps.setBoolean(2, det.getEligeUsuario());
-            ps.setInt(3, det.getId());
+            ps.setBoolean(3, det.getMultiple());
+            ps.setInt(4, det.getId());
             
             ps.executeUpdate();
             conec.close();

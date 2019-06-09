@@ -23,7 +23,7 @@
         <%  Usuario usu = (Usuario)request.getSession().getAttribute("usuario");
             CtrlPedido ctrlP = new CtrlPedido();
          ArrayList<Pedido> pedidosUsu = ctrlP.obtenerPedidos(usu.getId());%>
-        <% %>
+      
         <div class="cuenta">
             <div class="container"> 
                 <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); };%> class="row">
@@ -43,33 +43,52 @@
                             Usted nunca ha realizado pedidos.       
                         </div>
                         <%}else{%>
-                        <div class="table-responsive">
+                       
+                             <div class="table-responsive">
                             <div class="table-striped">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID Pedido</th>
-                                            <th>F Pedido</th>
-                                            <th>F Entrega</th>
-                                            <th>Total</th>
-                                            <th>Tortas</th>
-                                            <th>Estado</th>
-                                        </tr>
+                                        <th>ID</th>
+                                        <th>F Pedido</th>
+                                        <th>F Entrega</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th>Total seña</th>
+                                        <th>Restan pagar</th>
+                                        <th>Destino</th>
+                                        <th></th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                    <%for(Pedido p: pedidosUsu){%>
+                                        <%for(Pedido p: pedidosUsu){ %>
+                                        
                                         <tr>
-                                            <td><%= p.getId()  %></td>
+                                            <td><%= p.getId() %></td>
                                             <td><%= p.getFechaPedido() %></td>
                                             <td><%= p.getFechaEntrega() %></td>
-                                             <td><%= p.getTotal() %></td>
-                                            <td>
-                                            <% for(LineaPedido lp: p.getLineasPedido()){
-                                              lp.getTorta().getNombre();   }%> <br>                                          
+                                            <td><%= p.getTotal() %></td>
+                                             <% if(p.getEstado().equals("Pendiente")){   %>
+                                            <td><button type="button" class="btn btn-primary btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } else if(p.getEstado().equals("Aprobado")){   %>
+                                            <td><button type="button" class="btn btn-success btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } else if(p.getEstado().equals("Cancelado")){  %>
+                                            <td><button type="button" class="btn btn-danger btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } else{  %>
+                                            <td><button type="button" class="btn btn-info btn-sm"><%= p.getEstado() %></button></td>
+                                            <% } %>
+                                            <td><%= p.getSena() %></td>
+                                            <td><%= p.getTotal() - p.getSena() %></td>
                                           
+                                            <td><%= p.getUsuario().getDireccion()%></td>
+                                            <td>
+                                                <form action="CtrlMaestro" method="post">
+                                                    <input type="hidden"  name="form" value="RedireccionarPedidoComando"/>
+                                                    <input type="hidden"  name="destino" value="/pedidoDetalle.jsp"/>
+                                                    <input type="hidden" name="idPedidoEdit" value="<%= p.getId()%>">
+                                                    <input type="submit" class="btn btn-default" value="Ver pedido">
+                                                </form>
                                             </td>
-                                            
-                                            <td><%= p.getEstado()%></td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -92,7 +111,7 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
 <script src="js/main.js"></script>
-<script src="../js/mainSele.js" type="text/javascript"></script>
+<script src="js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');

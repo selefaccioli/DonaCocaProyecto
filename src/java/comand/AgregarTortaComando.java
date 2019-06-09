@@ -9,6 +9,7 @@ import data.DataTorta;
 import entity.Detalle;
 import entity.Torta;
 import entity.Variante;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -18,9 +19,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import static jdk.nashorn.internal.objects.NativeError.getFileName;
 import logic.CtrlDetalle;
 import logic.CtrlTorta;
 import util.DonaCocaException;
@@ -89,15 +93,27 @@ public class AgregarTortaComando extends Comando{
             if(imagen.getSize() > 0 )
             {
                 File ruta = new File("C:\\Users\\selef\\OneDrive\\Documentos\\NetBeansProjects\\Curso Java\\JavaFinalWebSele\\web\\images\\imagenesdc");
+                
                 InputStream inputStream = imagen.getInputStream();
-                String fileName =  Paths.get(imagen.getSubmittedFileName()).getFileName().toString();
-                File file = new File(ruta, fileName);
-                Files.copy(inputStream, file.toPath(),StandardCopyOption.REPLACE_EXISTING);
-                String rutaImg = fileName;
+                //String fileName =  Paths.get(imagen.getSubmittedFileName()).getFileName().toString();
+                //String fileName = (String) getFileName(imagen);
+                //File file = new File(ruta, fileName);
+                //Files.copy(inputStream, file.toPath(),StandardCopyOption.REPLACE_EXISTING);
+                //String rutaImg = fileName;
+                
+                ServletContext servletContext = request.getServletContext();
+                String absoluteDiskPath = servletContext.getRealPath("/images/imagenesdc");
+                String fileName = torta.getNombre()+" Imagen "+".jpg"; // MSIE fix.
+                InputStream input = imagen.getInputStream();
+                           BufferedImage bi = ImageIO.read(input);
+                           if(bi != null){
+                            ImageIO.write(bi, "jpg", new File(absoluteDiskPath, fileName));
+                           
+                            }
                 
                 if(inputStream!=null){
                    // torta.setImagen(inputStream);
-                    torta.setRutaImg(rutaImg);
+                    torta.setRutaImg(fileName);
                 }
                     
             }

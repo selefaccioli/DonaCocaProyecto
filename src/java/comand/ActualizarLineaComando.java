@@ -19,8 +19,9 @@ public class ActualizarLineaComando extends Comando{
     @Override
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
         int idTorta = Integer.parseInt(request.getParameter("idTorta"));
-        String cantStr=request.getParameter("cantidad");
+        String cantStr= request.getParameter("cantidad");
         
+        //  [1-9][0-9]* 
         if(cantStr.matches("[1-9][0-9]*"))
         {
             int cant = Integer.parseInt(cantStr);

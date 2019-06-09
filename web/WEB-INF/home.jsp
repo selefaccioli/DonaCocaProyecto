@@ -20,28 +20,17 @@
 <div id="wrap"> 
   
   <!-- header -->
-  <jsp:include page="header.jsp"/>
+ <jsp:include page="header.jsp"/>
   
- <div class="logo">
-               <% if(session.getAttribute("exitoTortaAgregada") != null){ %>
-        <div class="alert alert-success ">
-        <p class="text-center">Torta agregada al carro</p>        
-         </div>
-               <% session.setAttribute("exitoTortaAgregada", null); } %>
-        </div>
-        
-          <!--======= SUB BANNER =========-->
-  <section class="sub-bnr" data-stellar-background-ratio="">
+  <!--======= SUB BANNER =========-->
+  <section class="sub-bnr" data-stellar-background-ratio="0.5">
     <div class="position-center-center">
-      <div class="container">
-        
-        
-      </div>
+     
     </div>
   </section>
   
   <!-- Content -->
-  <div id="content"> 
+ <div id="content"> 
     
     <!-- Popular Products -->
     <section class="shop-page padding-top-100 padding-bottom-100">
@@ -89,7 +78,7 @@
           <div class="col-md-3">
             <div class="item"> 
               <!-- Item img -->
-              <div class="item-img"> <img class="img-1" style="width: 263px;height: 340px" src="../images/imagenesdc/<%= t.getRutaImg() %>" alt="">
+              <div> <img  style="width: 263px;height: 340px" src="images\imagenesdc\<%= t.getRutaImg() %>" alt="">
                
              
               </div>
@@ -113,7 +102,7 @@
           
 
                </div>
-                  <% } }  %>
+                  <% } } }  %>
          
         </div>
       </div>
@@ -121,9 +110,7 @@
     
    
   </div>
-<% } %>
-  
-  <!--======= RIGHTS =========--> 
+
   
 </div>
 <script src="js/jquery-1.11.3.min.js"></script> 
@@ -136,10 +123,12 @@
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
 <script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
 <script src="js/main.js"></script> 
-<script src="../js/mainSele.js" type="text/javascript"></script>
+
+<script src="js/mainSele.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
 </script>
+
 </body>
 </html>

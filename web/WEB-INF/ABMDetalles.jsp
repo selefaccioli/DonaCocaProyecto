@@ -1,28 +1,86 @@
 
-<%@page import="entity.Variante"%>
-<%@page import="entity.Parametro"%>
 <%@page import="entity.Detalle"%>
+<%@page import="entity.Parametro"%>
+<%@page import="entity.Parametro"%>
+<%@page import="entity.Variante"%>
 <%@page import="entity.Torta"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="entity.Torta"%>
+<%@page import="entity.Cupon"%>
+<%@page import="entity.Cupon"%>
+<%@page import="entity.Pedido"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
-<html lang="en">
-<jsp:include page="head.jsp"/>
- <body onload="scrollDiv()">
-     <!-- LOADER -->
-<div id="loader">
-  <div class="position-center-center">
-    <div class="ldr"></div>
-  </div>
-</div>
+<html>
+  <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="M_Adnan">
+<title>PAVSHOP - Multipurpose eCommerce HTML5 Template</title>
 
-<!-- Wrap -->
-<div id="wrap"> 
+<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
+<link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
+
+
+
+<!-- Custom CSS -->
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="css/ionicons.min.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
+
+
+<!-- Bootstrap Core CSS -->
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+<!-- JavaScripts -->
+<script src="js/modernizr.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous"></script>
   
-  <!-- header -->
-  <jsp:include page="header.jsp"/>
-  
-        <%!ArrayList<Detalle> detalles;%>
+
+
+<!-- Online Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+	
+	
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	
+	<style type="text/css" class="init">
+	
+	</style>
+	
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	
+	<script type="text/javascript" class="init">
+	
+$(document).ready(function() {
+	$('#example').DataTable( {
+		"pagingType": "full_numbers"
+	} );
+} );
+
+	</script>
+
+
+</head>
+<body class="wide comments example" onload="scrollDiv()">
+     <jsp:include page="header.jsp"/>
+      <%!ArrayList<Detalle> detalles;%>
         <%!ArrayList<Variante> variantes;%>
         <%!Parametro param;%>
         <%!Detalle detalle;%>
@@ -35,56 +93,66 @@
                 detalle = (Detalle)request.getAttribute("detallePorAgregar");  
                 
         %>
-        <div class="cuenta">
-            <div class="container"> 
-                <%if(request.getAttribute("ex")!=null && detalle ==null ){ %>
+	<a name="top" id="top"></a>
+	<div class="fw-background">
+		<div></div>
+	</div>
+	<div class="fw-container">
+          
+                        
+      <%if(request.getAttribute("ex")!=null){ %>
                 <div class="row">
                     <div class="alert alert-success fade in">
                         <%= request.getAttribute("ex")%>
+                        <% request.setAttribute("ex", null);}%>
                     </div>
                 </div>
-                <%}%>
-                <% if(detalles!=null) { %>
-                <div class="row">
-                    <h2 class="title text-center">Lista de detalles</h2> 
-                    <div class="col-sm-12">
-                        <div class="table-responsive" style="height:400px; overflow:auto">
-                            <div class="table-striped">
-                                <table class="table table-striped">
-                                    <thead>
+	
+		
+		<div class="fw-body">
+			<div class="content">
+                              
+                            <h2 class="title text-center">Detalles</h2> 
+				
+		<% if(detalles!=null) { %>
+                <table id="example" class="display" style="width:100%">
+					  <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Elige Usuario</th>
-                                            <th>Agregar / Editar</th>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Multiple</th>
+                                       
                                            
-                                            <th></th>
-                                        </tr>
+                                        <th></th>
+                                    </tr>
                                     </thead>
+                                    
                                     <tbody>
-                                        <tr>
-                                            <td> - </td>
+                                         <tr>
                                             <td> - </td>
                                             <td> - </td>
                                             <td> - </td>
                                             
+                                           
+                                            
                                             <td>
-                                                <form action="CtrlMaestro" method="post">
+                                                  <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="SeleccionarDetalleComando"/>
                                                     <input type="hidden" name="idDetalleEdit" value="0">
                                                     <input type="submit" value="+ Nuevo" class="btn btn-info btn-sm">
                                                 </form>
                                             </td>
                                         </tr>
-                                        <%for(Detalle d: detalles){
+                                         <%for(Detalle d: detalles){
                                         %>
-                                       
-                                        <tr> 
+                                        <tr>
                                             <td><%= d.getId()%></td>
-                                            <td><%= d.getNombre()%></td>
-                                            <td><%if(d.getEligeUsuario()){%><img src="./images/check.png"><%}%></td>
+                                            <td><%= d.getNombre() %></td>
+                                            
+                                            <td><%if(d.getMultiple()){%><img src="images\check.png"><%}%></td>
+                                            
                                             <td>
-                                                <form action="CtrlMaestro" method="post">
+                                               <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="SeleccionarDetalleComando"/>
                                                     <input type="hidden" name="idDetalleEdit" value="<%= d.getId() %>">
                                                     <input type="submit" value="Editar" class="btn btn-default btn-sm">
@@ -92,13 +160,19 @@
                                             </td>
                                         </tr>
                                         <%}%>
+                                   
                                     </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div> 
-                </div>
-                <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); }%> class="row">
+					
+					
+				</table>
+				
+				<%} %>
+			
+			</div>
+                                
+                                
+		</div>
+                    <div <%if(session.getAttribute("Scroll")!=null){%> id="Edit" <%session.setAttribute("Scroll", null); }%> class="row">
                     <br/>         
                     <h2 class="title text-center"><%if(detalle!=null && request.getAttribute("detallePorAgregar")==null){%>EDITAR<%} else{%>AGREGAR<%}%> detalle</h2>
                     <br/>
@@ -118,12 +192,12 @@
                                     <h6 class="text-left">Nombre</h6>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="control form-control" name="nomDet" placeholder="*"  required value="<%if(detalle!=null || request.getAttribute("detallePorAgregar")!=null)%><%=detalle.getNombre()%>">
+                                    <input type="text" class="control form-control" name="nomDet" placeholder="*" pattern="^[\s\S]{0,45}$" title="Solo se permiten hasta 45 caracteres" required value="<%if(detalle!=null || request.getAttribute("detallePorAgregar")!=null)%><%=detalle.getNombre()%>">
                                 </div>
                             </div>
                           <div class="row">
                                 <div class="col-sm-12">                                                           
-                                    <label class="puntero"><input class="enLinea" type="checkbox" name="eligeUsu" value="true" <% if((detalle!=null || request.getAttribute("detallePorAgregar")!=null) && detalle.getEligeUsuario()== true)%>checked<%;%>><h6 class="enLinea">Elige Usuario</h6></label>
+                                    <label class="puntero"><input class="enLinea" type="checkbox" name="multipleUsu" value="true" <% if((detalle!=null || request.getAttribute("detallePorAgregar")!=null) && detalle.getMultiple() == true)%>checked<%;%>><h6 class="enLinea">Multiple</h6></label>
                                 </div>
                            </div>  <br> 
                         
@@ -168,25 +242,40 @@
                             
                       
                     
+                </div>       
+                              
                 </div>
-                <% }%>
-            </div>
-        </div>
-<script src="js/jquery-1.11.3.min.js"></script> 
+	</div>
+	<script type="text/javascript">
+$(".dataTables_filter").hide();
+</script>
+	<script type="text/javascript">
+				  var _gaq = _gaq || [];
+				  _gaq.push(['_setAccount', 'UA-365466-5']);
+				  _gaq.push(['_trackPageview']);
+
+				  (function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				  })();
+	</script>
+   
 <script src="js/bootstrap.min.js"></script> 
-<script src="js/own-menu.js"></script> 
+
 <script src="js/jquery.lighter.js"></script> 
-<script src="js/owl.carousel.min.js"></script> 
+
 
 <!-- SLIDER REVOLUTION 4.x SCRIPTS  --> 
-<script type="text/javascript" src="rs-plugin/js/jquery.tp.t.min.js"></script> 
-<script type="text/javascript" src="rs-plugin/js/jquery.tp.min.js"></script> 
-<script src="js/main.js"></script> 
-<script src="js/main.js"></script>
-<script src="../js/mainSele.js" type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+
+
+
+
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
 </script>
-    </body>
+
+<script src="js/mainSele.js" type="text/javascript"></script>
+</body>
 </html>
