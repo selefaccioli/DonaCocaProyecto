@@ -7,6 +7,7 @@ package comand;
 
 import entity.LineaPedido;
 import entity.Pedido;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +44,9 @@ public class RegistrarSenaComando extends Comando{
            } catch (DonaCocaException ex) {
              request.setAttribute("ex", "Ha ocurrido un error registrando la seña");
              return "/pedidoDetalle.jsp"; 
-           }
+           } catch (SQLException ex) {
+                Logger.getLogger(RegistrarSenaComando.class.getName()).log(Level.SEVERE, null, ex);
+            }
     
        request.getSession().setAttribute("pendientes", pendientes);
        request.getSession().setAttribute("pedidoAmpliado", pedActual);

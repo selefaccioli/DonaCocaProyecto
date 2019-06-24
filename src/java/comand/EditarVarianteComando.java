@@ -6,7 +6,10 @@
 package comand;
 
 import entity.Variante;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlDetalle;
@@ -36,6 +39,8 @@ public class EditarVarianteComando extends Comando{
         } catch (DonaCocaException ex) {
             request.setAttribute("ex", ex.getMessage());
             return "/ABMVariantes.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarVarianteComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -47,6 +52,8 @@ public class EditarVarianteComando extends Comando{
         } catch (DonaCocaException ex) {
            request.setAttribute("ex", ex);
             return "/ABMVariantes.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarVarianteComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         

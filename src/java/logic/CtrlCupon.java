@@ -19,23 +19,23 @@ import util.DonaCocaException;
 public class CtrlCupon {
     DataCupon dc = new DataCupon();
     
-    public ArrayList<Cupon> obtenerCupones() throws DonaCocaException{
+    public ArrayList<Cupon> obtenerCupones() throws DonaCocaException, SQLException{
        return dc.obtenerCupones();
     }
     
-    public boolean existeCupon(String codCupon) throws DonaCocaException{      
+    public boolean existeCupon(String codCupon) throws DonaCocaException, SQLException{      
         return dc.existeCupon(codCupon);
     }
     
     
-     public Cupon obtenerCupon(String codCupon) throws DonaCocaException{
+     public Cupon obtenerCupon(String codCupon) throws DonaCocaException, SQLException{
        return dc.obtenerCupon(codCupon);}
    
-    public void agregarCupon(Cupon cupon) throws DonaCocaException{
+    public void agregarCupon(Cupon cupon) throws DonaCocaException, SQLException{
         dc.agregarCupon(cupon);
         }
         
-      public void actualizarCupon(Cupon cupon) throws DonaCocaException{      
+      public void actualizarCupon(Cupon cupon) throws DonaCocaException, SQLException{      
        
          dc.actualizarCupon(cupon);
     }

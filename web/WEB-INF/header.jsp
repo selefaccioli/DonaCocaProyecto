@@ -37,9 +37,24 @@
           </div>
           
            <!-- NAV -->
-           <% if(usu!= null && usu.isEsAdmin()){ %>
-          <div class="collapse navbar-collapse" id="nav-open-btn">  
-            <ul class="nav">
+           
+          <div class="collapse navbar-collapse" id="nav-open-btn">
+              <ul class="nav">
+              <li class="dropdown active"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">Ayuda</a>
+                <ul class="dropdown-menu">
+                  
+                 <form action="CtrlMaestro" method="post" id="formAboutus">
+                <input type="hidden" name="form" value="RedireccionarComando">
+                <input type="hidden" name="destino" value="/aboutus.jsp">
+                <li> <a href="javascript:;" type="submit" onclick="document.getElementById('formAboutus').submit()">Como comprar</a> </li>
+                
+                </form> 
+                  
+                </ul>
+              </li>
+              
+             <% if(usu!= null && usu.isEsAdmin()){ %> 
+            
               <li class="dropdown active"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">Administrador</a>
                 <ul class="dropdown-menu">
                   <form action="CtrlMaestro" method="post" id="formABMTorta">
@@ -156,9 +171,12 @@
                        
               
               <!-- USER BASKET -->
-             
-              <li class="dropdown user-basket"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> </a>
-                <ul class="dropdown-menu">
+             <% if(session.getAttribute("exitoTortaAgregada") != null){ %>
+              <li class="dropdown user-basket open"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> </a>
+              <% } else{     %>    
+              <li class="dropdown user-basket"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-basket-loaded"></i> </a>  
+              <% } %>   
+                  <ul class="dropdown-menu">
                      <% if((pedido.getLineasPedido().size() > 0) && (pedido.getLineasPedido().size() <= 3)){ 
                          for(LineaPedido lp : pedido.getLineasPedido()){
                       %>
@@ -168,13 +186,14 @@
                     </div>
                     <div class="media-body">
                       <h6 class="media-heading"><%= lp.getTorta().getNombre() %></h6>
-                      <span class="price">$ <%= lp.getTorta().getPrecio()  %></span> <span class="qty">QTY: <%= lp.getCantidad()  %></span> </div>
+                      <span class="price">PU: $ <%= lp.getTorta().getPrecio()  %></span> <span class="qty">QTY: <%= lp.getCantidad()  %></span> </div>
                   </li>
                   <% }}
                         else{%>
                         <div class="media-body">
                       <h6 class="media-heading">Cantidad de tortas en el carro: <%= pedido.getLineasPedido().size() %></h6>
                       <% } %>
+                    <% if((pedido.getLineasPedido().size() > 0) ){  %>  
                   <li class="margin-0">
                     <div class="row">
                         <form action="CtrlMaestro" method="post" class="formNav">
@@ -186,7 +205,7 @@
                         </form>
                
                     </div>
-                  </li>
+                  </li> <% } %>
                 </ul>
               </li>
            

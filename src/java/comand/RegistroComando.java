@@ -6,6 +6,7 @@
 package comand;
 
 import entity.Usuario;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +36,8 @@ public class RegistroComando extends Comando{
         } catch (DonaCocaException ex) {
             request.setAttribute("ex", ex.getMessage() );
             return "/signup.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistroComando.class.getName()).log(Level.SEVERE, null, ex);
         }
             
         usu.setNombre(request.getParameter("nomUsu"));
@@ -62,6 +65,8 @@ public class RegistroComando extends Comando{
             } catch (DonaCocaException ex) {
                 request.setAttribute("ex", ex.getMessage());
                 return "/signup.jsp";
+            } catch (SQLException ex) {
+                Logger.getLogger(RegistroComando.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             request.getSession().setAttribute("usuario", usu);

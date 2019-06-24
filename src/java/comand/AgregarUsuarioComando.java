@@ -6,6 +6,7 @@
 package comand;
 
 import entity.Usuario;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class AgregarUsuarioComando extends Comando{
         } catch (DonaCocaException ex) {
             request.setAttribute("ex", ex.getMessage());
             return "/ABMUsuarios.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(AgregarUsuarioComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         Usuario usNuevo = new Usuario();
@@ -59,7 +62,7 @@ public class AgregarUsuarioComando extends Comando{
         }
         
         usNuevo.setConocimiento(request.getParameter("conocimiento"));
-        ArrayList<Usuario> usuarios;
+        ArrayList<Usuario> usuarios = null;
         
         if(!existeUsuario){
             
@@ -69,6 +72,8 @@ public class AgregarUsuarioComando extends Comando{
             } catch (DonaCocaException ex) {
                 request.setAttribute("ex", ex.getMessage());
                 return"/ABMUsuarios.jsp";
+            } catch (SQLException ex) {
+                Logger.getLogger(AgregarUsuarioComando.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             

@@ -6,6 +6,7 @@
 package comand;
 
 import entity.Usuario;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +43,8 @@ public class CuentaComando extends Comando{
         } catch (DonaCocaException ex) {
             request.setAttribute("ex", ex.getMessage());
             return "/cuenta.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(CuentaComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         request.setAttribute("exitoEditado", true);

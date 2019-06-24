@@ -16,6 +16,7 @@ import entity.Pedido;
 import entity.Torta;
 import entity.Usuario;
 import entity.Variante;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -59,9 +60,20 @@ public class InicioComando extends Comando{
         ArrayList<Detalle> detalles = new  ArrayList<Detalle>();
         Parametro parametros = new Parametro();
        
-          try {
-           listaCupones = ctrlC.obtenerCupones();
+         
+       try {
            listaUsuarios = ctrlU.obtenerUsuarios();
+       } catch (DonaCocaException ex) {
+           Logger.getLogger(InicioComando.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(InicioComando.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        
+        
+        try {
+           listaCupones = ctrlC.obtenerCupones();
+           
            listaPedPendientes = ctrlP.obtenerPedidosPendientes();
            listaTortas = ctrlT.obtenerTortas();
            variantes = ctrlV.obtenerVariantes();
@@ -70,6 +82,8 @@ public class InicioComando extends Comando{
        } catch (DonaCocaException ex) {
            request.getSession().setAttribute("ex", ex.getMessage());
            return "/home.jsp";
+       } catch (SQLException ex) {
+           Logger.getLogger(InicioComando.class.getName()).log(Level.SEVERE, null, ex);
        }
         
         
@@ -99,7 +113,7 @@ public class InicioComando extends Comando{
             if(nomUsu!=null && contra!=null)
             {
                
-                Usuario usu;
+                Usuario usu = null ;
                 try
                 {
                     usu= ctrlU.obtenerUsuario(nomUsu, contra);
@@ -108,6 +122,8 @@ public class InicioComando extends Comando{
                 {
                     request.getSession().setAttribute("ex", ex.getMessage());
                     return "/home.jsp";
+                } catch (SQLException ex) {
+                    Logger.getLogger(InicioComando.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                 if(usu!=null)

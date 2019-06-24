@@ -6,7 +6,10 @@
 package comand;
 
 import entity.Cupon;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlCupon;
@@ -29,6 +32,8 @@ public class AgregarCuponComando extends Comando{
         } catch (DonaCocaException ex) {
             request.setAttribute("ex", ex.getMessage());
             return "/ABMUsuarios.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(AgregarCuponComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         Cupon cupNuevo = new Cupon();
@@ -39,7 +44,7 @@ public class AgregarCuponComando extends Comando{
         cupNuevo.setActivo(esActivo);
         cupNuevo.setPorcDescuento(Float.parseFloat(request.getParameter("porcCup")));
         
-        ArrayList<Cupon> cupones;
+        ArrayList<Cupon> cupones = null;
         
         if(!existeCupon){
             
@@ -49,7 +54,9 @@ public class AgregarCuponComando extends Comando{
             } catch (DonaCocaException ex) {
                 request.setAttribute("ex", ex.getMessage());
                 return"/ABMCupones.jsp";
-            }
+            } catch (SQLException ex) {
+                 Logger.getLogger(AgregarCuponComando.class.getName()).log(Level.SEVERE, null, ex);
+             }
             
             
             request.getSession().setAttribute("listaCupones", cupones);

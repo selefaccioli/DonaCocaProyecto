@@ -13,17 +13,20 @@ import util.DonaCocaException;
 
 public class DataUsuarios {
     
-    Conexion conn = new Conexion();
-    public Usuario obtenerUsuario(int idUsuario)throws DonaCocaException{
+   
+    
+    public Usuario obtenerUsuario(int idUsuario)throws DonaCocaException, SQLException{
         Usuario usu= null;
+        PreparedStatement ps= null;
+        ResultSet rs = null; 
         String sql= "select * from usuario where id_usuario=?;";
-        Connection conec= null;
+       
         try{
-            conec= conn.getConn();
+           
             
-            PreparedStatement ps= conec.prepareStatement(sql);
+             ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setInt(1, idUsuario);
-            ResultSet rs= ps.executeQuery();
+             rs= ps.executeQuery();
             
             if(rs.next()){
                 usu = new Usuario();
@@ -42,25 +45,31 @@ public class DataUsuarios {
                 usu.setConocimiento(rs.getString(13));
             }
             
-            conec.close();
+           // conec.close();
         }
         catch(SQLException e){
              throw new DonaCocaException("Error al recuperar el usuario por id",e);
-        }
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        } 
         return usu;
     }
     
-    public Usuario obtenerUsuario(String usuario,String password)throws DonaCocaException{
+    public Usuario obtenerUsuario(String usuario,String password)throws DonaCocaException, SQLException{
         Usuario usu= null;
+        PreparedStatement ps= null;
+        ResultSet rs = null; 
         String sql= "select * from usuario where usuario=? and contrasenia=?;";
-        Connection conec= null;
+        
         try{
-            conec= conn.getConn();
             
-            PreparedStatement ps= conec.prepareStatement(sql);
+            
+             ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setString(1, usuario);
             ps.setString(2, password);
-            ResultSet rs= ps.executeQuery();
+             rs= ps.executeQuery();
             
             if(rs.next()){
                 usu = new Usuario();
@@ -79,42 +88,52 @@ public class DataUsuarios {
                 usu.setConocimiento(rs.getString(13));
             }
             
-            conec.close();
+            //conec.close();
         }
         catch(SQLException e){
              throw new DonaCocaException("Error al recuperar el usuario en obtenerUsuario",e);
-        }
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        } 
         return usu;
     }
     
-    public boolean existeUsuario(String nombreUsuario) throws DonaCocaException{
-        
+    public boolean existeUsuario(String nombreUsuario) throws DonaCocaException, SQLException{
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String sql= "select count(*) from usuario where usuario= ?;";
-        Connection conec= null;
+        
         int cantidad=0;
         
         try{
-            conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+            
+             ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setString(1, nombreUsuario);
             
-            ResultSet rs= ps.executeQuery();
+             rs= ps.executeQuery();
             
             if(rs.next()){
                 cantidad= rs.getInt(1);
                 
             }
-            conec.close();
+           // conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al recuperar el usuario en existeUsuario",e);
-        }
+        } finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        } 
         
         return cantidad >0;
     }
     
-    public ArrayList<Usuario> buscarUsuarios(Usuario usu) throws DonaCocaException{
-        
+    public ArrayList<Usuario> buscarUsuarios(Usuario usu) throws DonaCocaException, SQLException{
+         PreparedStatement ps= null;
+        ResultSet rs = null;
         ArrayList<Usuario> resultado = new ArrayList<Usuario>();
         
         String apellido = usu.getApellido();
@@ -131,9 +150,9 @@ public class DataUsuarios {
         sql = sql+";";
         
         try{
-            Connection conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
-            ResultSet rs= ps.executeQuery();
+           
+             ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
+             rs= ps.executeQuery();
             
             while(rs.next()){
                 usu= new Usuario();
@@ -153,24 +172,29 @@ public class DataUsuarios {
                 resultado.add(usu);
                 
             }
-            conec.close();
+           // conec.close();
             
             
         }catch(SQLException e){
             throw new DonaCocaException("Error al recuperar uuarios en buscarUsuarios",e);
-        }
+        }  finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        } 
         return resultado;
         
     }
     
-    public ArrayList<Usuario> obtenerUsuarios() throws DonaCocaException{
+    public ArrayList<Usuario> obtenerUsuarios() throws DonaCocaException, SQLException{
         ArrayList<Usuario> resultado = new ArrayList<Usuario>();
-        
+         PreparedStatement ps= null;
+        ResultSet rs = null;
         String sql= "select * from usuario;";
         try{
-            Connection conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
-            ResultSet rs= ps.executeQuery();
+           
+             ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
+             rs= ps.executeQuery();
             
             while(rs.next()){
                 Usuario usu= new Usuario();
@@ -190,21 +214,26 @@ public class DataUsuarios {
                 resultado.add(usu);
             }
             
-            conec.close();
+            //conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al recuperar usuarios", e);
+        }  finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         return resultado;
         
     }
     
-    public void editarUsuario(Usuario usu) throws DonaCocaException{
+    public void editarUsuario(Usuario usu) throws DonaCocaException, SQLException{
         String sql="update usuario set nombre=? , apellido=? , direccion=? ,telefono=? , mail=?, dni=?,activo=?,es_admin=?,usuario=?, contrasenia=?, fechanacimiento=?, conocimiento= ? where id_usuario=?";
-               
+        PreparedStatement ps= null;
+             
         try{
-            Connection conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+            
+             ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setString(1, usu.getNombre());
             ps.setString(2, usu.getApellido());
             ps.setString(3, usu.getDireccion());
@@ -220,20 +249,26 @@ public class DataUsuarios {
             ps.setString(13, usu.getConocimiento());
            
             ps.executeUpdate();
-            conec.close();
+           // conec.close();
           
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al modificar usuario",e);
-        }  
+        } finally{
+            
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        } 
     }
     
-    public void registrarUsuario(Usuario usu)throws DonaCocaException{
-        PreparedStatement ps;
+    public void registrarUsuario(Usuario usu)throws DonaCocaException, SQLException{
+      
+        PreparedStatement ps= null;
+        ResultSet rs = null;  
         String transac = "insert into usuario(nombre,apellido,dni,usuario,contrasenia,es_admin,activo,mail,telefono,direccion,fechanacimiento,conocimiento) values (?,?,?,?,?,?,?,?,?,?,?,?);";
         try{
-            Connection conec= conn.getConn();
-            ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
+           
+            ps= FactoryConexion.getInstancia().getConn().prepareStatement(transac, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, usu.getNombre());
             ps.setString(2, usu.getApellido());
             ps.setInt(3, usu.getDni());
@@ -248,35 +283,44 @@ public class DataUsuarios {
             ps.setString(12, usu.getConocimiento());
             
             ps.executeUpdate();
-            ResultSet rs= ps.getGeneratedKeys();
+             rs= ps.getGeneratedKeys();
             
             if(rs.next())
             {
                 int id = rs.getInt(1);
                 usu.setId(id);
             }
-            conec.close();
+           // conec.close();
             
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al registrar usuario ",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         
     }
     
-    public void eliminarUsuario(Usuario usu) throws DonaCocaException{
-         
+    public void eliminarUsuario(Usuario usu) throws DonaCocaException, SQLException{
+         PreparedStatement ps= null;
+        ResultSet rs = null;
          String sql="update usuario set activo=? where id_usuario=?";
          try{
-            Connection conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+           
+             ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setBoolean(1, false);
             ps.setInt(2, usu.getId());
             ps.executeUpdate();
          }
          catch(SQLException e){
              throw new DonaCocaException("Error al eliminar usuario",e);
-         }
+         } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        }
     }
     
    

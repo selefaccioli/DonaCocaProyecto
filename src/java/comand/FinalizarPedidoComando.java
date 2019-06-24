@@ -10,6 +10,7 @@ import entity.LineaPedido;
 import entity.Pedido;
 import entity.Usuario;
 import entity.Variante;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -53,7 +54,7 @@ public class FinalizarPedidoComando extends Comando{
         double subtotal = 0.0f;
               for(LineaPedido linea: p.getLineasPedido()){
           
-          subtotal = subtotal + linea.getSubtotal();
+          subtotal = subtotal + linea.getSubtotal()*linea.getCantidad();
               } 
         SimpleDateFormat formato =  new SimpleDateFormat("yyyy-MM-dd");
         Date fecha = null;
@@ -116,6 +117,8 @@ public class FinalizarPedidoComando extends Comando{
                 } catch (DonaCocaException ex) {
                     request.setAttribute("ex", ex.getMessage());
                     return "/Checkout.jsp";
+                } catch (SQLException ex) {
+                    Logger.getLogger(FinalizarPedidoComando.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
             }
@@ -148,10 +151,12 @@ public class FinalizarPedidoComando extends Comando{
                     request.setAttribute("ex", ex.getMessage());
                     return "/Checkout.jsp";
                     
-                }
+                } catch (SQLException ex) {
+                Logger.getLogger(FinalizarPedidoComando.class.getName()).log(Level.SEVERE, null, ex);
+            }
                 String mje;
            
-      mje= 
+ /*     mje= 
 "<html>\n";
  
       mje = mje + 
@@ -235,7 +240,7 @@ public class FinalizarPedidoComando extends Comando{
 "            <!-- PRICE -->\n" +
 "            <li class=\"col-sm-2\">\n" +
 "                     <div class=\"position-center-center\"> \n" +
-"                  <p class=\"all-total\"><span>" +  linea.getSubtotal()  + "</span></p>\n" +
+"                  <p class=\"all-total\"><span>" + "Precio unitario: " + linea.getSubtotal()  + "</span></p>\n" +
 "                     </div>\n" +
 "            </li>\n" +
 "            \n" +
@@ -248,7 +253,7 @@ public class FinalizarPedidoComando extends Comando{
 "                   <form action=\"CtrlMaestro\" method=\"post\">\n" +
 "                   <input type=\"hidden\"  name=\"form\" value=\"ActualizarLineaComando\"/>\n" +
 "                   <input type=\"hidden\" name=\"idTorta\" value=\"<%= linea.getTorta().getId() %>\"/>\n" +
-"                   <input onchange=\"submit()\" disabled min=\"1\" class=\"tamanio cart_quantity_input\"type=\"number\" name=\"cantidad\" value=\"" + linea.getCantidad() + "\"/>\n" +
+"                   <input disabled type=\"text\"  name=\"cantidad\" value=\" Cantidad: " + linea.getCantidad() + "\"/>\n" +
 "                   \n" +
 "                   </form>\n" +
 "              </div>\n" +
@@ -259,7 +264,7 @@ public class FinalizarPedidoComando extends Comando{
 "            <!-- TOTAL PRICE -->\n" +
 "            <li class=\"col-sm-2\">\n" +
 "              <div class=\"position-center-center\"> \n" +
-"                 <p class=\"all-total\"><span>"+  linea.getSubtotal()* linea.getCantidad() + "</span></p>\n" +
+"                 <p class=\"all-total\"><span>"+ "Total torta: " + linea.getSubtotal()* linea.getCantidad() + "</span></p>\n" +
 "                  \n" +
 "               \n" +
 "                \n" +
@@ -449,7 +454,7 @@ public class FinalizarPedidoComando extends Comando{
                     return "/Checkout.jsp";
             }
             
-            
+            */
                 
                 
                 request.getSession().setAttribute("exitoPedido", true);

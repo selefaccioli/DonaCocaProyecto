@@ -77,6 +77,8 @@ public class FiltrosComando extends Comando{
             return "/pedidosARealizar.jsp";
         }
         
+            } catch (SQLException ex) {
+                Logger.getLogger(FiltrosComando.class.getName()).log(Level.SEVERE, null, ex);
             }
        }else{
           try {

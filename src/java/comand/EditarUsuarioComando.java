@@ -6,6 +6,7 @@
 package comand;
 
 import entity.Usuario;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,8 @@ public class EditarUsuarioComando extends Comando{
         } catch (DonaCocaException ex) {
            request.setAttribute("ex", ex.getMessage());
            return "/ABMUsuarios.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarUsuarioComando.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         request.getSession().setAttribute("listaUsuarios", usuarios);

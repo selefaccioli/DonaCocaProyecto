@@ -17,6 +17,9 @@ function calcHash()
 }
 
 
+
+
+
 /*Validación para el cambio de contraseña*/
 function validarCambioPass()
 {

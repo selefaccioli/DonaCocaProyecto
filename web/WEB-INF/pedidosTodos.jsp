@@ -51,12 +51,12 @@ if(session.getAttribute("lineasP")!= null){
 			<div class="content">
                             <h2 class="title text-center">Todos los Pedidos</h2> 
 				
-                            <form method="post" action="CtrlMaestro">
+                            <form method="post" >
       <div class="col-md-2">
         <ul class="nav nav-stacked">
           <li><strong>Fecha Desde (Entrega)</strong></li>
           <li>
-            <input type="date" class="form-control" id="dateFrom" />
+            <input type="date" class="form-control" id="dateFrom" name="dateFrom"/>
           </li>
         </ul>
       </div>
@@ -65,7 +65,7 @@ if(session.getAttribute("lineasP")!= null){
         <ul class="nav nav-stacked">
           <li><strong>Fecha Hasta (Entrega)</strong></li>
           <li>
-            <input type="date" class="form-control"  id="dateTo" />
+            <input type="date" class="form-control"  id="dateTo" name="dateTo"/>
           </li>
         </ul>
       </div>
@@ -118,6 +118,7 @@ if(session.getAttribute("lineasP")!= null){
                                         <th>Estado</th>
                                         <th>Total seña</th>
                                         <th>Restan pagar</th>
+                                        <th>Condición seña</th>
                                         <th>Usuario</th>
                                         <th>Dirección usuario</th>
                                         <th></th>
@@ -142,10 +143,16 @@ if(session.getAttribute("lineasP")!= null){
                                             <td><button type="button" class="btn btn-info btn-sm"><%= p.getEstado() %></button></td>
                                             <% } %>
                                             <td><%= p.getSena() %></td>
+                                            <td><%= p.getTotal() - p.getSena() %></td>
+                                            <% if(p.getCondicionSena() != null){ %>
                                             <td><%= p.getCondicionSena() %></td>
+                                            <% } else{   %>
+                                            <td>-</td> <% } %>
                                             <td><%= p.getUsuario().getApellido()%>, <%= p.getUsuario().getNombre()%></td>
-                                          
+                                            <% if( p.getUsuario().getDireccion() == null){ %>
                                             <td><%= p.getUsuario().getDireccion()%></td>
+                                            <% } else{   %>
+                                            <td></td><% } %>
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="RedireccionarPedidoComando"/>
@@ -174,7 +181,11 @@ if(session.getAttribute("lineasP")!= null){
                                             <td><button type="button" class="btn btn-info btn-sm"><%= p.getEstado() %></button></td>
                                             <% } %>
                                             <td><%= p.getSena() %></td>
+                                             <td><%= p.getTotal() - p.getSena() %></td>
+                                            <% if(p.getCondicionSena() != null){ %>
                                             <td><%= p.getCondicionSena() %></td>
+                                            <% } else{   %>
+                                            <td>-</td> <% } %>
                                             <td><%= p.getUsuario().getApellido()%>, <%= p.getUsuario().getNombre()%></td>
                                           
                                             <td><%= p.getUsuario().getDireccion()%></td>

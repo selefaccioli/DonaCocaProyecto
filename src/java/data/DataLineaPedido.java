@@ -11,20 +11,21 @@ import util.DonaCocaException;
 
 public class DataLineaPedido {
     
-    Conexion conn= new Conexion();
-    Connection conec= null;
+   
     
-    public ArrayList<LineaPedido> obtenerLineasPedido (int idPedido) throws DonaCocaException{
+    public ArrayList<LineaPedido> obtenerLineasPedido (int idPedido) throws DonaCocaException, SQLException{
         String sql = "select * from linea_pedido1 where id_pedido =? ;";
         Connection con = null;      
         ArrayList<LineaPedido> lineas = new ArrayList<>();
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         
         try
         {
-            conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+           
+             ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setInt(1, idPedido);
-            ResultSet rs = ps.executeQuery();
+             rs = ps.executeQuery();
               
             while(rs.next())
             {
@@ -39,17 +40,22 @@ public class DataLineaPedido {
                 lineas.add(lp);
                 
             }    
-            conec.close();
+            //conec.close();
         }  
         catch(SQLException e){
             throw new DonaCocaException("Error al obtener lineas de un pedido",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         
         return lineas;         
     }
     
-      public void registrarLineas(ArrayList<LineaPedido> lineas, int idPedido) throws DonaCocaException{ 
-    
+      public void registrarLineas(ArrayList<LineaPedido> lineas, int idPedido) throws DonaCocaException, SQLException{ 
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         
         for(LineaPedido lp: lineas ) 
         {   
@@ -57,19 +63,23 @@ public class DataLineaPedido {
            
             try
             {
-               conec= conn.getConn();
-               PreparedStatement ps = conec.prepareStatement(sql);
+              
+               ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
                ps.setInt(1, idPedido);
                ps.setInt(2, lp.getCantidad());
                ps.setInt(3, lp.getTorta().getId());
                ps.setDouble(4, lp.getSubtotal());
                ps.executeUpdate();
                
-               conec.close();
+               //conec.close();
             }
             catch(SQLException e){
             throw new DonaCocaException("Error al registrar linea de pedido",e);
-            }             
+            } finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        }             
         }      
     }      
     

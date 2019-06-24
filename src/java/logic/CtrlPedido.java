@@ -16,31 +16,31 @@ import util.DonaCocaException;
 public class CtrlPedido {
     DataPedido dp = new DataPedido();
     
-    public void cerrarPedido(Pedido p) throws DonaCocaException{
+    public void cerrarPedido(Pedido p) throws DonaCocaException, SQLException{
         dp.cerrarPedido(p);
     }
     
-    public void registrarEnvio(Pedido p) throws DonaCocaException{
+    public void registrarEnvio(Pedido p) throws DonaCocaException, SQLException{
          dp.registrarEnvio(p);
     }
      
-    public void registrarPedido(Pedido p) throws DonaCocaException{  
+    public void registrarPedido(Pedido p) throws DonaCocaException, SQLException{  
         dp.registrarPedido(p);
     }
     
-    public ArrayList<Pedido> obtenerPedidos(int idUsuario) throws DonaCocaException{   
+    public ArrayList<Pedido> obtenerPedidos(int idUsuario) throws DonaCocaException, SQLException{   
         return dp.obtenerPedidos(idUsuario);
     }
    
-    public ArrayList<Pedido> obtenerPedidosEnviados () throws DonaCocaException{    
+    public ArrayList<Pedido> obtenerPedidosEnviados () throws DonaCocaException, SQLException{    
         return dp.obtenerPedidosEnviados();
     }
     
-    public ArrayList<Pedido> obtenerPedidosPendientes() throws DonaCocaException{  
+    public ArrayList<Pedido> obtenerPedidosPendientes() throws DonaCocaException, SQLException{  
         return dp.obtenerPedidosPendientes();
     }
     
-    public void registrarSena(Pedido p) throws DonaCocaException{
+    public void registrarSena(Pedido p) throws DonaCocaException, SQLException{
         dp.registrarSena(p);
     }
     

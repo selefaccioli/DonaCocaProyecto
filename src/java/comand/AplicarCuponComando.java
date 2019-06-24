@@ -6,6 +6,7 @@
 package comand;
 
 import entity.Cupon;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,8 @@ public class AplicarCuponComando extends Comando{
         } catch (DonaCocaException ex) {
             request.setAttribute("ex","Error al buscar existecupon");
             return ("/carro.jsp");
+        } catch (SQLException ex) {
+            Logger.getLogger(AplicarCuponComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         if(cupon != null){

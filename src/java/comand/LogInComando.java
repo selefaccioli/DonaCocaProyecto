@@ -7,6 +7,7 @@ package comand;
 
 import entity.Pedido;
 import entity.Usuario;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +40,8 @@ public class LogInComando extends Comando{
         catch (DonaCocaException ex){
             request.setAttribute("ex", ex.getMessage());
             return "/login.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(LogInComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -59,7 +62,7 @@ public class LogInComando extends Comando{
                 recordarNombre.setPath("/");
                 response.addCookie(recordarNombre);
                 response.addCookie(recordarContra);
-            }    
+            }     
             
             
         if(usu.isEsAdmin())
@@ -73,7 +76,9 @@ public class LogInComando extends Comando{
                 {
                     request.setAttribute("ex",ex.getMessage());
                     return "/login.jsp";
-                }
+                } catch (SQLException ex) {
+                Logger.getLogger(LogInComando.class.getName()).log(Level.SEVERE, null, ex);
+            }
                 
                 request.getSession().setAttribute("pendientes", pendientes);
             }

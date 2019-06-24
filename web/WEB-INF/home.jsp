@@ -23,6 +23,16 @@
  <jsp:include page="header.jsp"/>
   
   <!--======= SUB BANNER =========-->
+  <% if(session.getAttribute("exitoRegistro") != null){   %>
+   <div class="row">
+                <div class="col-sm-4">            
+                    <div class="alert alert-success fade in"> 
+                        Usuario registrado con exito!
+                        <% session.setAttribute("exitoRegistro", null);  %>
+                    </div>                    
+                </div>
+            </div> 
+        <% } %>
   <section class="sub-bnr" data-stellar-background-ratio="0.5">
     <div class="position-center-center">
      
@@ -35,8 +45,8 @@
     <!-- Popular Products -->
     <section class="shop-page padding-top-100 padding-bottom-100">
       <div class="container">
-        
-        
+          
+      
         <!-- Popular Item Slide -->
         <div class="papular-block row row-eq-height"> 
             
@@ -49,6 +59,7 @@
                     </div>                    
                 </div>
             </div>
+                    
         </div><%} else if(request.getAttribute("tortatesting")!= null){
         session.setAttribute("tortatesting", null);
         %>
@@ -66,6 +77,7 @@
         session.setAttribute("tortaAmpliada", null);
         session.setAttribute("detallesTorta", null);
         session.setAttribute("tortaVarActivas", null);
+        session.setAttribute("cantTor", null);
         }
     
         for(Torta t: listaTortas){ 

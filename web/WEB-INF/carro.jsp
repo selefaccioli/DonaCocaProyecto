@@ -265,7 +265,7 @@
                      <input type="hidden"  name="destino" value="/Checkout.jsp"/>
                 
                  
-                     <input class="btn btn-default add-to-cart linea" type="submit" value="Checkout" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
+                     <input class="btn btn-default add-to-cart linea" type="submit" value="Checkout" <% if((usu != null && usu.isEsAdmin()) || (lp.size()<1)){ %> disabled="" <% } %>>
                      
                 </form><br><br>
                 
@@ -296,7 +296,7 @@
                      <input type="hidden"  name="destino" value="/Checkout.jsp"/>
                 
                  
-                     <input class="btn btn-default add-to-cart linea" type="submit" value="No, gracias. continuar al checkout" <% if(usu != null && usu.isEsAdmin()){ %> disabled="" <% } %>>
+                     <input class="btn btn-default add-to-cart linea" type="submit" value="No, gracias. continuar al checkout" <% if((usu != null && usu.isEsAdmin()) || (lp.size()<1)){ %> disabled="" <% } %>>
                      
                 </form><br><br>
                      <% } %>   

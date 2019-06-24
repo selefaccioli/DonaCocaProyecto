@@ -6,7 +6,10 @@
 package comand;
 
 import entity.Cupon;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlCupon;
@@ -41,6 +44,8 @@ public class EditarCuponComando extends Comando{
         } catch (DonaCocaException ex) {
            request.setAttribute("ex", ex.getMessage());
            return "/ABMCupones.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarCuponComando.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         request.getSession().setAttribute("listaCupones", cupones);

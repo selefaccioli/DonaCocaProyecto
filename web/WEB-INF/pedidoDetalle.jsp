@@ -23,17 +23,17 @@
    
       <% if(request.getAttribute("ExitoCierre")!= null){%> 
                     <div class="alert alert-success">
-                       Pedido cerrado con éxito! Un mail ha sido enviado a la casilla del cliente.
+                       Pedido cerrado con éxito! 
                     </div>
                     <%request.setAttribute("ExitoCierre",null);} %>
      <% if(request.getAttribute("ExitoCancel")!= null){%> 
                     <div class="alert alert-success">
-                       Pedido cancelado con éxito! Un mail ha sido enviado a la casilla del cliente.
+                       Pedido cancelado con éxito! 
                     </div>
                     <%request.setAttribute("ExitoCancel",null);} %>
     <% if(request.getAttribute("ExitoSena")!= null){%> 
                     <div class="alert alert-success">
-                       Seña registrada con éxito! Un mail ha sido enviado a la casilla del cliente.
+                       Seña registrada con éxito!
                     </div>
                     <%request.setAttribute("ExitoSena",null);} %>
     <% if(request.getAttribute("ex")!= null){%> 
@@ -63,13 +63,14 @@
            double subtotal = 0.0f;
               for(LineaPedido linea: lineasP){
           
-          subtotal = subtotal + linea.getSubtotal();
+          subtotal = subtotal + (linea.getSubtotal()*linea.getCantidad());
               }
         
         
         %>  
         <div class="cuenta">
             <div class="container"> 
+                <% if((usu != null) && usu.isEsAdmin() ){ %>
                 <form action="CtrlMaestro" method="post"> 
                      <div class="row">
                          <input  type="hidden" name="form" value="RedireccionarComando">
@@ -79,7 +80,7 @@
                 </div>  
                 </form>
                          
-                
+                <% } %>
                 
        
         <!-- Payments Steps -->

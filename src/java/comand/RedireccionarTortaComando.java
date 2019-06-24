@@ -7,6 +7,7 @@ package comand;
 
 import entity.Detalle;
 import entity.Torta;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,11 +36,15 @@ public class RedireccionarTortaComando extends Comando{
             t = ctrlT.obtenerTorta(id);
         } catch (DonaCocaException ex) {
             Logger.getLogger(RedireccionarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(RedireccionarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
         }
          if(t != null){
          try {
             detallesTorta = ctrlD.obtenerDetalles(t.getId());
          } catch (DonaCocaException ex) {
+             Logger.getLogger(RedireccionarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (SQLException ex) {
              Logger.getLogger(RedireccionarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
          }
              request.getSession().setAttribute("tortaAmpliada", t);

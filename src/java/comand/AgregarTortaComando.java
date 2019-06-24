@@ -15,10 +15,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +47,7 @@ public class AgregarTortaComando extends Comando{
     
     
   
-        boolean existeTorta;
+        boolean existeTorta = false;
         
         //valida que la torta sea única
         try
@@ -56,6 +59,8 @@ public class AgregarTortaComando extends Comando{
         {
             request.setAttribute("ex", ex.getMessage());
             return"/ABMTortas.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(AgregarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         torta = new Torta();
@@ -138,7 +143,9 @@ public class AgregarTortaComando extends Comando{
                 request.setAttribute("ex", ex.getMessage());
                 request.getSession().setAttribute("Scroll",true);
                 return "/ABMTortas.jsp";
-            }         
+            } catch (SQLException ex) {         
+            Logger.getLogger(AgregarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
+        }
             request.getSession().setAttribute("listaTortas", tortas);
             request.setAttribute("ExitoTorta", true);
             request.setAttribute("tortaPorAgregar", null);

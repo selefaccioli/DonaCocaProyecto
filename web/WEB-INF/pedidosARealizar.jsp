@@ -147,7 +147,10 @@ if(session.getAttribute("lineasP")!= null){
                                             <td>Envío a domicilio</td>
                                             <% } else{   %>
                                             <td>-</td> <% } %>
+                                            <% if( p.getUsuario().getDireccion() != null){ %>
                                            <td><%= p.getUsuario().getDireccion()%></td>
+                                           <% } else{   %>
+                                           <td></td><% } %>
                                             <td>
                                                 <form action="CtrlMaestro" method="post">
                                                     <input type="hidden"  name="form" value="RedireccionarPedidoComando"/>

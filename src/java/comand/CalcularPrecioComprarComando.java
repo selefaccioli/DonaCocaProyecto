@@ -11,6 +11,7 @@ import entity.LineaPedido;
 import entity.Pedido;
 import entity.Torta;
 import entity.Variante;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,8 @@ public class CalcularPrecioComprarComando extends Comando{
         ArrayList<Variante> varianteDetalle = new ArrayList<Variante>();
         ArrayList<Variante> variantesActivas = new ArrayList<Variante>();
         Torta tortaVarActivas = new Torta();
+        int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+        
       if(request.getParameter("calcPrecio") != null){
            float total =0;
         
@@ -44,6 +47,8 @@ public class CalcularPrecioComprarComando extends Comando{
                  } catch (DonaCocaException ex) {
                      request.setAttribute("ex", ex.getMessage());
                      return "/productos.jsp";
+                 } catch (SQLException ex) {
+                     Logger.getLogger(CalcularPrecioComprarComando.class.getName()).log(Level.SEVERE, null, ex);
                  }
                  if(d.getMultiple()){
                        String selecc[] = request.getParameterValues("variantesD");
@@ -60,7 +65,7 @@ public class CalcularPrecioComprarComando extends Comando{
                             }
                             }  
                        }
-                       
+                      
                } else{
                      try {
                          Variante selecVar = ctrlV.obtenerVariante(Integer.parseInt(request.getParameter(d.getNombre())));
@@ -69,6 +74,8 @@ public class CalcularPrecioComprarComando extends Comando{
                      } catch (DonaCocaException ex) {
                         request.setAttribute("ex", ex.getMessage());
                         return "/productos.jsp";
+                     } catch (SQLException ex) {
+                         Logger.getLogger(CalcularPrecioComprarComando.class.getName()).log(Level.SEVERE, null, ex);
                      }
                      
                  }
@@ -77,6 +84,7 @@ public class CalcularPrecioComprarComando extends Comando{
            
            
        }
+        total = (total*cantidad);
         tortaVarActivas.setVariantes(variantesActivas);
         tortaVarActivas.setId(t.getId());
         tortaVarActivas.setActivo(t.isActivo());
@@ -85,6 +93,7 @@ public class CalcularPrecioComprarComando extends Comando{
         tortaVarActivas.setPrecio(total);
         request.getSession().setAttribute("tortaVarActivas", tortaVarActivas);
         request.getSession().setAttribute("totalTor", total);
+        request.getSession().setAttribute("cantTor", cantidad);
         return "/producto.jsp";
       } else{
         Torta tortaAgregar = (Torta)request.getSession().getAttribute("tortaVarActivas");  
@@ -104,7 +113,7 @@ public class CalcularPrecioComprarComando extends Comando{
                 } 
                  
             if(cont == tortaAgregar.getVariantes().size()){ //ya existia la torta
-            lp.setCantidad(lp.getCantidad() + 1);
+            lp.setCantidad(lp.getCantidad() + cantidad);
             lp.setSubtotal(tortaAgregar.getPrecio() * lp.getCantidad());
             request.getSession().setAttribute("exitoTortaAgregada", true);
             
@@ -129,7 +138,7 @@ public class CalcularPrecioComprarComando extends Comando{
         
         try {
             Torta tnueva = dt.obtenerTorta(idTorta);
-            lp.setCantidad(1); //porque no estaba antes en el carro va a ser 1
+            lp.setCantidad(cantidad); //porque no estaba antes en el carro va a ser 1
             lp.setTorta(tortaAgregar);
             lp.setSubtotal(tortaAgregar.getPrecio());
             lp.setVariantes(tortaAgregar.getVariantes());
@@ -138,7 +147,9 @@ public class CalcularPrecioComprarComando extends Comando{
             
         } catch (DonaCocaException ex) {
            request.getSession().setAttribute("exitoTortaAgregada", false);
-        }
+        }   catch (SQLException ex) {
+                Logger.getLogger(CalcularPrecioComprarComando.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     
     request.getSession().setAttribute("pedido", pedido);

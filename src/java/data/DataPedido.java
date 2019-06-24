@@ -26,71 +26,88 @@ import util.DonaCocaException;
  */
 public class DataPedido {
     
-    Conexion conn= new Conexion();
-    Connection conec= null;
+   
     
     
-    public void cerrarPedido(Pedido p) throws DonaCocaException{
-        
+    public void cerrarPedido(Pedido p) throws DonaCocaException, SQLException{
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         
         String sql = "update pedido set estado=?, cerrado=? where id_pedido=?;";
         try{
-            conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+           
+            ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setString(1, p.getEstado());
             ps.setBoolean(2, p.isCerrado());
             ps.setInt(3, p.getId());
             ps.executeUpdate();
-            conec.close();
+            //conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al cerrar pedido",e);
+        } finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
     }
     
-    public void registrarEnvio(Pedido p) throws DonaCocaException{
+    public void registrarEnvio(Pedido p) throws DonaCocaException, SQLException{
         String sql= "update pedido set estado=?, cerrado=? where id_pedido=?;";;
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         try
         {
-            conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+            
+            ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             
             ps.setString(1, p.getEstado());
             ps.setBoolean(2, true);
             ps.setInt(3, p.getId());
             ps.executeUpdate();
-            conec.close();
+            //conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al registrar envio",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
     }
     
-      public void registrarSena(Pedido p) throws DonaCocaException{
+      public void registrarSena(Pedido p) throws DonaCocaException, SQLException{
         String sql= "update pedido set sena=?, estado=? where id_pedido=?;";;
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         try
         {
-            conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+           
+            ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             
             ps.setFloat(1, p.getSena());
             ps.setString(2, p.getEstado());
             ps.setInt(3, p.getId());
             ps.executeUpdate();
-            conec.close();
+            //conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al registrar seña",e);
+        } finally{
+             if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
     }
     
-    public void registrarPedido(Pedido p) throws DonaCocaException{        
+    public void registrarPedido(Pedido p) throws DonaCocaException, SQLException{        
         String sql = "insert into pedido(fecha_pedido, fecha_entrega,total, estado, id_usuario, cerrado, sena, aclaraciones, envio_domicilio,porc_descuento,descuento) values (?,?,?,?,?,?,?,?,?,?,?);";
-        
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         try
         {   
-            conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+           
+            ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             
             ps.setDate(1, new java.sql.Date(p.getFechaPedido().getTime()));
             ps.setDate(2,new java.sql.Date(p.getFechaEntrega().getTime()));
@@ -105,7 +122,7 @@ public class DataPedido {
             ps.setFloat(11, p.getDescuento());
             ps.executeUpdate();
              
-            ResultSet rs = ps.getGeneratedKeys(); //obtengo las ultimas llaves generadas
+             rs = ps.getGeneratedKeys(); //obtengo las ultimas llaves generadas
             
             if(rs.next())
             { 
@@ -116,23 +133,28 @@ public class DataPedido {
                 dlpv.registrarLpVariantes(p.getLineasPedido(), clave);
             }
                        
-             conec.close();      
+            // conec.close();      
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al registrar pedido",e);
+        } finally{
+             if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
     }
     
-    public ArrayList<Pedido> obtenerPedidos(int idUsuario) throws DonaCocaException{         
+    public ArrayList<Pedido> obtenerPedidos(int idUsuario) throws DonaCocaException, SQLException{         
         ArrayList<Pedido> pedidosEncontrados = new ArrayList<>();
-        String sql = "select * from pedido where id_usuario = ? order by pedido.`fecha_entrega` asc, pedido.`estado`= \"Aprobado\";";
-        
+        String sql = "select * from pedido where id_usuario = ? order by pedido.`fecha_entrega` asc;";
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         try 
         {
-           conec= conn.getConn();
-           PreparedStatement ps= conec.prepareStatement(sql);
+          
+           ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
            ps.setInt(1, idUsuario);
-            ResultSet rs =ps.executeQuery();
+           rs =ps.executeQuery();
              
             while(rs.next())
             { 
@@ -154,23 +176,29 @@ public class DataPedido {
                 p.setLineasPedido(new DataLineaPedido().obtenerLineasPedido(p.getId()));
                 pedidosEncontrados.add(p);                     
             }                   
-            conec.close();      
+            //conec.close();      
         }
          catch(SQLException e){
             throw new DonaCocaException("Error al obtener pedidos",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         return pedidosEncontrados;
     } 
     
-    public ArrayList<Pedido> obtenerPedidosEnviados () throws DonaCocaException{         
+    public ArrayList<Pedido> obtenerPedidosEnviados () throws DonaCocaException, SQLException{         
         ArrayList<Pedido> pedidosEncontrados = new ArrayList<>();
         String sql = "SELECT * FROM pedido where estado like 'Enviado';";
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         
         try
         {
-           conec= conn.getConn();
-           PreparedStatement ps= conec.prepareStatement(sql);
-           ResultSet rs =ps.executeQuery();
+          
+            ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
+            rs =ps.executeQuery();
              
             while(rs.next())
             { 
@@ -185,16 +213,22 @@ public class DataPedido {
                 p.setLineasPedido(new DataLineaPedido().obtenerLineasPedido(p.getId()));
                 pedidosEncontrados.add(p);                         
             }                   
-            conec.close();      
+            //conec.close();      
         }
          catch(SQLException e){
             throw new DonaCocaException("Error al obtener pedidos enviados",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         return pedidosEncontrados;
     }
     
-     public ArrayList<Pedido> obtenerPedidosPendientes() throws DonaCocaException{         
+     public ArrayList<Pedido> obtenerPedidosPendientes() throws DonaCocaException, SQLException{         
         ArrayList<Pedido> pedidosEncontrados = new ArrayList<>();
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         CtrlUsuario ctrlU = new CtrlUsuario();
         Usuario usu = new Usuario();
         String sql = "select p.*, case when DATEDIFF(p.`fecha_entrega`,now())>3 and p.`estado`='Pendiente' \n" +
@@ -217,13 +251,13 @@ public class DataPedido {
 "            end as \"Condicion seña\"\n" +
 "            \n" +
 "from pedido as p\n" +
-"order by p.`fecha_entrega` asc, p.`estado`= \"Seña pagada\";";   
+"order by p.`fecha_entrega` asc;";   
         
         try
         {
-           conec= conn.getConn();
-           PreparedStatement ps= conec.prepareStatement(sql);
-           ResultSet rs =ps.executeQuery();
+           
+            ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
+            rs =ps.executeQuery();
              
             while(rs.next())
             { 
@@ -249,16 +283,22 @@ public class DataPedido {
                 p.setLineasPedido(new DataLineaPedido().obtenerLineasPedido(p.getId()));
                 pedidosEncontrados.add(p);                  
             }                   
-            conec.close();      
+            //conec.close();      
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al obtener pedidos pendientes",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         return pedidosEncontrados;
     }       
      
      public ArrayList<Pedido> filtrosPedidos(Date fDesde, Date fHasta, String estado, String usuario) throws DonaCocaException, SQLException{
          ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+         PreparedStatement ps= null;
+        ResultSet rs = null;
          int cont=0;
          //if(fDesde != null && fHasta != null && estado != null && usuario != null){
              String sql = "select p.*, case when DATEDIFF(p.`fecha_entrega`,now())>3 and p.`estado`='Pendiente' \n" +
@@ -284,7 +324,7 @@ public class DataPedido {
            
          
         try {
-            conec= conn.getConn();
+            
             Usuario usu = new Usuario();
             CtrlUsuario ctrlU = new CtrlUsuario();
             
@@ -317,9 +357,9 @@ public class DataPedido {
                     cont = cont + 1;
                 }
                 
-                sql= sql + "order by p.`fecha_entrega` asc, p.`estado`= \"Seña pagada\" ;";
-               PreparedStatement ps= conec.prepareStatement(sql);
-           ResultSet rs =ps.executeQuery();
+                sql= sql + "order by p.`fecha_entrega` asc;";
+                ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
+                rs =ps.executeQuery();
              
             while(rs.next())
             { 
@@ -345,11 +385,15 @@ public class DataPedido {
                 p.setLineasPedido(new DataLineaPedido().obtenerLineasPedido(p.getId()));
                 pedidos.add(p);                  
             }                   
-            conec.close();      
+            //conec.close();      
             
             
         } catch (DonaCocaException ex) {
             throw new DonaCocaException("Error al filtrar pedidos",ex);
+        } finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
            
          

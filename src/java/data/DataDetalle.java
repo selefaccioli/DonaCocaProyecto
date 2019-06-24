@@ -13,17 +13,18 @@ import util.DonaCocaException;
 
 
 public class DataDetalle {
-    Conexion conn= new Conexion();
-    Connection conec= null;
     
-    public ArrayList<Detalle> obtenerDetalles() throws DonaCocaException{
+    
+    public ArrayList<Detalle> obtenerDetalles() throws DonaCocaException, SQLException{
         ArrayList<Detalle> listaDetalles = new ArrayList<>();
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         try
         {
-            conec= conn.getConn();
+            
             String sql = "select * from detalle;";
-            PreparedStatement ps= conec.prepareStatement(sql);
-            ResultSet rs= ps.executeQuery();
+             ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
+             rs= ps.executeQuery();
                 
                 while(rs.next())
                 {
@@ -36,25 +37,31 @@ public class DataDetalle {
                     
                     listaDetalles.add(d);
                 }
-                conec.close();
+               // conec.close();
                 
         }
          catch(SQLException e){
             throw new DonaCocaException("Error al obtener detalles",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
                    
         return listaDetalles;
     }        
     
-    public Detalle obtenerDetalle(int idDetalle) throws DonaCocaException{
+    public Detalle obtenerDetalle(int idDetalle) throws DonaCocaException, SQLException{
          Detalle d= new Detalle();
+         PreparedStatement ps= null;
+         ResultSet rs = null;
         try
         {
-            conec= conn.getConn();
+            
             String sql = "select * from detalle where id_detalle = ?;";
-            PreparedStatement ps= conec.prepareStatement(sql);
+            ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setInt(1, idDetalle);
-            ResultSet rs= ps.executeQuery();
+            rs= ps.executeQuery();
                 
                 if(rs.next())
                 {
@@ -67,28 +74,34 @@ public class DataDetalle {
                     
                    
                 }
-                conec.close();
+               // conec.close();
                 
         }
          catch(SQLException e){
             throw new DonaCocaException("Error al obtener detalles",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
                    
         return d;
     }   
     
-     public ArrayList<Detalle> obtenerDetalles(int idTorta) throws DonaCocaException{
+     public ArrayList<Detalle> obtenerDetalles(int idTorta) throws DonaCocaException, SQLException{
         ArrayList<Detalle> listaDetalles = new ArrayList<>();
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String sql = "select DISTINCT d.`id_detalle` from detalle d inner join variante v on d.`id_detalle`= v.`id_detalle` \n" +
 "inner join torta_variante tv on v.`id_variante` = tv.`id_variante`\n" +
 "where id_torta = ?;";
         
         try
         {
-            conec = conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+            
+            ps = FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setInt(1, idTorta);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
                    
             while(rs.next())
             {
@@ -98,82 +111,102 @@ public class DataDetalle {
                     listaDetalles.add(d);
                 }
             }
-            conec.close();
+           // conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al obtener lista de detalles segun id torta",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }        
         return listaDetalles;
     }
-        public boolean existeDetalle(String nombreDetalle) throws DonaCocaException{
-        
+        public boolean existeDetalle(String nombreDetalle) throws DonaCocaException, SQLException{
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String sql= "select count(*) from detalle where nombre= ?;";
-        Connection conec= null;
+        
         int cantidad=0;
         
         try{
-            conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+            
+             ps =  FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setString(1, nombreDetalle);
             
-            ResultSet rs= ps.executeQuery();
+             rs= ps.executeQuery();
             
             if(rs.next()){
                 cantidad= rs.getInt(1);
                 
             }
-            conec.close();
+           // conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al recuperar el detalle en existeDetalle",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         
         return cantidad >0;
     }
-      public void registrarDetalle(Detalle det)throws DonaCocaException{
-        PreparedStatement ps;
+      public void registrarDetalle(Detalle det)throws DonaCocaException, SQLException{
+        
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String transac = "insert into detalle(nombre,elige_usuario,multiple) values (?,?,?);";
         try{
-            Connection conec= conn.getConn();
-            ps= conec.prepareStatement(transac, Statement.RETURN_GENERATED_KEYS);
+            
+            ps= FactoryConexion.getInstancia().getConn().prepareStatement(transac, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, det.getNombre());
             ps.setBoolean(2, det.getEligeUsuario());
             ps.setBoolean(3, det.getMultiple());
             
             ps.executeUpdate();
-            ResultSet rs= ps.getGeneratedKeys();
+             rs= ps.getGeneratedKeys();
             
             if(rs.next())
             {
                 int id = rs.getInt(1);
                 det.setId(id);
             }
-            conec.close();
+           // conec.close();
             
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al registrar detalle ",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         
     }
       
-    public void editarDetalle(Detalle det) throws DonaCocaException{
+    public void editarDetalle(Detalle det) throws DonaCocaException, SQLException{
         String sql="update detalle set nombre=? , elige_usuario=?, multiple =?  where id_detalle=?";
-               
+        PreparedStatement ps= null;
+        ResultSet rs = null;       
         try{
-            Connection conec= conn.getConn();
-            PreparedStatement ps = conec.prepareStatement(sql);
+           
+             ps =  FactoryConexion.getInstancia().getConn().prepareStatement(sql);
             ps.setString(1, det.getNombre());
             ps.setBoolean(2, det.getEligeUsuario());
             ps.setBoolean(3, det.getMultiple());
             ps.setInt(4, det.getId());
             
             ps.executeUpdate();
-            conec.close();
+           // conec.close();
           
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al modificar detalle",e);
+        } finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }  
     }
     

@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,8 @@ public class EliminarTortaComando extends Comando{
            } catch (DonaCocaException ex) {
                request.setAttribute("ex", ex.getMessage());
                return"/ABMTortas.jsp";
+           } catch (SQLException ex) {
+               Logger.getLogger(EliminarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
            }
           
            

@@ -63,7 +63,7 @@
               <!-- Images Slider -->
               <div class="images-slider">
                 <ul class="slides">
-                  <li> <img class="img-responsive" style="width: 653px;height: 662px" src="images\imagenesdc\<%=  t.getRutaImg() %>"  alt=""> </li>
+                  <li> <img class="img-responsive" style="width: 649px;height: 662px" src="images\imagenesdc\<%=  t.getRutaImg() %>"  alt=""> </li>
                 </ul>
               </div>
            
@@ -83,11 +83,23 @@
             </div>
         </div> <%} %>
               <h4><%= t.getNombre()  %></h4>
+              <h6>Cantidad</h6>
+              
+               <div class="cart_quantity_button">
+                  
+                   
+                   <input  min="1"  required  class="tamanio cart_quantity_input" type="number"  name="cantidad" <%if(session.getAttribute("cantTor") != null){ %> value="<%= session.getAttribute("cantTor")  %>"  <% } %> />
+                   
+                   
+              </div>
+             
               <% if(session.getAttribute("totalTor") != null){ 
               %>
               <span class="price"><small>$</small><%= session.getAttribute("totalTor") %></span> 
              
               <%} 
+
+
               if(detallesTorta.size() > 0){ %>
                
                <%  for(Detalle d: detallesTorta){%>

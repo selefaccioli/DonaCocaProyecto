@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,8 @@ public class EditarTortaComando extends Comando{
         } catch (DonaCocaException ex) {
             request.setAttribute("ex", ex.getMessage());
             return "/ABMTortas.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
         }
  
         tortaEditada.setId(Integer.parseInt(request.getParameter("ID")));
@@ -125,7 +128,9 @@ public class EditarTortaComando extends Comando{
                 request.setAttribute("ex", ex.getMessage());
                 request.getSession().setAttribute("Scroll",true);
                 return "/ABMTortas.jsp";
-            }         
+            } catch (SQLException ex) {         
+            Logger.getLogger(EditarTortaComando.class.getName()).log(Level.SEVERE, null, ex);
+        }
             request.getSession().setAttribute("listaTortas", tortas);
             request.getSession().setAttribute("TortaEdit", tortaEditada);
             request.getSession().setAttribute("Scroll",true);

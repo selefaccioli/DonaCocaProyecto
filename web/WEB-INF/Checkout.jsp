@@ -104,7 +104,7 @@ else { if(request.getAttribute("ex") != null){%>
                     <%if(usu!= null){ %>
                     <li class="col-md-6">
                       <label> *NOMBRE
-                          <input type="text"  pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres"  required name="nomUsu" <%if(usu!= null){ %>value="<%= usu.getNombre()   %>" disabled  <% } %> placeholder="">
+                          <input type="text"  pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres"  required name="nomUsu" <%if(usu!= null){ %>value="<%= usu.getNombre()   %>"   <% } %> placeholder="">
                       </label>
                     </li>
                     <% } else{ %>
@@ -119,7 +119,7 @@ else { if(request.getAttribute("ex") != null){%>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> *APELLIDO
-                        <input type="text"  required name="apeUsu"  pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" <%if(usu!= null){ %>value="<%= usu.getApellido()   %>" disabled <% } %> placeholder="">
+                        <input type="text"  required name="apeUsu"  pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" <%if(usu!= null){ %>value="<%= usu.getApellido()   %>"  <% } %> placeholder="">
                       </label>
                     </li>
                     <% } else{ %>
@@ -135,7 +135,7 @@ else { if(request.getAttribute("ex") != null){%>
                     <li class="col-md-6"> 
                       <!-- MAIL -->
                       <label>*MAIL
-                        <input type="mail" required name="mailUsu"  pattern="^[\s\S]{0,20}$" title="Solo se permiten hasta 20 caracteres" <%if(usu!= null){ %>value="<%= usu.getMail()   %>"  <% }%> placeholder="">
+                        <input type="mail" required name="mailUsu"  pattern="^[\s\S]{0,40}$" title="Solo se permiten hasta 40 caracteres" <%if(usu!= null){ %>value="<%= usu.getMail()   %>"  <% }%> placeholder="">
                       </label>
                     </li>
                     <% } else{ %>
@@ -254,19 +254,19 @@ else { if(request.getAttribute("ex") != null){%>
                     <!-- Name -->
                     <li class="col-md-6">
                       <label> *NOMBRE
-                        <input type="text"  required name="nomUsu"  <%if(usu!= null){ %>value="<%= usu.getNombre()   %>" disabled <% } %> placeholder="">
+                        <input type="text"  required name="nomUsu"  <%if(usu!= null){ %>value="<%= usu.getNombre()   %>"  <% } %> placeholder="">
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> *APELLIDO
-                        <input type="text"  required name="apeUsu" <%if(usu!= null){ %>value="<%= usu.getApellido()   %>" disabled <% } %> placeholder="">
+                        <input type="text"  required name="apeUsu" <%if(usu!= null){ %>value="<%= usu.getApellido()   %>"  <% } %> placeholder="">
                       </label>
                     </li>
                     <li class="col-md-6"> 
                       <!-- MAIL -->
                       <label>*MAIL
-                        <input type="text" required name="mailUsu" <%if(usu!= null){ %>value="<%= usu.getMail()   %>" disabled <% }%> placeholder="">
+                        <input type="text" required name="mailUsu" <%if(usu!= null){ %>value="<%= usu.getMail()   %>"  <% }%> placeholder="">
                       </label>
                     </li>
                     
@@ -274,14 +274,14 @@ else { if(request.getAttribute("ex") != null){%>
                     <!-- TELEFONO -->
                     <li class="col-md-6">
                       <label>*TELÉFONO
-                        <input type="text" required  name="telUsu" <%if(usu!= null){ %>value="<%= usu.getTelefono() %>" disabled <% } %>  placeholder="">
+                        <input type="text" required  name="telUsu" <%if(usu!= null){ %>value="<%= usu.getTelefono() %>"  <% } %>  placeholder="">
                       </label>
                     </li>
                     
                          <!-- fecha nacimiento -->
                     <li class="col-md-6">
                       <label> *FECHA NACIMIENTO
-                        <input type="date" name="fecNac" <%if(usu!= null){ %>value="<%= usu.getFechaNacimiento() %>" disabled <% } %> placeholder="">
+                        <input type="date" name="fecNac" <%if(usu!= null){ %>value="<%= usu.getFechaNacimiento() %>"  <% } %> placeholder="">
                       </label>
                     </li>
                     
@@ -344,9 +344,9 @@ else { if(request.getAttribute("ex") != null){%>
                 <div class="order-detail">
                    <% double subtotal = 0.0f;
                        for(LineaPedido linea: lp){
-                   subtotal = subtotal + linea.getSubtotal();
+                   subtotal = subtotal + (linea.getSubtotal()* linea.getCantidad());
            %>
-                  <p><%= linea.getTorta().getNombre()  %><span><%= linea.getSubtotal() %></span></p>
+                  <p><%= linea.getTorta().getNombre()  %><span><%= linea.getSubtotal() * linea.getCantidad() %></span></p>
                   
                   <% } %>
                   <!-- SUB TOTAL -->

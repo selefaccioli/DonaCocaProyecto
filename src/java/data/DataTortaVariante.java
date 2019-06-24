@@ -14,11 +14,12 @@ import util.DonaCocaException;
 
 
 public class DataTortaVariante {
-    Conexion conn= new Conexion();
+   
     
     
-    public void agregarTortaVariante(Torta torta) throws DonaCocaException{
-        
+    public void agregarTortaVariante(Torta torta) throws DonaCocaException, SQLException{
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String transac = "insert into torta_variante values ";
         
          for(int i=0; i<torta.getVariantes().size(); i++)
@@ -32,41 +33,53 @@ public class DataTortaVariante {
         }
          
          try{
-             Connection conec= conn.getConn();
-             PreparedStatement ps= conec.prepareStatement(transac);
+            
+              ps= FactoryConexion.getInstancia().getConn().prepareStatement(transac);
              ps.executeUpdate();
-             conec.close();
+            // conec.close();
          }
          catch(SQLException e){
             throw new DonaCocaException("Error al agregar torta_variante",e);
+        }  finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }   
     }
     
-    public void actualizarTortaVariante(Torta torta)throws DonaCocaException{
+    public void actualizarTortaVariante(Torta torta)throws DonaCocaException, SQLException{
         String sql = "delete from torta_variante where id_torta=?;";
+        PreparedStatement ps= null;
+        ResultSet rs = null;
          try{
-             Connection conec= conn.getConn();
-             PreparedStatement ps= conec.prepareStatement(sql);
+             
+              ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
              ps.setInt(1, torta.getId());
              ps.executeUpdate();
-             conec.close();
+            // conec.close();
              
              this.agregarTortaVariante(torta);
          }
          catch(SQLException e){
             throw new DonaCocaException("Error al actualizar torta_variante",e);
+        }  finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }   
     }
     
-    public ArrayList<Variante> obtenerVariantesTorta(Torta torta) throws DonaCocaException{
+    public ArrayList<Variante> obtenerVariantesTorta(Torta torta) throws DonaCocaException, SQLException{
         ArrayList<Variante> variantes = new ArrayList<Variante>();
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String sql="select variante.`id_variante`, variante.`descripcion`, variante.`id_detalle` from variante inner join torta_variante on variante.`id_variante`= torta_variante.`id_variante`where id_torta=?;";
         CtrlDetalle ctrlD = new CtrlDetalle();
         try{
-             Connection conec= conn.getConn();
-             PreparedStatement ps= conec.prepareStatement(sql);
+            
+              ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
              ps.setInt(1, torta.getId());
-             ResultSet rs= ps.executeQuery();
+              rs= ps.executeQuery();
              
              while(rs.next()){
                  Variante v = new Variante();
@@ -77,10 +90,14 @@ public class DataTortaVariante {
                  
                  variantes.add(v);
              }
-             conec.close();
+             //conec.close();
          }
          catch(SQLException e){
             throw new DonaCocaException("Error al obtener variantes Torta",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }   
         
         return variantes;

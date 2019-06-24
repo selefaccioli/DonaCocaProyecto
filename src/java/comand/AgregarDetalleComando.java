@@ -6,6 +6,7 @@
 package comand;
 
 import entity.Detalle;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,8 @@ public class AgregarDetalleComando extends Comando{
            
             request.setAttribute("ex", ex.getMessage());
             return "/ABMDetalles.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(AgregarDetalleComando.class.getName()).log(Level.SEVERE, null, ex);
         }
             
             
@@ -42,7 +45,7 @@ public class AgregarDetalleComando extends Comando{
         detNuevo.setMultiple(multiple);
         detNuevo.setEligeUsuario(true);
         
-        ArrayList<Detalle> detalles;
+        ArrayList<Detalle> detalles = null;
         
         if(!existeDetalle){
                 try {
@@ -51,6 +54,8 @@ public class AgregarDetalleComando extends Comando{
                 } catch (DonaCocaException ex) {
                     request.setAttribute("ex", ex.getMessage());
                     return "/ABMDetalles.jsp";
+                } catch (SQLException ex) {
+                    Logger.getLogger(AgregarDetalleComando.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                 

@@ -9,19 +9,20 @@ import java.sql.SQLException;
 import util.DonaCocaException;
 
 public class DataParametros {
-    Conexion conn= new Conexion();
-    Connection conec= null;
+   
     
-     public Parametro obtenerParametros() throws DonaCocaException{ 
+     public Parametro obtenerParametros() throws DonaCocaException, SQLException{ 
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         Parametro par= null;
         String sql = "select * from parametros where fecha_actualizacion= "+
                      "(select max(fecha_actualizacion) from parametros where fecha_actualizacion < CURRENT_DATE);"; 
                         
         try
         {
-            conec= conn.getConn();
-            PreparedStatement ps= conec.prepareStatement(sql);
-            ResultSet rs= ps.executeQuery();
+            
+             ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
+             rs= ps.executeQuery();
             
             if(rs.next())
             {  
@@ -34,10 +35,14 @@ public class DataParametros {
                 par.setFechaActualizacion(rs.getDate(5));
             }
             
-            conec.close();
+            //conec.close();
         }
         catch(SQLException e){
             throw new DonaCocaException("Error al obtener parametros",e);
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }
         
         return par;

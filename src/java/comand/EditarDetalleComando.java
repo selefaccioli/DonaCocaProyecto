@@ -6,6 +6,7 @@
 package comand;
 
 import entity.Detalle;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,8 @@ public class EditarDetalleComando extends Comando{
         } catch (DonaCocaException ex) {
            request.setAttribute("ex", ex);
             return "/ABMDetalles.jsp";
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarDetalleComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         

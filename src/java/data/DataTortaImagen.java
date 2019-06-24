@@ -22,11 +22,12 @@ import util.DonaCocaException;
  * @author selef
  */
 public class DataTortaImagen {
-   Conexion conn= new Conexion();
+  
     
     
     public void agregarTortaImagen(Torta torta) throws DonaCocaException, SQLException{
-        
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String transac = "insert into torta_imagen values ";
         
          for(int i=0; i<torta.getRutasImg().size(); i++)
@@ -40,41 +41,53 @@ public class DataTortaImagen {
         }
          
          try{
-             Connection conec= conn.getConn();
-             PreparedStatement ps= conec.prepareStatement(transac);
+             
+              ps= FactoryConexion.getInstancia().getConn().prepareStatement(transac);
              ps.executeUpdate();
-             conec.close();
+            // conec.close();
          }
          catch(SQLException e){
             throw new DonaCocaException("Error al agregar torta_imagen",e);
-        }   
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        }  
     }
     
-    public void actualizarTortaImagen(Torta torta)throws DonaCocaException{
+    public void actualizarTortaImagen(Torta torta)throws DonaCocaException, SQLException{
         String sql = "delete from torta_imagen where id_torta=?;";
+         PreparedStatement ps= null;
+        ResultSet rs = null;
          try{
-             Connection conec= conn.getConn();
-             PreparedStatement ps= conec.prepareStatement(sql);
+            
+              ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
              ps.setInt(1, torta.getId());
              ps.executeUpdate();
-             conec.close();
+             //conec.close();
              
              this.agregarTortaImagen(torta);
          }
          catch(SQLException e){
             throw new DonaCocaException("Error al actualizar torta_imagen",e);
+        } finally{
+             if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
         }   
     }
     
-     public ArrayList<Imagen> obtenerImagenesTorta(Torta torta) throws DonaCocaException{
+     public ArrayList<Imagen> obtenerImagenesTorta(Torta torta) throws DonaCocaException, SQLException{
         ArrayList<Imagen> imagenes = new ArrayList<Imagen>();
+        PreparedStatement ps= null;
+        ResultSet rs = null;
         String sql="select torta_imagen.id_imagen, torta_imagen.ruta from torta_imagen `where id_torta=?;";
         CtrlDetalle ctrlD = new CtrlDetalle();
         try{
-             Connection conec= conn.getConn();
-             PreparedStatement ps= conec.prepareStatement(sql);
+             
+              ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
              ps.setInt(1, torta.getId());
-             ResultSet rs= ps.executeQuery();
+              rs= ps.executeQuery();
              
              while(rs.next()){
                  Imagen img = new Imagen();
@@ -85,11 +98,15 @@ public class DataTortaImagen {
                  
                  imagenes.add(img);
              }
-             conec.close();
+             //conec.close();
          }
          catch(SQLException e){
             throw new DonaCocaException("Error al obtener variantes Torta",e);
-        }   
+        }  finally{
+           if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        }  
         
         return imagenes;
     }

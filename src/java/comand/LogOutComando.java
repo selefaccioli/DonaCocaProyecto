@@ -19,7 +19,7 @@ public class LogOutComando extends Comando{
     public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
         Cookie[] cookies = request.getCookies();
-        
+         
         for(Cookie c:cookies)
         {
             if(c.getName().equals("nomUsuarioDonaCoca"))
@@ -38,6 +38,8 @@ public class LogOutComando extends Comando{
             }
         }
         
+        
+        request.getSession().setAttribute("usuario", null);
         return "/index.jsp";
     }
     

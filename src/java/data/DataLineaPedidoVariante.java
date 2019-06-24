@@ -22,12 +22,11 @@ import util.DonaCocaException;
  * @author selef
  */
 public class DataLineaPedidoVariante {
-    Conexion conn= new Conexion();
-    Connection conec= null;
+  
     
-    public void registrarLpVariantes(ArrayList<LineaPedido> lineas, int idPedido) throws DonaCocaException{ 
-    
-        
+    public void registrarLpVariantes(ArrayList<LineaPedido> lineas, int idPedido) throws DonaCocaException, SQLException{ 
+     PreparedStatement ps= null;
+     ResultSet rs = null; 
          for(int i=0; i< lineas.size(); i++)
         {
             String transac = "insert into lineapedido_variante values ";
@@ -42,15 +41,19 @@ public class DataLineaPedidoVariante {
             }
              try
             {
-               conec= conn.getConn();
-               PreparedStatement ps = conec.prepareStatement(transac);
+               
+                ps = FactoryConexion.getInstancia().getConn().prepareStatement(transac);
                ps.executeUpdate();
                
-               conec.close();
+               //conec.close();
             }
             catch(SQLException e){
             throw new DonaCocaException("Error al registrar lineapedido_variante",e);
-            } 
+            } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        }
             
                       
         }   
@@ -60,16 +63,18 @@ public class DataLineaPedidoVariante {
               
     }    
     
-    public ArrayList<Variante> obtenerVariantesLp(LineaPedido lp) throws DonaCocaException{
+    public ArrayList<Variante> obtenerVariantesLp(LineaPedido lp) throws DonaCocaException, SQLException{
         ArrayList<Variante> variantes = new ArrayList<Variante>();
+        PreparedStatement ps= null;
+        ResultSet rs = null; 
         String sql="select variante.`id_variante`, variante.`descripcion`, variante.`id_detalle` from variante inner join lineapedido_variante on variante.`id_variante`= lineapedido_variante.`id_variante` where id_torta=? and id_pedido=?;";
         CtrlDetalle ctrlD = new CtrlDetalle();
         try{
-             Connection conec= conn.getConn();
-             PreparedStatement ps= conec.prepareStatement(sql);
+            
+             ps= FactoryConexion.getInstancia().getConn().prepareStatement(sql);
              ps.setInt(1, lp.getTorta().getId());
              ps.setInt(2, lp.getIdPedido());
-             ResultSet rs= ps.executeQuery();
+             rs= ps.executeQuery();
              
              while(rs.next()){
                  Variante v = new Variante();
@@ -80,14 +85,18 @@ public class DataLineaPedidoVariante {
                  
                  variantes.add(v);
              }
-             conec.close();
+            // conec.close();
              
             
          } 
          catch(SQLException e){
             throw new DonaCocaException("Error al obtener variantes lineapedido",e);
             
-        }   
+        } finally{
+            if(rs!=null)rs.close();
+            if(ps!=null)ps.close();
+            FactoryConexion.getInstancia().releaseConn();
+        }  
          
         return variantes;
     }

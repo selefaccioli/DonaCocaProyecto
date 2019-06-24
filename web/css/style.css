@@ -3371,6 +3371,14 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 	text-align: left;
 	position: relative;
 }
+.sub-bnr2 {
+	background: url(../images/horizontal.jpeg) no-repeat;
+        
+	background-size: cover !important;
+	min-height: 610px;
+	text-align: left;
+	position: relative;
+}
 .sub-bnr h4 {
 	font-size: 25px;
 	color: #fff;

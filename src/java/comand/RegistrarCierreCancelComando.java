@@ -7,7 +7,10 @@ package comand;
 
 import entity.LineaPedido;
 import entity.Pedido;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.CtrlPedido;
@@ -51,6 +54,8 @@ public class RegistrarCierreCancelComando extends Comando{
         {
             request.setAttribute("ex", ex.getMessage());
             return "/pedidoDetalle.jsp";     
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistrarCierreCancelComando.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try
@@ -61,6 +66,8 @@ public class RegistrarCierreCancelComando extends Comando{
         {
             request.setAttribute("ex", ex.getMessage());
             return "/pedidoDetalle.jsp";    
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistrarCierreCancelComando.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         request.getSession().setAttribute("pendientes",pendientes);
