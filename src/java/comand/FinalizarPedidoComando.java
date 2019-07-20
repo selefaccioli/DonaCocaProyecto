@@ -156,282 +156,133 @@ public class FinalizarPedidoComando extends Comando{
             }
                 String mje;
            
- /*     mje= 
-"<html>\n";
  
-      mje = mje + 
+ 
+ mje = "<style type=\"text/css\">\n" +
+"  body,\n" +
+"  html, \n" +
+"  .body {\n" +
+"    background: #f3f3f3 !important;\n" +
+"  }\n" +
+"</style>\n" +
+"<!-- move the above styles into your custom stylesheet -->\n" +
 "\n" +
-"  \n" +
-"        \n" +
-" <body>    \n" +
-"        <div class=\"cuenta\">\n" +
-"            <div class=\"container\"> \n" +
-"              \n" +
-"                         \n" +
-"                \n" +
-"                \n" +
-"       \n" +
-"        <!-- Payments Steps -->\n" +
-"  <div class=\"row\">\n" +
-"  <div class=\"table-responsive\">\n" +
-"                            <div class=\"table-striped\">\n" +
-"                                <table class=\"table table-striped\">\n" +
-"                                    <thead>\n" +
-"                                        <tr>\n" +
-                           
-"                                        <th>Estado</th>\n" +
-"                                        <th></th>\n" +
-"                                    </tr>\n" +
-"                                    </thead>\n" +
-"                                    <tbody>\n" +
-"                                        \n" +
-"                                        \n" +
-"                                        <tr>\n";
-                                          
-      
-                                            if(p.getEstado().equals("Pendiente")){ 
-                                 mje=  mje +  "<td><button type=\"button\" class=\"btn btn-primary btn-sm\">" + p.getEstado() + "</button></td>\n";
-                                            } else if(p.getEstado().equals("Aprobado")){ 
-                                 mje=  mje +    "<td><button type=\"button\" class=\"btn btn-success btn-sm\">" + p.getEstado() + "</button></td>\n";
-                                            } else if(p.getEstado().equals("Cancelado")){  
-                                 mje=  mje +     "<td><button type=\"button\" class=\"btn btn-danger btn-sm\">" + p.getEstado() + "</button></td>\n";
-                                            } else{  
-                                 mje=  mje +    "<td><button type=\"button\" class=\"btn btn-info btn-sm\">" + p.getEstado() + "</button></td>\n"; }
-                                             
- mje = mje +"\n" +
-"                                        </tr>\n" +
-"                                      \n" +
-"                                    </tbody>\n" +
-"                                </table>\n" +
-"                            </div>\n" +
-"                        </div>\n" +
-"       \n" +
-"  </div>\n" +
-"       \n" +
-"        <br><br>\n" +
-"        \n" ;
+"<spacer size=\"16\"></spacer>\n" +
+"\n" +
+"<container>\n" +
+"\n" +
+"  <spacer size=\"16\"></spacer>\n" +
+"\n" +
+"  <row>\n" +
+"    <columns>\n" +
+"      <h1>Muchas gracias por su compra!</h1>\n" +
+"      <p>A continuación le dejamos el detalle de su pedido.</p>\n" +
+"\n" +
+"      <spacer size=\"16\"></spacer>\n" +
+"\n" +
+"      <callout class=\"secondary\">\n" +
+"        <row>\n" +
+"          <columns large=\"6\">\n" +
+"            <p>\n" +
+"              <strong>Datos del usuario</strong><br/>\n";
 
-              for(LineaPedido linea: p.getLineasPedido()){ 
- mje = mje + "\n" +
-"           \n" +
-"          <!-- Cart Details -->\n" +
-"          <ul class=\"row cart-details\">\n" +
-"            <li class=\"col-sm-6\">\n" +
-"              <div class=\"media\"> \n" +
-"                <!-- Media Image -->\n" +
+     mje = mje + "Nombre y Apellido: " + p.getUsuario().getNombre() + " " + p.getUsuario().getApellido() + "<br/>"+
+                 "Mail: " + p.getUsuario().getMail() + "<br/>"+ 
+                 "Teléfono: " + p.getUsuario().getTelefono() + "<br/>"+ "</p>";
  
-"                <!-- Item Name -->\n" +
-"                <div class=\"media-body\">\n" +
-"                  <div class=\"position-center-center\">\n" +
-"                    <h5> Nombre torta: " +  linea.getTorta().getNombre();
-                      if(linea.getVariantes() != null){ 
-                          mje = mje + "</h5>";
-                    for(Variante v: linea.getVariantes()){ 
-                         mje = mje + "<p>\n" +
-                        v.getDetalle().getNombre() + ": " +
-                        v.getDescripcion()  +
-                     "</p>\n"; }}
-                 mje = mje +
-"                  </div>\n" +
-"                </div>\n" +
-"              </div>\n" +
-"            </li>\n" +
-"            \n" +
-"            <!-- PRICE -->\n" +
-"            <li class=\"col-sm-2\">\n" +
-"                     <div class=\"position-center-center\"> \n" +
-"                  <p class=\"all-total\"><span>" + "Precio unitario: " + linea.getSubtotal()  + "</span></p>\n" +
-"                     </div>\n" +
-"            </li>\n" +
-"            \n" +
-"            <!-- QTY -->\n" +
-"            <li class=\"col-sm-1\">\n" +
-"              <div class=\"position-center-center\">\n" +
-"              \n" +
-"                  <!-- QTY -->\n" +
-"                <div class=\"cart_quantity_button\">\n" +
-"                   <form action=\"CtrlMaestro\" method=\"post\">\n" +
-"                   <input type=\"hidden\"  name=\"form\" value=\"ActualizarLineaComando\"/>\n" +
-"                   <input type=\"hidden\" name=\"idTorta\" value=\"<%= linea.getTorta().getId() %>\"/>\n" +
-"                   <input disabled type=\"text\"  name=\"cantidad\" value=\" Cantidad: " + linea.getCantidad() + "\"/>\n" +
-"                   \n" +
-"                   </form>\n" +
-"              </div>\n" +
-"               \n" +
-"              </div>\n" +
-"            </li>\n" +
-"            \n" +
-"            <!-- TOTAL PRICE -->\n" +
-"            <li class=\"col-sm-2\">\n" +
-"              <div class=\"position-center-center\"> \n" +
-"                 <p class=\"all-total\"><span>"+ "Total torta: " + linea.getSubtotal()* linea.getCantidad() + "</span></p>\n" +
-"                  \n" +
-"               \n" +
-"                \n" +
-"              \n" +
-"              </div>\n" +
-"            </li>\n" +
-"            \n" +
-"         \n" +
-"            \n" +
-"          </ul>\n" +
-"        \n";
+
+ mje = mje + 
+"        </row>\n" +
+"      </callout>\n" +
+         
+"      <callout class=\"secondary\">\n" +
+"        <row>\n" +
+"          <columns large=\"6\">\n" +
+"            <p>\n" +
+"              <strong>Metodo de envío</strong><br/>\n";
+ if(p.getEnvioDomicilio()){
+     mje = mje + "Envio a domicilio. Dirección: <br/>" + p.getUsuario().getDireccion() + ", Reconquista.</p>";
  }
-        mje = mje + "\n" +
-"          \n" +
-"       \n" +
-"          \n" +
-"          \n" +
-"        </div>\n" +
-"          \n" +
-"      </div>\n" +
-"          \n" +
-"          \n" +
-"          \n" +
-"          \n" +
-"       \n" +
-"     <section class=\"chart-page padding-top-100 padding-bottom-100\">\n" +
-"      <div class=\"container\"> \n" +
-"        \n" +
-"        <!-- Payments Steps -->\n" +
-"        <div class=\"shopping-cart\"> \n" +
-"          \n" +
-"          <!-- SHOPPING INFORMATION -->\n" +
-"          <div class=\"cart-ship-info\">\n" +
-"            <div class=\"row\"> \n" +
-"              \n" +
-"              <!-- ESTIMATE SHIPPING & TAX -->\n" +
-"              <div class=\"col-sm-7\">\n" +
-"                <h6>Usuario</h6>\n" +
-"                <form action=\"CtrlMaestro\" method=\"post\">\n" +
-"                  <ul class=\"row\">\n" +
-"                    \n" +
-"                    <!-- Name -->\n" +
-"                    <li class=\"col-md-6\">\n" +
-"                      <label> *NOMBRE\n" +
-"                        <input type=\"text\" disabled name=\"first-name\" value=\"" + p.getUsuario().getNombre()   +"\" placeholder=\"\">\n" +
-"                      </label>\n" +
-"                    </li>\n" +
-"                    <!-- LAST NAME -->\n" +
-"                    <li class=\"col-md-6\">\n" +
-"                      <label> *APELLIDO\n" +
-"                        <input type=\"text\" disabled name=\"last-name\" value=\"" + p.getUsuario().getApellido()   + "\" placeholder=\"\">\n" +
-"                      </label>\n" +
-"                    </li>\n" +
-"                    <li class=\"col-md-6\"> \n" +
-"                      <!-- MAIL -->\n" +
-"                      <label>MAIL\n" +
-"                        <input type=\"text\" disabled name=\"company\" value=\"" + p.getUsuario().getMail()  + "\" placeholder=\"\">\n" +
-"                      </label>\n" +
-"                    </li>\n" +
-"                    <li class=\"col-md-6\"> \n" +
-"                      <!-- DIRECCION -->\n" +
-"                      <label>*DIRECCIÓN\n" +
-"                        <input type=\"text\" disabled name=\"address\" value=\"" + p.getUsuario().getDireccion()  + "\" placeholder=\"\">\n" +
-"                      </label>\n" +
-"                    </li>\n" +
-"                    <!-- TELEFONO -->\n" +
-"                    <li class=\"col-md-6\">\n" +
-"                      <label>*TELÉFONO\n" +
-"                        <input type=\"text\"  disabled name=\"town\" value=\""+ p.getUsuario().getTelefono()  +"\" placeholder=\"\">\n" +
-"                      </label>\n" +
-"                    </li>\n" +
-"                    \n" +
-"                    <!-- CIUDAD -->\n" +
-"                    <li class=\"col-md-6\">\n" +
-"                      <label> CIUDAD\n" +
-"                        <input type=\"text\" disabled name=\"contry-state\" value=\"Reconquista\" placeholder=\"\">\n" +
-"                      </label>\n" +
-"                    </li>\n" +
-"                    \n" +
-"                    \n" +
-"                    \n" +
-"                \n" +
-"                    \n" +
-"                    <!-- CREATE AN ACCOUNT -->\n" +
-"                   \n" +
-"                  </ul>\n" +
-"                      \n" +
-"                      <h6>Aclaraciones adicionales o preferencias</h6>\n" +
-"                     <h7>(Nombre a poner en la torta, cambio de colores, cuadro de futbol, edad, etc )</h7><br>\n" +
-"                  <textarea name=\"aclaraciones\" disabled rows=\"10\" cols=\"80\">";
-                 if(p.getAclaraciones()!= null){ 
-                     mje = mje + p.getAclaraciones();
-                         } 
-                  mje = mje + "</textarea><br>\n" +
-                   
+ else{
+      mje = mje + "Retira en local</p> ";
+ }
+ mje = mje + 
+"        </row>\n" +
+"      </callout>\n" +
+"\n" +
+"      <h4>Detalles de la orden</h4>\n" +
+"\n" +
+ "      <callout class=\"secondary\">\n" +
+"        <row>\n" +
+"          <columns large=\"6\">\n" +
+"            <p>\n" +
+"              <strong>Aclaraciones adicionales</strong><br/>\n";
 
-                
-"             \n" +
-"              </div>\n" +
-"              \n" +
-"              <!-- SUB TOTAL -->\n" +
-"              <div class=\"col-sm-5\">\n" +
-"                <h6>Su orden</h6>\n" +
-"                <div class=\"order-place\">\n" +
-"                  <div class=\"order-detail\">\n" +
-"                 \n" +
-"                    \n" +
-"                    <!-- SUB TOTAL -->\n" +
-"                     <p class=\"all-total\">";
-                  if(p.getPorcentajeDescuento() != 0){
-                      mje = mje + "SUBTOTAL";} else{
-                      mje = mje + "TOTAL"; } 
-                     mje = mje + "<span>" +  subtotal +"</span></p>\n";
-                    if(p.getPorcentajeDescuento() != 0){ 
-                 mje = mje + "<p class=\"all-total\">PORCENTAJE DE DESCUENTO<span>" +  p.getPorcentajeDescuento() + "</span></p>\n" +
-"                \n" +
-"                  <p class=\"all-total\">DESCUENTO EN $<span>" + p.getDescuento() + "</span></p>\n" +
-"                 \n" +
-"                  <p class=\"all-total\">TOTAL<span>" + p.getTotal() + "</span></p>\n" +
-"                 \n" +
-"                  \n";}
-                  
+     mje = mje + p.getAclaraciones() + "</p><br/>";
+ 
 
-                    mje = mje + 
-"                    <p class=\"all-total\">TOTAL SEÑA<span> $" +  p.getSena()   +"</span></p>\n" +
-"                    <p class=\"all-total\">RESTAN PAGAR <span> $" + (p.getTotal() -  p.getSena())   +"</span></p>\n" +
-"                  </div>\n" +
-"                 \n" +
-"                \n" +
-"                   </div> \n" +
-"                    <br><br><br><br>\n" +
-"                <h6>Método de envío</h6>\n" +
-"                <div class=\"order-place\">\n" +
-"                    <div class=\"radio\">\n" +
-"                          <input type=\"radio\" name=\"radio1\" id=\"domicilio\" value=\"domicilio\" disabled\n";
-                    
-                    if(p.getEnvioDomicilio()){
-                        mje = mje + "checked"; } 
-                    mje = mje + ">\n" +
-"                          <label for=\"radio2\">Envío a domicilio</label>\n" +
-"                        </div>\n" +
-"                    \n" +
-"                        <div class=\"radio\">\n" +
-"                          <input type=\"radio\" name=\"radio1\" id=\"local\" value=\"local\" disabled\n";
-                    if(!p.getEnvioDomicilio()){
-                        mje = mje + "checked"; } 
-                     mje = mje + ">\n" +
-"                          <label for=\"radio3\">Retiro en local</label>\n" +
-"                        </div>\n" +
-"                   \n" +
-"                </div>\n" +
-"                    \n" +
-"                   \n" +
-"                </div>\n" +
-"              </div>\n" +
-"            </div>\n" +
-"          </div>\n" +
-"        </div>\n" +
-"     \n" +
-"    </section>         \n" +
-" </div>\n" +
-"    </body>\n" +
-" \n" +
-"</html>\n" +
-"";
-              
-                String mensaje;
+ mje = mje + 
+"        </row>\n" +
+"      </callout>\n" +        
+"      <table>\n" +
+"        <tr>"
+         + "<th>Nombre Producto</th>"
+         + "<th>Detalles</th>"
+         + "<th>Precio unitario</th>" 
+         + "<th>Cantidad</th>" 
+         + "<th>Precio total</th>" 
+         + "</tr>\n";
+ for(LineaPedido lp : p.getLineasPedido()){
+     mje = mje + "<tr><td>" + lp.getTorta().getNombre() + "</td>";
+     mje= mje + "<td>"; 
+     if(lp.getVariantes() != null){ 
+         for(Variante v: lp.getVariantes()){ 
+             mje = mje +  v.getDetalle().getNombre() + ": " +  v.getDescripcion() + "<br/>";
+         }
+     }
+     mje = mje + "</td>";
+     mje = mje + "<td>$" + lp.getSubtotal() +"</td>\n";
+     mje = mje + "<td>" + lp.getCantidad() +"</td>\n";
+     mje = mje + "<td>$" + lp.getSubtotal()*lp.getCantidad() +"</td></tr>\n";
+
+ }
+
+if(p.getPorcentajeDescuento() != 0){
+    
+mje = mje + 
+"          <br/><tr><td colspan=\"2\"><b>Subtotal:</br></td>\n" +
+"          <td>$" + subtotal + "</td>\n" +
+"        </tr>\n" +
+"          <tr><td colspan=\"2\"><b>Porcentaje de descuento:</br></td>\n" +
+"          <td>%" + p.getPorcentajeDescuento() + "</td>\n" +
+"        </tr>\n" +
+"          <tr><td colspan=\"2\"><b>Descuento en pesos:</br></td>\n" +
+"          <td>$" + p.getDescuento() + "</td>\n" +
+"        </tr>\n" +   
+"          <tr><td colspan=\"2\"><b>Total:</br></td>\n" +
+"          <td>$" + (subtotal - p.getDescuento()) + "</td>\n" +
+"        </tr>\n" +        
+"      </table>\n" ;
+}
+else{
+    mje = mje + 
+"          <br/><tr><td colspan=\"2\"><b>Total:</br></td>\n" +
+"          <td>$" + p.getTotal() + "</td>\n" +
+"        </tr>\n" +      
+"      </table>\n" ;
+}
+mje = mje + 
+"      <hr/>\n" +
+       "<h4>Que sigue ahora?</h4>"+
+
+      "<p>Usted deberá abonar una seña en el local de Doña Coca para que su pedido sea aprobado. "
+        + "Tiene tiempo hasta tres días antes de la fecha de entrega.</p>" +
+   
+"    </columns>\n" +
+"  </row>\n" +
+"</container>";
+ 
+           String mensaje;
                
         try{
             String destinatario = request.getParameter("mailUsu"); ;
@@ -453,8 +304,6 @@ public class FinalizarPedidoComando extends Comando{
             request.setAttribute("ex", ex.getMessage());
                     return "/Checkout.jsp";
             }
-            
-            */
                 
                 
                 request.getSession().setAttribute("exitoPedido", true);

@@ -73,10 +73,10 @@
               <!-- ESTIMATE SHIPPING & TAX -->
               <div class="col-sm-7">
                 <h6>INGRESÁ CON TU USUARIO</h6>
-                <form action="CtrlMaestro" method="post" onsubmit="calcHash()">
-                    <input type="hidden" name="form" value="LogInComando" onsubmit="calcHash()">
+                
                   <ul class="row">
-                    
+                    <form action="CtrlMaestro" method="post" onsubmit="calcHash()">
+                    <input type="hidden" name="form" value="LogInComando" onsubmit="calcHash()">
                     <!-- Name -->
                     <li class="col-md-12">
                       <label> USUARIO
@@ -96,16 +96,18 @@
                       <button type="submit" class="btn">INICIAR SESIÓN</button>
                     </li>
                     
+                    </form>
                     
-                    
-                    <!-- FORGET PASS 
+                    <!-- FORGET PASS -->
                     <li class="col-md-4">
                       <div class="checkbox margin-0 margin-top-20 text-right">
-                        <a href="#.">Forget Password</a>
-                      </div>-->
+                        <a href="#.">Olvidó su contraseña?</a>
+                      </div>
                     </li>
                   </ul>
-                </form>
+                
+                
+                
                  <%if(request.getParameter("nomUsu")!= null && request.getParameter("contra")!=null){
                                 if(session.getAttribute("usuario") == null){
                                     if(request.getAttribute("ex") != null){

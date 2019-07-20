@@ -9,14 +9,14 @@ public class Conexion {
         Connection conn= null;
         try{
             Class.forName("com.mysql.jdbc.Driver");
- /*String usuarioDB= "donac_sol"; 
+ String usuarioDB= "donac_sol"; 
            // String usuarioDB= "donac_sfaccioli";
             String passwordDB = "f37453481";
             String servidor = "jdbc:mysql://localhost:3306/donacoca_entrega"; 
            // String usuarioDB= "tp_sele";
             //String passwordDB= "6BjeUP*_ZFjN";
             //String servidor= "jdbc:mysql://localhost:3306/tp_sele";*/
-String usuarioDB="sfaccioli";
+/*String usuarioDB="sfaccioli";
 String passwordDB="f123";
 String servidor = "jdbc:mysql://localhost:3309/finaljava";  
          /*  String usuarioDB= "root";
